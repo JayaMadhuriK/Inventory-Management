@@ -80,9 +80,9 @@ public class UserDetailsImpl implements UserDetails {
     return Objects.equals(email, user.email);
   }
 
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+@Override
+public String getUsername() {
+	return email;
+}
+
 }

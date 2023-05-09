@@ -1,5 +1,6 @@
 package com.project.Inventory.Controller;
 
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +23,7 @@ public class TestController {
   }
 
   @GetMapping("/admin")
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasRole('ADMIN')")
   public String adminAccess() {
     return "Admin Board.";
   }
