@@ -1,0 +1,81 @@
+.img{
+    background-image: url('https://blog.yoobic.com/hubfs/supermarket%20shelves%20cropped.jpeg');
+    width:1366px;
+    height:625px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+    .image{
+        background-image: url('walmart.png');
+        background-size:200px;
+        width:200px;
+        height:100px;
+        padding-left: 15px;
+        border-radius:10px;
+        margin-left:10px;
+    }
+    
+    .register-popup{
+        width:414px;
+        height:610px;
+        background-color:rgba(8, 8, 7, 0.5);
+        position: absolute;
+        margin-left:470px;
+        margin-top:-95px;
+        border:1px solid #555555;
+        border-radius: 10px;
+        .register-form{
+            position:absolute;
+            margin-top:15;
+            margin-left:135px;
+           
+            h1{
+                text-shadow: #201e1e;
+                margin-top:-0px;
+                margin-left:20px;
+                color:rgb(250, 247, 247);
+            }
+            .error{
+                margin-left:-40px;
+            }
+            .first-name{
+                display:flex;
+                margin-left:-30px;
+                margin-top:7px;
+                color:rgb(12, 11, 11);
+                .text{
+                    .MuiInput-root {
+                        border-bottom: 1px solid white !important;
+                      }
+                    .MuiInputLabel-root {
+                        color: white !important;
+                    }
+                    color-scheme: dark;
+                    
+                }
+
+            }
+            .first-name:focus-within label{
+                
+                color:rgb(236, 232, 232);
+            }
+            .buttonlabel{
+                margin-top:20px;
+                .button{
+                    margin-left: -5px;
+                    padding-left: 40px;
+                    padding-right:40px;
+                    color:rgb(8, 8, 8);
+                    background-color:rgb(238, 243, 238);
+                }
+                .button:hover{
+                    background-color:rgb(27, 34, 27);
+                    color:white;
+                }
+    
+            }
+        }
+    }
+    
+}

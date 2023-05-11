@@ -1,6 +1,7 @@
 package com.project.Inventory.Entity;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -9,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class InventoryItems {
@@ -28,6 +30,9 @@ public class InventoryItems {
 	private int warranty;
 	@Column(nullable=false)
 	private String expireDate;
+	
+	 @OneToMany(mappedBy = "item")
+	 private List<AssignedItems> assignedItem;
 	
 	public int getItemId() {
 		return itemId;
@@ -70,6 +75,26 @@ public class InventoryItems {
 	}
 	public void setExpireDate(String expireDate) {
 		this.expireDate = expireDate;
+	}
+	public List<AssignedItems> getAssignedItem() {
+		return assignedItem;
+	}
+	public void setAssignedItem(List<AssignedItems> assignedItem) {
+		this.assignedItem = assignedItem;
+	}
+	public InventoryItems(String itemName, String category, int billNumber, Date dateOfPurchase, int warranty,
+			String expireDate) {
+		super();
+		this.itemName = itemName;
+		this.category = category;
+		this.billNumber = billNumber;
+		this.dateOfPurchase = dateOfPurchase;
+		this.warranty = warranty;
+		this.expireDate = expireDate;
+	}
+	public InventoryItems() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 	
 }

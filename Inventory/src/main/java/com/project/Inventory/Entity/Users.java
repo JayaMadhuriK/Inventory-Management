@@ -2,6 +2,7 @@ package com.project.Inventory.Entity;
 
 import java.sql.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Entity;
@@ -12,6 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Users {
@@ -23,12 +26,17 @@ public class Users {
 	private String firstName,lastName;
 	private Date dateOfBirth;
 	private int age;
+	@Size(min = 10, max = 12)
 	private int mobileNumber;
 	 @ManyToMany(fetch = FetchType.LAZY)
 	 @JoinTable(  name = "user_roles", 
 	        joinColumns = @JoinColumn(name = "user_id"), 
 	        inverseJoinColumns = @JoinColumn(name = "role_id"))
 	 private Set<Role> roles = new HashSet<>();
+	 
+	 @OneToMany(mappedBy = "user")
+	 private List<AssignedItems> assignedItems;
+	 
 	public Long getUserId() {
 		return userId;
 	}
@@ -79,6 +87,13 @@ public class Users {
 	}
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+	
+	public List<AssignedItems> getAssignedItems() {
+		return assignedItems;
+	}
+	public void setAssignedItems(List<AssignedItems> assignedItems) {
+		this.assignedItems = assignedItems;
 	}
 	public Users(String email, String password, String firstName, String lastName, Date dateOfBirth,
 			int age, int mobileNumber) {
