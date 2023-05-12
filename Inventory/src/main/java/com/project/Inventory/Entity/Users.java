@@ -26,8 +26,7 @@ public class Users {
 	private String firstName,lastName;
 	private Date dateOfBirth;
 	private int age;
-	@Size(min = 10, max = 12)
-	private int mobileNumber;
+	private Long mobileNumber;
 	 @ManyToMany(fetch = FetchType.LAZY)
 	 @JoinTable(  name = "user_roles", 
 	        joinColumns = @JoinColumn(name = "user_id"), 
@@ -36,67 +35,81 @@ public class Users {
 	 
 	 @OneToMany(mappedBy = "user")
 	 private List<AssignedItems> assignedItems;
-	 
-	public Long getUserId() {
-		return userId;
-	}
+
 	public String getEmail() {
 		return email;
 	}
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	public String getFirstName() {
 		return firstName;
 	}
+
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
+
 	public String getLastName() {
 		return lastName;
 	}
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
 	public Date getDateOfBirth() {
 		return dateOfBirth;
 	}
+
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
+
 	public int getAge() {
 		return age;
 	}
+
 	public void setAge(int age) {
 		this.age = age;
 	}
-	public int getMobileNumber() {
+
+	public Long getMobileNumber() {
 		return mobileNumber;
 	}
-	public void setMobileNumber(int mobileNumber) {
+
+	public void setMobileNumber(Long mobileNumber) {
 		this.mobileNumber = mobileNumber;
 	}
+
 	public Set<Role> getRoles() {
 		return roles;
 	}
+
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-	
+
 	public List<AssignedItems> getAssignedItems() {
 		return assignedItems;
 	}
+
 	public void setAssignedItems(List<AssignedItems> assignedItems) {
 		this.assignedItems = assignedItems;
 	}
-	public Users(String email, String password, String firstName, String lastName, Date dateOfBirth,
-			int age, int mobileNumber) {
+
+	public Users(String email, String password, String firstName, String lastName, Date dateOfBirth, int age,
+			Long mobileNumber) {
 		super();
 		this.email = email;
 		this.password = password;
@@ -106,11 +119,11 @@ public class Users {
 		this.age = age;
 		this.mobileNumber = mobileNumber;
 	}
+
 	public Users() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	
-	 
 	
 }

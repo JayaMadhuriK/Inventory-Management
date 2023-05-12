@@ -32,7 +32,7 @@ import com.project.Inventory.Security.Service.UserDetailsImpl;
 
 import jakarta.validation.Valid;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*",maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
