@@ -16,7 +16,7 @@
     }
     .login-popup{
         width:350px;
-        height:300px;
+        height:350px;
         background-color:rgba(8, 8, 7, 0.8);
         opacity:0.8;
         position: absolute;
@@ -30,14 +30,14 @@
             margin-left:50px;
             h1{
                 text-shadow: #555555;
-                margin-top:-40px;
+                margin-top:-55px;
                 margin-left:80px;
                 color:rgb(250, 247, 247);
             }
             .first-name{
                 display:flex;
                 margin-left:15px;
-                margin-top:5px;
+                margin-top:20px;
                 color:rgb(12, 11, 11);
                 .text{
                     .MuiInput-root {
@@ -47,10 +47,9 @@
                         color: white !important;
                     }
                 }
-                
             }
             .buttonlabel{
-                margin-top:30px;
+                margin-top:50px;
                 .button{
                     margin-left: 40px;
                     padding-left: 60px;
@@ -61,13 +60,19 @@
                 .link{
                     margin-left:28px;
                     color:white;
+                    margin-top:10px;
                 }
                 .button:hover{
                     background-color:rgb(3, 5, 3);
                     color:white;
 
                 }
-    
+                .button:disabled{
+                    background-color:rgb(98, 102, 98);
+                    color:rgb(221, 208, 208);
+                    cursor:not-allowed;
+
+                }
             }
         }
     }
