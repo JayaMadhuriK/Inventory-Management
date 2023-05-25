@@ -1,16 +1,18 @@
 package com.project.Inventory.Entity;
 
 import java.sql.Date;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class InventoryItems {
@@ -21,6 +23,7 @@ public class InventoryItems {
 	private String itemName;
 	@Column(nullable=false, length = 128)
 	private String category;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(nullable=false, length = 30)
 	private int billNumber;
 	@Column(nullable=false)
@@ -30,10 +33,26 @@ public class InventoryItems {
 	private int warranty;
 	@Column(nullable=false)
 	private String expireDate;
+	@OneToOne(fetch = FetchType.LAZY)
+	 @JoinTable(  name = "employee_items", 
+	        joinColumns = @JoinColumn(name = "item_id"),
+	        inverseJoinColumns = @JoinColumn(name = "user_id"))
+	 private Users assignedEmployee;
 	
-	 @OneToMany(mappedBy = "item")
-	 private List<AssignedItems> assignedItem;
-	
+	public InventoryItems() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public InventoryItems(String itemName, String category, int billNumber, Date dateOfPurchase, int warranty,
+			String expireDate) {
+		super();
+		this.itemName = itemName;
+		this.category = category;
+		this.billNumber = billNumber;
+		this.dateOfPurchase = dateOfPurchase;
+		this.warranty = warranty;
+		this.expireDate = expireDate;
+	}
 	public int getItemId() {
 		return itemId;
 	}
@@ -76,25 +95,11 @@ public class InventoryItems {
 	public void setExpireDate(String expireDate) {
 		this.expireDate = expireDate;
 	}
-	public List<AssignedItems> getAssignedItem() {
-		return assignedItem;
+	public Users getAssignedEmployee() {
+		return assignedEmployee;
 	}
-	public void setAssignedItem(List<AssignedItems> assignedItem) {
-		this.assignedItem = assignedItem;
-	}
-	public InventoryItems(String itemName, String category, int billNumber, Date dateOfPurchase, int warranty,
-			String expireDate) {
-		super();
-		this.itemName = itemName;
-		this.category = category;
-		this.billNumber = billNumber;
-		this.dateOfPurchase = dateOfPurchase;
-		this.warranty = warranty;
-		this.expireDate = expireDate;
-	}
-	public InventoryItems() {
-		super();
-		// TODO Auto-generated constructor stub
+	public void setAssignedEmployee(Users assignedEmployee) {
+		this.assignedEmployee = assignedEmployee;
 	}
 	
 }

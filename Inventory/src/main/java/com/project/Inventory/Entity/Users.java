@@ -33,9 +33,7 @@ public class Users {
 	        inverseJoinColumns = @JoinColumn(name = "role_id"))
 	 private Set<Role> roles = new HashSet<>();
 	 
-	 @OneToMany(mappedBy = "user")
-	 private List<AssignedItems> assignedItems;
-
+	
 	public String getEmail() {
 		return email;
 	}
@@ -100,13 +98,7 @@ public class Users {
 		this.roles = roles;
 	}
 
-	public List<AssignedItems> getAssignedItems() {
-		return assignedItems;
-	}
-
-	public void setAssignedItems(List<AssignedItems> assignedItems) {
-		this.assignedItems = assignedItems;
-	}
+	
 
 	public Users(String email, String password, String firstName, String lastName, Date dateOfBirth, int age,
 			Long mobileNumber) {
