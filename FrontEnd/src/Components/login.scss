@@ -1,22 +1,27 @@
-.home{
+.body{
     background-image: url('https://blog.yoobic.com/hubfs/supermarket%20shelves%20cropped.jpeg');
     width:1365px;
     height:625px;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    .image{
-        background-image: url('walmart.png');
-        background-size:200px;
-        width:200px;
+    .logo{
+        font-size: 50px;
+        width:220px;
+        font-weight:900;
         height:100px;
-        padding-left: 15px;
-        border-radius:10px;
         margin-left:600px;
+        background: linear-gradient(to left,
+        blue,
+        black,
+        blue,
+        black);
+        -webkit-background-clip: text;
+        color: transparent;
     }
     .login-popup{
         width:350px;
-        height:350px;
+        height:335px;
         background-color:rgba(8, 8, 7, 0.8);
         opacity:0.8;
         position: absolute;
@@ -34,7 +39,7 @@
                 margin-left:80px;
                 color:rgb(250, 247, 247);
             }
-            .first-name{
+            .textbox{
                 display:flex;
                 margin-left:15px;
                 margin-top:20px;
@@ -49,7 +54,7 @@
                 }
             }
             .buttonlabel{
-                margin-top:50px;
+                margin-top:30px;
                 .button{
                     margin-left: 40px;
                     padding-left: 60px;

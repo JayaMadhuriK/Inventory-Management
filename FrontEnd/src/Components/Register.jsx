@@ -23,7 +23,6 @@ const Register = (role) =>{
         password: "",
         role: role?.role 
     };
-
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -41,7 +40,6 @@ const Register = (role) =>{
     const [systemErrors,setSystemErrors] = useState("");
     const [ageValue,setAgeValue] = useState();
     const [ageBlur,setAgeBlur] = useState(false);
-
     const Alert = React.forwardRef(function Alert(props, ref) {
         return <MuiAlert ref={ref} variant="filled" {...props} />;
     });
@@ -220,57 +218,56 @@ const Register = (role) =>{
             setIsDisable(true);
         }
     }, [formErrors]);
-
     return (
-        <Grid className="img">
-            <Grid className="image"></Grid>
+        <Grid className="body">
+            <Grid className="logo">WalMart</Grid>
             {systemErrors?.networkError?.length>0 && <Alert severity="error" style={{width:'350px', position:"absolute", marginLeft:'983px', marginTop:'470px'}}>{systemErrors?.networkError}</Alert>}   
             {systemErrors?.response?.length>0 && <Alert severity="success" style={{width:'400px', position:"absolute", marginLeft:'933px', marginTop:'470px'}}>{systemErrors?.response}</Alert>} 
             <Grid className='register-popup'>
                 <Grid>
                     <FormControl className="register-form">
                         <h1>SignUp</h1>
-                        <Grid className="first-last-name-container"> 
-                            <Grid className="first-name">
+                        <Grid className="field-container"> 
+                            <Grid className="textbox">
                                 <TextField type="text" className="text" variant="standard" InputProps={input} name="firstName" style={{width: "205px"}} onChange={handleChange} label="First Name" size="small" required></TextField>
                             </Grid>
-                            <Grid className="first-name">
+                            <Grid className="textbox">
                                 <TextField type="text" className="text" variant="standard" InputProps={input} name="lastName" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Last Name" size="small" required></TextField>
                             </Grid>
-                            <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"60px"}}>{formErrors.firstName}</p>
-                            <p style={{color:"red", position:"absolute",marginLeft:"210px",marginTop:"60px"}}>{formErrors.lastName}</p>
+                            <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"65px"}}>{formErrors.firstName}</p>
+                            <p style={{color:"red", position:"absolute",marginLeft:"210px",marginTop:"65px"}}>{formErrors.lastName}</p>
                         </Grid>
-                        <Grid className = "first-last-name-container">
-                            <Grid className="first-name">
+                        <Grid className = "field-container">
+                            <Grid className="textbox">
                                 <TextField type={focus ? "date" : "text"} className="text" variant="standard" InputProps={input} name="dateOfBirth" style={{width: "205px"}} onChange={handleChange} label="Date of birth" size="small" onFocus={onFocus} onBlur={onBlur} required></TextField>
                             </Grid>
-                            <Grid className="first-name">
+                            <Grid className="textbox">
                                 <TextField type="text" className="text" variant="standard" InputProps={input} InputLabelProps={{shrink:ageBlur}} inputProps={{ readOnly: true }} name="age" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Age" size="small" value={ageValue} required></TextField>
                             </Grid>
-                            <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"60px"}}>{formErrors.dateOfBirth}</p>
+                            <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"65px"}}>{formErrors.dateOfBirth}</p>
                         </Grid>
-                        <Grid className = "first-last-name-container">
-                            <Grid className="first-name">
+                        <Grid className = "field-container">
+                            <Grid className="textbox">
                                 <TextField type="Number" className="text" variant="standard" InputProps={input} name="mobileNumber" style={{width: "205px"}} onChange={handleChange} label="Mobile Number" size="small" required></TextField>
                             </Grid>
-                            <Grid className="first-name">
+                            <Grid className="textbox">
                                 <TextField type="email" className="text" variant="standard" InputProps={input}  name="email" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Email Id" size="small" required></TextField>
                             </Grid>
-                            <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"60px"}}>{formErrors.mobileNumber}</p>
-                            <p style={{color:"red", position:"absolute",marginLeft:"210px",marginTop:"60px"}}>{formErrors.email}</p>
+                            <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"65px"}}>{formErrors.mobileNumber}</p>
+                            <p style={{color:"red", position:"absolute",marginLeft:"210px",marginTop:"65px"}}>{formErrors.email}</p>
                         </Grid>
-                        <Grid className = "first-last-name-container">
-                            <Grid className="first-name">
+                        <Grid className = "field-container">
+                            <Grid className="textbox">
                                 <TextField type={showPassword ? "text" : "password"} className="text" variant="standard" InputProps={inputpass} name="password" style={{width: "210px"}} onChange={handleChange} label="Password" size="small" required></TextField>
                             </Grid>
-                            <Grid className="first-name">
+                            <Grid className="textbox">
                                 <TextField type={showConfirmPassword ? "text" : "password"} className="text" variant="standard" InputProps={inputconf} name="confirmpassword" style={{width: "210px",marginLeft:"65px"}} onChange={handleChange} label="Confirm Password" size="small" required></TextField>
                             </Grid>
-                            <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"60px"}}>{formErrors.password}</p>
-                            <p style={{color:"red", position:"absolute",marginLeft:"210px",marginTop:"60px"}}>{formErrors.confirmpassword}</p>
+                            <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"65px"}}>{formErrors.password}</p>
+                            <p style={{color:"red", position:"absolute",marginLeft:"210px",marginTop:"65px"}}>{formErrors.confirmpassword}</p>
                         </Grid>
-                        <Grid className="buttonlabel">
-                            <Button variant="contained" onClick={handleRegister} disabled={isDisable} InputProps={input} size="large" className="button">Register</Button>
+                        <Grid className="button-label">
+                            <Button variant="contained" className="button" onClick={handleRegister} disabled={isDisable} InputProps={input} size="large" >Register</Button>
                         </Grid>
                     </FormControl>
                 </Grid>

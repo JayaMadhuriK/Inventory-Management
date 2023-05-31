@@ -142,19 +142,19 @@ const Login = () =>{
     }, [formErrors]);
 
     return (
-        <Grid className="home">
-            <Grid className="image"></Grid>
+        <Grid className="body">
+            <Grid className="logo">WalMart</Grid>
             {systemErrors?.networkError?.length>0 && <Alert severity="error" style={{width:'350px', position:"absolute", marginLeft:'983px', marginTop:'400px'}}>{systemErrors?.networkError}</Alert>}  
-            {systemErrors?.response?.length>0 && <Alert severity="success" style={{width:'350px', position:"absolute", marginLeft:'983px', marginTop:'400px'}}>{systemErrors?.response}</Alert>}     
+            {systemErrors?.response?.length>0 && <Alert severity="success" style={{width:'350px', position:"absolute", marginLeft:'983px', marginTop:'400px'}}>{systemErrors?.response}</Alert>}  
             <Grid className='login-popup'>
                 <Grid>
                     <FormControl className="register-form">
                         <h1>SignIn</h1>
-                        <Grid className="first-name">
+                        <Grid className="textbox">
                             <TextField type="email" className="text" name="email" style={{width: "235px"}} onChange={handleChange} InputProps={input} variant="standard" label = "Email ID" size="small" required></TextField>
                         </Grid>
                         <p style={{color:"red", position:"absolute",marginLeft:"20px",marginTop:"75px"}}>{formErrors.email}</p>
-                        <Grid className="first-name">
+                        <Grid className="textbox">
                             <TextField type={showPassword ? "text" : "password"} className="text"  name="password" onChange={handleChange} InputProps={inputpass} variant="standard" label = "Password" size="small"  required></TextField>
                         </Grid>
                         <p style={{color:"red", position:"absolute",marginLeft:"20px",marginTop:"140px"}}>{formErrors.password}</p>

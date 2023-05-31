@@ -1,25 +1,30 @@
-.img{
+.body{
     background-image: url('https://blog.yoobic.com/hubfs/supermarket%20shelves%20cropped.jpeg');
     width:1366px;
     height:625px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    .image{
-        background-image: url('walmart.png');
-        background-size:200px;
-        width:200px;
+    .logo{
+        font-size: 50px;
+        width:220px;
+        font-weight:900;
         height:100px;
-        padding-left: 15px;
-        border-radius:10px;
-        margin-left:10px;
+        margin-left:600px;
+        background: linear-gradient(to left,
+        blue,
+        black,
+        blue,
+        black);
+        -webkit-background-clip: text;
+        color: transparent;
     }
     .register-popup{
         width:600px;
         height:450px;
         background-color:rgba(8, 8, 7, 0.7);
         position: absolute;
-        margin-left:420px;
+        margin-left:410px;
         border:1px solid #555555;
         border-radius: 10px;
         .register-form{
@@ -32,12 +37,12 @@
                 margin-left:130px;
                 color:rgb(250, 247, 247);
             }
-            .first-last-name-container{
+            .field-container{
                 display:flex;
-                .first-name{
+                .textbox{
                     display:flex;
                     margin-left:-30px;
-                    margin-top:15px;
+                    margin-top:20px;
                     color:rgb(12, 11, 11);
                     .text{
                         .MuiInput-root {
@@ -50,7 +55,7 @@
                     }
                 }
             }
-            .buttonlabel{
+            .button-label{
                 margin-top:50px;
                 .button{
                     margin-left: 100px;
