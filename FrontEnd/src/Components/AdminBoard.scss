@@ -1,0 +1,30 @@
+.admin-body{
+    .label{
+        height: 70px;
+        width:1365;
+        background-color: black;
+        display: flex;
+        .logo{
+            font-size: 50px;
+            width:220px;
+            font-weight:700;
+            height:100px;
+            background: linear-gradient(to left,
+            blue,
+            white,
+            blue,
+            white);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .employee{
+            margin-left: 750px;
+            color:white;
+        }
+        .items{
+            margin-left: 30px;
+            color:white;
+        }
+    
+    }
+}
