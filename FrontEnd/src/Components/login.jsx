@@ -48,7 +48,7 @@ const Login = () =>{
             <InputAdornment position="end">
               <AccountCircleIcon sx={{ color: "white"}}/>
             </InputAdornment>
-          ),
+        ),
     };
 
     const inputpass = {

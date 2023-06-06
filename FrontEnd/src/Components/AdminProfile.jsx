@@ -1,6 +1,7 @@
 import {Grid} from '@material-ui/core'
-import React,{useState} from 'react'
-import './AdminBoard.scss'
+import React,{useEffect, useState} from 'react'
+import './AdminBoard.scss';
+import axios from 'axios'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -13,30 +14,31 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import AdminNavBar from './AdminNavBar';
 
-const AdminBoard = () =>{
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [isDialogOpen,setIsDialogOpen] = useState(false);
+const AdminProfile = () =>{
+    const [admin,setAdmin] = useState(null);
     const navigate = useNavigate();
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    const handleLogOut = () => {
-        setTimeout(function() {
-        navigate('/');
-        },1000);
-    };
-    const handleClose1 = () =>{
-        setIsDialogOpen(false);
-    };
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+    const fetchAdmin = async() =>{
+        const response =await axios.get('http://localhost:6001/user');
+        setAdmin(response?.data);
+    }
+    useEffect(()=>{
+        fetchAdmin();
+    },[]);
    return (
         <Grid className="admin-body">
             <Grid><AdminNavBar/></Grid>
-            
+             {admin ?(
+                <Grid>
+                    <h3>Profile</h3>
+                    <p>User Id</p>
+                    <p></p>
+                    <p></p>
+                </Grid>
+             ):(
+                <p>Loading admin profile ....</p>
+             )}
         </Grid>
-   )
-}
+   );
+};
 
-export default AdminBoard;
+export default AdminProfile;

@@ -16,24 +16,20 @@ import com.project.Inventory.Service.InventoryItemService;
 public class InventoryItemServiceImpl implements InventoryItemService {
 	
 	private final ItemRepo inventoryItemRepo;
-	private final UserRepo userRepo;
 	
-	public InventoryItemServiceImpl(ItemRepo inventoryItemRepo,UserRepo userRepo)
+	public InventoryItemServiceImpl(ItemRepo inventoryItemRepo)
 	{
 		this.inventoryItemRepo=inventoryItemRepo;
-		this.userRepo=userRepo;
 	}
 	@Override
 	public InventoryItems updateInventoryItem(int id,InventoryItems inventoryItems) {
 		Optional<InventoryItems> inventoryPayload = inventoryItemRepo.findById(id);
-		Optional<Users> userPayload =	userRepo.findById((long) 1);
-		System.out.println(inventoryItems.getAssignedEmployee());
 		inventoryPayload.get().setItemName(inventoryItems.getItemName());
 		inventoryPayload.get().setCategory(inventoryItems.getCategory());
 		inventoryPayload.get().setExpireDate(inventoryItems.getExpireDate());
 		inventoryPayload.get().setWarranty(inventoryItems.getWarranty());
 		inventoryPayload.get().setDateOfPurchase(inventoryItems.getDateOfPurchase());
-		inventoryPayload.get().setAssignedEmployee(userPayload.get());
+		inventoryPayload.get().setEmpId(inventoryItems.getEmpId());
 		return inventoryItemRepo.save(inventoryPayload.get());
 	}
 

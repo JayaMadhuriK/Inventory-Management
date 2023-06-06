@@ -6,13 +6,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class InventoryItems {
@@ -27,24 +23,20 @@ public class InventoryItems {
 	@Column(nullable=false, length = 30)
 	private int billNumber;
 	@Column(nullable=false)
-	@JsonFormat(pattern="DD-MM-YYYY")
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date dateOfPurchase;
 	@Column(nullable=false)
 	private int warranty;
 	@Column(nullable=false)
 	private String expireDate;
-	@OneToOne(fetch = FetchType.LAZY)
-	 @JoinTable(  name = "employee_items", 
-	        joinColumns = @JoinColumn(name = "item_id"),
-	        inverseJoinColumns = @JoinColumn(name = "user_id"))
-	 private Users assignedEmployee;
-	
+	@Column(nullable=true)
+	private Long empId;
 	public InventoryItems() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public InventoryItems(String itemName, String category, int billNumber, Date dateOfPurchase, int warranty,
-			String expireDate) {
+			String expireDate, Long empId) {
 		super();
 		this.itemName = itemName;
 		this.category = category;
@@ -52,12 +44,7 @@ public class InventoryItems {
 		this.dateOfPurchase = dateOfPurchase;
 		this.warranty = warranty;
 		this.expireDate = expireDate;
-	}
-	public int getItemId() {
-		return itemId;
-	}
-	public void setItemId(int itemId) {
-		this.itemId = itemId;
+		this.empId = empId;
 	}
 	public String getItemName() {
 		return itemName;
@@ -95,11 +82,11 @@ public class InventoryItems {
 	public void setExpireDate(String expireDate) {
 		this.expireDate = expireDate;
 	}
-	public Users getAssignedEmployee() {
-		return assignedEmployee;
+	public Long getEmpId() {
+		return empId;
 	}
-	public void setAssignedEmployee(Users assignedEmployee) {
-		this.assignedEmployee = assignedEmployee;
+	public void setEmpId(Long empId) {
+		this.empId = empId;
 	}
 	
 }

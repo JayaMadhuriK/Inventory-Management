@@ -17,8 +17,12 @@
             -webkit-background-clip: text;
             color: transparent;
         }
+        .home{
+            margin-left: 650px;
+            color:white;
+        }
         .employee{
-            margin-left: 750px;
+            margin-left: 30px;
             color:white;
         }
         .items{
@@ -26,5 +30,184 @@
             color:white;
         }
     
+    }
+}
+.employee-body{
+    .app-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        // padding: 1rem;
+    }
+    .grid-btn{
+        margin-top:30px;
+        h1{
+            margin-top:40px;
+            margin-left:20px;
+        }
+        .button{
+            margin-left:1120px;
+            margin-top: 0px;
+            position:absolute;
+            background-color: rgb(4, 4, 8);
+        }
+        .buttonnew{
+            margin-left:20px;
+            position:absolute;
+            background-color: rgb(4, 4, 8);
+        }
+    }
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top:70px;
+    }
+    
+    th,
+    tr {
+        border: 1px solid #ffffff;
+        color:white;
+    }
+    th {
+    background-color: rgb(4, 4, 8);
+    }
+
+    td {
+    background-color: rgb(230, 236, 240);
+    }
+}
+.addemployee{
+    width:1366px;
+    height:625px;
+    border:1px solid black;
+    box-shadow: 1px grey;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    .employee-popup{
+        width:600px;
+        height:450px;
+        background-color:black;
+        position: absolute;
+        margin-left:380px;
+        margin-top: 60px;
+        border:1px solid #555555;
+        border-radius: 10px;
+        .register-form{
+            position:absolute;
+            margin-top:25;
+            margin-left:115px;
+            h1{
+                text-shadow: #201e1e;
+                margin-top:-0px;
+                margin-left:100px;
+                color:rgb(250, 247, 247);
+            }
+            .field-container{
+                display:flex;
+                .textbox{
+                    display:flex;
+                    margin-left:-30px;
+                    margin-top:20px;
+                    color:rgb(12, 11, 11);
+                    .text{
+                        .MuiInput-root {
+                            border-bottom: 1px solid white !important;
+                          }
+                        .MuiInputLabel-root {
+                            color: white !important;
+                        }
+                        color-scheme: dark;
+                    }
+                }
+            }
+            .button-label{
+                margin-top:50px;
+                .button{
+                    margin-left: 100px;
+                    padding-left: 40px;
+                    padding-right:40px;
+                    color:rgb(8, 8, 8);
+                    background-color:rgb(238, 243, 238);
+                }
+                .button:hover{
+                    background-color:rgb(27, 34, 27);
+                    color:white;
+                }
+                .button:disabled{
+                    background-color:rgb(98, 102, 98);
+                    color:rgb(221, 208, 208);
+                    cursor:not-allowed;
+                }
+            }
+        }
+    }
+}
+
+.additem{
+    width:1366px;
+    height:625px;
+    border:1px solid black;
+    box-shadow: 1px grey;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    .item-popup{
+        width:600px;
+        height:350px;
+        background-color:black;
+        position: absolute;
+        margin-left:380px;
+        margin-top: 60px;
+        border:1px solid #555555;
+        border-radius: 10px;
+        .register-form{
+            position:absolute;
+            margin-top:25;
+            margin-left:115px;
+            h1{
+                text-shadow: #201e1e;
+                margin-top:-0px;
+                margin-left:100px;
+                color:rgb(250, 247, 247);
+            }
+            .field-container{
+                display:flex;
+                .textbox{
+                    display:flex;
+                    margin-left:-30px;
+                    margin-top:20px;
+                    color:rgb(12, 11, 11);
+                    .text{
+                        .MuiInput-root {
+                            border-bottom: 1px solid white !important;
+                          }
+                        .MuiInputLabel-root {
+                            color: white !important;
+                        }
+                        color-scheme: dark;
+                    }
+                }
+            }
+            .button-label{
+                margin-top:30px;
+                .button{
+                    margin-left: 120px;
+                    padding-left: 40px;
+                    padding-right:40px;
+                    color:rgb(8, 8, 8);
+                    background-color:rgb(238, 243, 238);
+                }
+                .button:hover{
+                    background-color:rgb(27, 34, 27);
+                    color:white;
+                }
+                .button:disabled{
+                    background-color:rgb(98, 102, 98);
+                    color:rgb(221, 208, 208);
+                    cursor:not-allowed;
+                }
+            }
+        }
     }
 }
