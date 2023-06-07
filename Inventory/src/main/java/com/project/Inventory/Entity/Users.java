@@ -34,6 +34,14 @@ public class Users {
 	 private Set<Role> roles = new HashSet<>();
 	 
 	
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
 	public String getEmail() {
 		return email;
 	}
@@ -97,9 +105,6 @@ public class Users {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-
-	
-
 	public Users(String email, String password, String firstName, String lastName, Date dateOfBirth, int age,
 			Long mobileNumber) {
 		super();
@@ -111,7 +116,6 @@ public class Users {
 		this.age = age;
 		this.mobileNumber = mobileNumber;
 	}
-
 	public Users() {
 		super();
 		// TODO Auto-generated constructor stub

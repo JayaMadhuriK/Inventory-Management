@@ -32,6 +32,9 @@ const AdminNavBar = () =>{
     const handleClose = () =>{
         setIsDialogOpen(false);
     };
+    const handleCloseMenu = () =>{
+        setAnchorEl(null);
+    };
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -48,7 +51,7 @@ const AdminNavBar = () =>{
         navigate('/itemlist');
     }
    return (
-        <Grid className="admin-body">
+        <Grid className="adminnav-body">
             <Grid className='label'>
                 <Grid className="logo">WalMart</Grid>
                 <Button variant="standard" className="home" onClick={handleHome}>{underline.home ? <u>Home</u>:<>Home</>}</Button>
@@ -61,8 +64,9 @@ const AdminNavBar = () =>{
                     keepMounted
                     anchorEl={anchorEl}
                     style={{top: 50,marginLeft:'55px'}}
-                    onClose={handleClose}
+                    onClose={handleCloseMenu}
                     open={Boolean(anchorEl)}
+                    autoFocus
                 >
                     <MenuItem onClick={handleProfile}>Profile</MenuItem>
                     <MenuItem onClick={()=>{setIsDialogOpen(true)}}>Logout</MenuItem>

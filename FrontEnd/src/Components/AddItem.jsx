@@ -40,7 +40,7 @@ const AddItem = () =>{
         }
     };
     const handleRegister = () =>{
-      axios.post('http://localhost:6001/api/auth/signup',formValues)
+      axios.post('http://localhost:6001/api/inventory/InventoryItems',formValues)
       .then(response=>{
         if(response?.status==200){
             setSystemErrors({...systemErrors,response:'Item added Successfully'});
@@ -85,7 +85,7 @@ const AddItem = () =>{
                                 <TextField type={focus ? "date" : "text"} className="text" variant="standard" InputProps={input} name="dateOfPurchase" style={{width: "205px"}} onChange={handleChange} label="Date of purchase" size="small" onFocus={onFocus} onBlur={onBlur} required></TextField>
                             </Grid>
                             <Grid className="textbox">
-                                <TextField type="text" className="text" variant="standard" InputProps={input} InputLabelProps={{input}} inputProps={{ readOnly: true }} name="billNumber" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Bill Number" size="small" required></TextField>
+                                <TextField type="text" className="text" variant="standard" InputProps={input} name="billNumber" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Bill Number" size="small" required></TextField>
                             </Grid>
                         </Grid>
                         <Grid className = "field-container">
@@ -94,6 +94,11 @@ const AddItem = () =>{
                             </Grid>
                             <Grid className="textbox">
                                 <TextField className="text" variant="standard" InputProps={input}  name="expireDate" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Expire Date" size="small" required></TextField>
+                            </Grid>
+                        </Grid>
+                        <Grid className = "field-container">
+                            <Grid className="textbox">
+                                <TextField type="Number" className="text" variant="standard" InputProps={input} name="empId" style={{width: "205px"}} onChange={handleChange} label="Employee Id" size="small" required></TextField>
                             </Grid>
                         </Grid>
                         <Grid className="button-label">

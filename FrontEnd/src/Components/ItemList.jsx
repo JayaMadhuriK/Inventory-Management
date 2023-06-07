@@ -29,7 +29,7 @@ import SearchIcon from '@mui/icons-material/Search';
 const ItemList = () =>{
      const [itemData,setItemData] = useState([])
     const getItemData = async () =>{
-        const response =await axios.get('http://localhost:4000/item')
+        const response =await axios.get('http://localhost:6001/api/inventory/InventoryItems')
         setItemData(response?.data);
         console.log(response);
     };
@@ -56,7 +56,7 @@ const ItemList = () =>{
         <Grid className="employee-body">
             <Grid><AdminNavBar/></Grid>
             <Grid className="grid-btn">
-                <h1>Items</h1>
+                <h1>ITEMS</h1>
                 <Button variant="contained" color="primary" size="medium" onClick={()=>{navigate("/additem")}} className="buttonnew"><AddIcon/>Add Item</Button>
                 <TextField variant="standard" className="button" color="primary" InputProps={input}></TextField>
             </Grid>
@@ -71,6 +71,7 @@ const ItemList = () =>{
                             <TableCell>Date of Purchase</TableCell>
                             <TableCell>Warranty</TableCell>
                             <TableCell>Expire date</TableCell>
+                            <TableCell>Employee ID</TableCell>
                             <TableCell align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
@@ -87,12 +88,13 @@ const ItemList = () =>{
                                 <TableCell>{item.dateOfPurchase}</TableCell>
                                 <TableCell>{item.warranty}</TableCell>
                                 <TableCell>{item.expireDate}</TableCell>
+                                <TableCell>{item.empId}</TableCell>
                                 <TableCell align="center" scope="row" component="th">
                                     <Grid style={{display:'flex'}}>
                                         <Button variant="contained" size="small" onClick={()=>{navigate("/additem",{state:{item:item}})}}>Update</Button>
                                         <Button variant="contained" style={{marginLeft:'10px'}} 
                                         onClick={()=>{
-                                            axios.delete(`http://localhost:4000/item/${item.itemId}`);
+                                            axios.delete(`http://localhost:6001/api/inventory/InventoryItems/${item.itemId}`);
                                             window.location.reload(false);
                                         }} 
                                         color="error" size="small">Delete</Button>

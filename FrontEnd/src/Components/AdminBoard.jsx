@@ -12,31 +12,37 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import AdminNavBar from './AdminNavBar';
+import {Card,Space,Statistic} from 'antd';
+import { Category, PeopleOutline, ShoppingCartCheckoutOutlined, ShoppingCartOutlined } from '@mui/icons-material';
 
-const AdminBoard = () =>{
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [isDialogOpen,setIsDialogOpen] = useState(false);
+const AdminBoard = ({title,count}) =>{
     const navigate = useNavigate();
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-    const handleLogOut = () => {
-        setTimeout(function() {
-        navigate('/');
-        },1000);
-    };
-    const handleClose1 = () =>{
-        setIsDialogOpen(false);
-    };
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
    return (
-        <Grid className="admin-body">
+        <Grid className="adminboard-body">
             <Grid><AdminNavBar/></Grid>
-            
+            <Grid className="grid1">
+                <img src='https://www.spherewms.com/hubfs/blog-files/SPH%20Whse%20Inv%20Mgmt%20Blog-shutterstock_1930996376.jpg' width="1366" height="400" className="image" ></img>
+                <Grid className='space'>
+                    <Space direction="horizontal">
+                        <DashboardCard icon={<PeopleOutline style={{color:"black", backgroundColor:"red",borderRadius:20, fontSize:24, padding:8,}}/>} title="Employees" value={1234}/>
+                        <DashboardCard icon={<ShoppingCartOutlined style={{color:"black", backgroundColor:"blueviolet",borderRadius:20, fontSize:24, padding:8,}}/>} title="Assigned Items" value={1234}/>
+                        <DashboardCard icon={<ShoppingCartCheckoutOutlined style={{color:"black", backgroundColor:"yellow",borderRadius:20, fontSize:24, padding:8,}}/>} title="Unassigned Items" value={1234}/>
+                        <DashboardCard icon={<Category style={{color:"black", backgroundColor:"pink",borderRadius:20, fontSize:24, padding:8,}}/>} title="Categories" value={1234}/>
+                    </Space>
+                </Grid>
+            </Grid>
         </Grid>
    )
 }
 
+function DashboardCard({title,value,icon}){
+    return(
+        <Card style={{marginLeft:"120px",height:"110px",border:"0"}}>
+            <Space direction="horizontal">
+                {icon}
+                <Statistic title={title} value={value}/>
+            </Space>
+        </Card>
+    );
+}
 export default AdminBoard;

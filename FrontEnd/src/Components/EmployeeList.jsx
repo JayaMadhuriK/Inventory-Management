@@ -29,7 +29,7 @@ import SearchIcon from '@mui/icons-material/Search';
 const EmployeeList= () =>{
      const [employeeData,setEmployeeData] = useState([])
     const getEmployeeData = async () =>{
-        const response =await axios.get('http://localhost:4000/employee')
+        const response =await axios.get('http://localhost:6001/api/users/getemployees');
         setEmployeeData(response?.data);
         console.log(response);
     };
@@ -56,7 +56,7 @@ const EmployeeList= () =>{
         <Grid className="employee-body">
             <Grid><AdminNavBar/></Grid>
             <Grid className="grid-btn">
-                <h1>Employees</h1>
+                <h1>EMPLOYEES</h1>
                 <Button variant="contained" color="primary" size="medium" onClick={()=>{navigate("/addemployee")}} className="buttonnew"><AddIcon/>Add Employee</Button>
                 <TextField variant="standard" className="button" color="primary" InputProps={input}></TextField>
             </Grid>
@@ -89,13 +89,13 @@ const EmployeeList= () =>{
                                 <TableCell>{employee.mobileNumber}</TableCell>
                                 <TableCell align="center" scope="row" component="th">
                                     <Grid style={{display:'flex'}}>
-                                        <Button variant="contained" size="small" onClick={()=>{navigate("/addemployee",{state:{employee:employee}})}}>Update</Button>
                                         <Button variant="contained" style={{marginLeft:'10px'}} 
                                         onClick={()=>{
-                                            axios.delete(`http://localhost:4000/employee/${employee.userId}`);
+                                            axios.delete(`http://localhost:6001/api/users/deleteusers/${employee.userId}`);
                                             window.location.reload(false);
                                         }} 
                                         color="error" size="small">Delete</Button>
+                                        <Button variant="contained" size="small" style={{marginLeft:'10px'}}  onClick={()=>{navigate("/addemployee",{state:{employee:employee}})}}>Items Assigned</Button>
                                     </Grid>
                                 </TableCell>
                             </TableRow>

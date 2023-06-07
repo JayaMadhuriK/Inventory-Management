@@ -17,22 +17,31 @@ import AdminNavBar from './AdminNavBar';
 const AdminProfile = () =>{
     const [admin,setAdmin] = useState(null);
     const navigate = useNavigate();
+    const userId = 2;
     const fetchAdmin = async() =>{
-        const response =await axios.get('http://localhost:6001/user');
+        try{
+        const response =await axios.get(`http://localhost:6001/api/users/getusers/${userId}`);
         setAdmin(response?.data);
-    }
+        }catch(error){
+            console.log(error);
+        }
+    };
     useEffect(()=>{
         fetchAdmin();
     },[]);
    return (
-        <Grid className="admin-body">
+        <Grid className="adminprofile-body">
             <Grid><AdminNavBar/></Grid>
              {admin ?(
                 <Grid>
                     <h3>Profile</h3>
-                    <p>User Id</p>
-                    <p></p>
-                    <p></p>
+                    <p>User Id:{admin.userId}</p>
+                    <p>Email: {admin.email}</p>
+                    <p>First Name:{admin.firstName}</p>
+                    <p>Last Name:{admin.lastName}</p>
+                    <p>Date of Birth:{admin.dateOfbirth}</p>
+                    <p>Age:{admin.age}</p>
+                    <p>Mobile Number:{admin.mobileNumber}</p>
                 </Grid>
              ):(
                 <p>Loading admin profile ....</p>

@@ -46,6 +46,13 @@ public class InventoryItems {
 		this.expireDate = expireDate;
 		this.empId = empId;
 	}
+	
+	public int getItemId() {
+		return itemId;
+	}
+	public void setItemId(int itemId) {
+		this.itemId = itemId;
+	}
 	public String getItemName() {
 		return itemName;
 	}
