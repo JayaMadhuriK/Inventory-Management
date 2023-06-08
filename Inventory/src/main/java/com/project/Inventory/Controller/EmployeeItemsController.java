@@ -2,6 +2,8 @@ package com.project.Inventory.Controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +16,7 @@ import com.project.Inventory.Entity.EmployeeItems;
 import com.project.Inventory.Request.Reponse.EmployeeItemResponse;
 import com.project.Inventory.Service.EmployeeItemsService;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/employeeitems")
 @RestController
 public class EmployeeItemsController {
@@ -39,4 +42,8 @@ public class EmployeeItemsController {
 	{
 		return employeeItemsService.updateEmployeeItem(id, employeeItems);
 	} 
+	@DeleteMapping("/unassignitems/{id}")
+	public void deleteEmployeeItem(@PathVariable Long id) {
+		employeeItemsService.deleteEmployeeItem(id);
+	}
 }

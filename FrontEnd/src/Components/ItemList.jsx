@@ -10,7 +10,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import AdminNavBar from './AdminNavBar';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import {TableContainer,
@@ -54,7 +53,6 @@ const ItemList = () =>{
       },[]);
    return (
         <Grid className="employee-body">
-            <Grid><AdminNavBar/></Grid>
             <Grid className="grid-btn">
                 <h1>ITEMS</h1>
                 <Button variant="contained" color="primary" size="medium" onClick={()=>{navigate("/additem")}} className="buttonnew"><AddIcon/>Add Item</Button>
@@ -95,7 +93,6 @@ const ItemList = () =>{
                                         <Button variant="contained" style={{marginLeft:'10px'}} 
                                         onClick={()=>{
                                             axios.delete(`http://localhost:6001/api/inventory/InventoryItems/${item.itemId}`);
-                                            window.location.reload(false);
                                         }} 
                                         color="error" size="small">Delete</Button>
                                     </Grid>

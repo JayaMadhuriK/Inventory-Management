@@ -22,7 +22,7 @@ const AddEmployee = () =>{
         mobileNumber:"",
         email: "", 
         password: "",
-        role: "employee" ,
+        role: ['employee'] ,
     };
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
@@ -221,7 +221,6 @@ const AddEmployee = () =>{
     }, [formErrors]);
     return (
         <Grid className="addemployee">
-            <Grid><AdminNavBar/></Grid>
             {systemErrors?.networkError?.length>0 && <Alert severity="error" style={{width:'350px', position:"absolute", marginLeft:'983px', marginTop:'5px'}}>{systemErrors?.networkError}</Alert>}   
             {systemErrors?.response?.length>0 && <Alert severity="success" style={{width:'400px', position:"absolute", marginLeft:'933px', marginTop:'5px'}}>{systemErrors?.response}</Alert>} 
             <Grid className='employee-popup'>

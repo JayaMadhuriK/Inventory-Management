@@ -11,26 +11,40 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
+import AdminBoard from './AdminBoard';
+import EmployeeList from './EmployeeList';
+import ItemList from './ItemList';
+import UserProfile from './UserProfile';
+import EmployeeAssignedItems from './EmployeeAssignedItems';
+import AddEmployee from './AddEmployee';
 
 const AdminNavBar = () =>{
     const [anchorEl, setAnchorEl] = useState(null);
-    const [underline,setUnderline] = useState({
+    const [navigation,setNavigation] = useState({
         home:true,
         employee:false,
         items:false,
+        profile:false,
+        employeeAssigned:false,
+        addEmployee:false,
     });
     const [isDialogOpen,setIsDialogOpen] = useState(false);
+    const [employeeDetails,setEmployeeDetails] = useState({});
     const navigate = useNavigate();
     const handleProfile = () => {
-        navigate('/profile');
+        setNavigation({...navigation,home:false,employee:false,items:false,profile:true,employeeAssigned:false,addEmployee:false});
+        setAnchorEl(null);
     };
+    console.log(employeeDetails);
     const handleLogOut = () => {
+        setAnchorEl(null);
         setTimeout(function() {
         navigate('/');
         },1000);
     };
     const handleClose = () =>{
         setIsDialogOpen(false);
+        setAnchorEl(null);
     };
     const handleCloseMenu = () =>{
         setAnchorEl(null);
@@ -39,24 +53,21 @@ const AdminNavBar = () =>{
         setAnchorEl(event.currentTarget);
     };
     const handleHome = ()=>{
-        setUnderline({...underline,home:true,employee:false,items:false});
-        navigate('/adminboard');
+        setNavigation({...navigation,home:true,employee:false,items:false,profile:false,employeeAssigned:false,addEmployee:false});
     };
     const handleEmployee = ()=>{
-        setUnderline({...underline,home:false,employee:true,items:false});
-        navigate('/employeelist');
+        setNavigation({...navigation,home:false,employee:true,items:false,profile:false,employeeAssigned:false,addEmployee:false});
     }
     const handleItem = ()=>{
-        setUnderline({...underline,home:false,employee:false,items:true});
-        navigate('/itemlist');
+        setNavigation({...navigation,home:false,employee:false,items:true,profile:false,employeeAssigned:false,addEmployee:false});
     }
    return (
         <Grid className="adminnav-body">
             <Grid className='label'>
                 <Grid className="logo">WalMart</Grid>
-                <Button variant="standard" className="home" onClick={handleHome}>{underline.home ? <u>Home</u>:<>Home</>}</Button>
-                <Button variant="standard" className="employee" onClick={handleEmployee}>{underline.employee ? <u>Employee</u>:<>Employee</>}</Button>
-                <Button variant="standard" className="items" onClick={handleItem}>{underline.items ? <u>Items</u>:<>Items</>}</Button>
+                <Button variant="standard" className="home" onClick={handleHome}>{navigation.home ? <u>Home</u>:<>Home</>}</Button>
+                <Button variant="standard" className="employee" onClick={handleEmployee}>{navigation.employee ? <u>Employee</u>:<>Employee</>}</Button>
+                <Button variant="standard" className="items" onClick={handleItem}>{navigation.items ? <u>Items</u>:<>Items</>}</Button>
                 <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                     <AccountCircleIcon className="icon" sx={{fontSize:'40px', color:'white', marginTop:'-5px', position: 'absolute', marginLeft:'170px'}}/>
                 </IconButton>
@@ -72,6 +83,16 @@ const AdminNavBar = () =>{
                     <MenuItem onClick={()=>{setIsDialogOpen(true)}}>Logout</MenuItem>
                 </Menu>
             </Grid>
+            {navigation ?.home && <AdminBoard/>}
+            {navigation ?.employee && <EmployeeList
+                employeeDetails={employeeDetails} 
+                setEmployeeDetails={setEmployeeDetails}
+                setNavigation={setNavigation}
+                navigation={navigation}/>}
+            {navigation ?.items && <ItemList/>}
+            {navigation ?.profile && <UserProfile employeeDetails={employeeDetails}/>}
+            {navigation ?.employeeAssigned && <EmployeeAssignedItems employeeDetails={employeeDetails} />}
+            {navigation ?.addEmployee && <AddEmployee/>}
             <Dialog sx={{
                     "& .MuiDialog-container": {
                         "& .MuiPaper-root": {

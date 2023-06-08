@@ -56,13 +56,19 @@
                 }
             }
             .button-label{
-                margin-top:50px;
+                margin-top:30px;
                 .button{
                     margin-left: 100px;
                     padding-left: 40px;
                     padding-right:40px;
                     color:rgb(8, 8, 8);
                     background-color:rgb(238, 243, 238);
+                    margin-top: -30px;
+                }
+                .button2{
+                    margin-left: -200px;
+                    margin-top: 50px;
+                    color:white;
                 }
                 .button:hover{
                     background-color:rgb(27, 34, 27);

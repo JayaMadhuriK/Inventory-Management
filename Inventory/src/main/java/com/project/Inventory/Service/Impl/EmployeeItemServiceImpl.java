@@ -67,8 +67,19 @@ public class EmployeeItemServiceImpl implements EmployeeItemsService{
 	}
 
 	@Override
-	public void deleteEmployeeItem(int id) {
-		
+	public void deleteEmployeeItem(Long id) {
+		Optional<EmployeeItems> employeeItems = employeeItemsRepo.findById(id);
+		if(employeeItems.isPresent()) {
+			List<Integer> assignedItems = employeeItems.get().getAssignedItems();
+			for(Integer itemId :assignedItems) {
+				Optional<InventoryItems> inventoryItems = itemRepo.findById(itemId);
+				if(inventoryItems.isPresent()) {
+					InventoryItems item = inventoryItems.get();
+					item.setEmpId(null);
+					itemRepo.save(item);
+				}
+			}
+		}
 		
 	}
 

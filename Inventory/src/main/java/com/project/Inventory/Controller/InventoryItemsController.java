@@ -49,5 +49,17 @@ public class InventoryItemsController {
 	{
 		inventoryItemService.deleteInventoryItem(id);
 	}
-	
+	@GetMapping("/InventoryItems/unassign")
+	public List<InventoryItems> findByEmpIdIsNull() {
+		List<InventoryItems> unassignedItems = inventoryItemService.findByEmpIdIsNull();
+		return unassignedItems ;
+		
+	}
+	@GetMapping("/InventoryItems/assign")
+	public List<InventoryItems> findByEmpIdIsNotNull() {
+		List<InventoryItems> assignedItems = inventoryItemService.findByEmpIdIsNotNull();
+		return assignedItems ;
+		
+	}
+
 }

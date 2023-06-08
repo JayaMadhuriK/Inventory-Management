@@ -11,4 +11,6 @@ public interface InventoryItemService {
 	List<InventoryItems> getInventoryItems();
 	Optional<InventoryItems> findByInventoryItemId(int id);
 	void deleteInventoryItem(int id);
+	List<InventoryItems> findByEmpIdIsNull();
+	List<InventoryItems> findByEmpIdIsNotNull();
 }

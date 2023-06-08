@@ -56,5 +56,14 @@ public class InventoryItemServiceImpl implements InventoryItemService {
 		
 		inventoryItemRepo.deleteById(id);;
 	}
+	@Override
+	public List<InventoryItems> findByEmpIdIsNull() {
+		
+		return inventoryItemRepo.findByEmpIdIsNull();
+	}
+	@Override
+	public List<InventoryItems> findByEmpIdIsNotNull() {
+	    return inventoryItemRepo.findByEmpIdIsNotNull();
+	}
 	
 }

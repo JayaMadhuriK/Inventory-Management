@@ -11,5 +11,5 @@ public interface EmployeeItemsService {
 	EmployeeItems updateEmployeeItem(Long id,EmployeeItems employeeItems);
 	List<EmployeeItems> getEmployeeItems();
 	EmployeeItemResponse findByEmployeeItemId(Long id);
-	void deleteEmployeeItem(int id);
+	void deleteEmployeeItem(Long id);
 }

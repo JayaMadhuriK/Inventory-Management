@@ -118,6 +118,9 @@ const Register = (role) =>{
         }
       });
     };
+    const handleLogin = () => {
+        navigate("/");
+    }
     const handleChange = (e) => {
         const { name, value } = e.target;
         if(name === "email"){
@@ -268,6 +271,7 @@ const Register = (role) =>{
                         </Grid>
                         <Grid className="button-label">
                             <Button variant="contained" className="button" onClick={handleRegister} disabled={isDisable} InputProps={input} size="large" >Register</Button>
+                            <Button variant="standard" className="button2" onClick={handleLogin} InputProps={input} size="small" >having an account? Login</Button>
                         </Grid>
                     </FormControl>
                 </Grid>

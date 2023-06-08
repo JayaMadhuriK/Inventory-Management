@@ -1,16 +1,7 @@
 import {Grid, TextField} from '@material-ui/core'
 import React,{useState,useEffect} from 'react'
 import './AdminBoard.scss'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import IconButton from '@mui/material/IconButton';
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
 import { useNavigate } from 'react-router-dom';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import AdminNavBar from './AdminNavBar';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import {TableContainer,
@@ -26,8 +17,9 @@ import Button from '@mui/material/Button';
 import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 
-const EmployeeList= () =>{
-     const [employeeData,setEmployeeData] = useState([])
+const EmployeeList= (props) =>{
+    const {employeeDetails,setEmployeeDetails,navigation,setNavigation} = props;
+    const [employeeData,setEmployeeData] = useState([])
     const getEmployeeData = async () =>{
         const response =await axios.get('http://localhost:6001/api/users/getemployees');
         setEmployeeData(response?.data);
@@ -54,7 +46,6 @@ const EmployeeList= () =>{
       },[]);
    return (
         <Grid className="employee-body">
-            <Grid><AdminNavBar/></Grid>
             <Grid className="grid-btn">
                 <h1>EMPLOYEES</h1>
                 <Button variant="contained" color="primary" size="medium" onClick={()=>{navigate("/addemployee")}} className="buttonnew"><AddIcon/>Add Employee</Button>
@@ -95,7 +86,7 @@ const EmployeeList= () =>{
                                             window.location.reload(false);
                                         }} 
                                         color="error" size="small">Delete</Button>
-                                        <Button variant="contained" size="small" style={{marginLeft:'10px'}}  onClick={()=>{navigate("/addemployee",{state:{employee:employee}})}}>Items Assigned</Button>
+                                        <Button variant="contained" size="small" style={{marginLeft:'10px'}}  onClick={()=>{setEmployeeDetails(employee);setNavigation({...navigation,home:false,employee:false,items:false,profile:false,employeeAssigned:true,addEmployee:false})}}>Inventory Details</Button>
                                     </Grid>
                                 </TableCell>
                             </TableRow>
