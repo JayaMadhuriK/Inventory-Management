@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid'
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import './AdminBoard.scss'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Button from '@mui/material/Button';
@@ -17,6 +17,7 @@ import ItemList from './ItemList';
 import UserProfile from './UserProfile';
 import EmployeeAssignedItems from './EmployeeAssignedItems';
 import AddEmployee from './AddEmployee';
+import axios from 'axios';
 
 const AdminNavBar = () =>{
     const [anchorEl, setAnchorEl] = useState(null);
@@ -33,6 +34,13 @@ const AdminNavBar = () =>{
     const [assignItemCount, setAssignItemCount] = useState(0);
     const [unAssignItemCount, setUnAssignItemCount] = useState(0);
     const [employeeCount, setEmployeeCount] = useState(0);
+    const [employeeData,setEmployeeData] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredEmployeeData, setFilteredEmployeeData] = useState([]);
+    const [itemData,setItemData] = useState([]);
+    const [searchQuery1, setSearchQuery1] = useState('');
+    const [filteredItemData, setFilteredItemData] = useState([]);
+
     const navigate = useNavigate();
     const handleProfile = () => {
         setNavigation({...navigation,home:false,employee:false,items:false,profile:true,employeeAssigned:false,addEmployee:false});
@@ -63,7 +71,44 @@ const AdminNavBar = () =>{
     }
     const handleItem = ()=>{
         setNavigation({...navigation,home:false,employee:false,items:true,profile:false,employeeAssigned:false,addEmployee:false});
-    }
+    };
+    const getEmployeeData = async () =>{
+        const response =await axios.get('http://localhost:6001/api/users/getemployees');
+        const data = response?.data;
+        setEmployeeData(data);
+        setEmployeeCount(data?.length);
+        console.log(data?.length)
+        const filteredData = data?.filter((employee) => {
+            const empIdMatch = employee.userId.toString().includes(searchQuery.toLowerCase());
+            const empNameMatch = `${employee.firstName} ${employee.lastName}`.toLowerCase().includes(searchQuery.toLowerCase());
+            const empEmailMatch = employee.email.toLowerCase().includes(searchQuery.toLowerCase());
+            return empIdMatch || empNameMatch || empEmailMatch;
+        });
+        setFilteredEmployeeData(filteredData);
+        console.log(response);
+    };
+    const getItemData = async () =>{
+        const assign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/assign');
+        setAssignItemCount(assign?.data.length);
+        const unassign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign');
+        setUnAssignItemCount(unassign?.data.length);
+        const response =await axios.get('http://localhost:6001/api/inventory/InventoryItems');
+        const data = response?.data;
+        setItemData(data);
+        const filteredData = data?.filter((item) =>{
+        const itemNameMatch = item.itemName.toLowerCase().includes(searchQuery1.toLowerCase());
+        const itemIdMatch = item.itemId.toString().includes(searchQuery1.toLowerCase());
+        const categoryMatch = item.category.toLowerCase().includes(searchQuery1.toLowerCase());
+        const billNumberMatch = item.billNumber.toString().includes(searchQuery1.toLowerCase());
+    
+        return itemNameMatch || itemIdMatch || categoryMatch || billNumberMatch;
+    });
+        setFilteredItemData(filteredData)
+    };
+    useEffect(() => {
+        getEmployeeData();
+        getItemData();
+      },[searchQuery,searchQuery1]);
    return (
         <Grid className="adminnav-body">
             <Grid className='label'>
@@ -88,12 +133,17 @@ const AdminNavBar = () =>{
             </Grid>
             {navigation ?.home && <AdminBoard assignItemCount={assignItemCount} unAssignItemCount={unAssignItemCount} employeeCount={employeeCount}/>}
             {navigation ?.employee && <EmployeeList
-                employeeDetails={employeeDetails} 
                 setEmployeeDetails={setEmployeeDetails}
                 setNavigation={setNavigation}
                 navigation={navigation}
-                setEmployeeCount={setEmployeeCount}/>}
-            {navigation ?.items && <ItemList setAssignItemCount={setAssignItemCount} setUnAssignItemCount={setUnAssignItemCount}/>}
+                employeeData={employeeData}
+                setSearchQuery={setSearchQuery}
+                searchQuery={searchQuery}
+                filteredEmployeeData={filteredEmployeeData}/>}
+            {navigation ?.items && <ItemList
+             searchQuery1={searchQuery1}
+             filteredItemData={filteredItemData}
+             />}
             {navigation ?.profile && <UserProfile employeeDetails={employeeDetails}/>}
             {navigation ?.employeeAssigned && <EmployeeAssignedItems employeeDetails={employeeDetails} />}
             {navigation ?.addEmployee && <AddEmployee/>}

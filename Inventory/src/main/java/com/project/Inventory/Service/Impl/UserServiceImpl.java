@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.project.Inventory.Entity.ERole;
+import com.project.Inventory.Entity.InventoryItems;
 import com.project.Inventory.Entity.Role;
 import com.project.Inventory.Entity.Users;
+import com.project.Inventory.Repository.EmployeeItemsRepo;
+import com.project.Inventory.Repository.ItemRepo;
 import com.project.Inventory.Repository.UserRepo;
 import com.project.Inventory.Service.UserService;
 
@@ -19,11 +22,15 @@ import com.project.Inventory.Service.UserService;
 public class UserServiceImpl implements UserService{
 
 	private final UserRepo userRepo;
+	private final EmployeeItemsRepo employeeItemsRepo;
+	private final ItemRepo itemRepo;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
-	public UserServiceImpl(UserRepo userRepo){
+	public UserServiceImpl(UserRepo userRepo, ItemRepo itemRepo, EmployeeItemsRepo employeeItemsRepo){
 		this.userRepo = userRepo;
+		this.employeeItemsRepo = employeeItemsRepo;
+		this.itemRepo = itemRepo;
 	}
 	@Override
 	public Users addUsers(Users users) {
@@ -60,6 +67,12 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void deleteUser(Long id) {
 		userRepo.deleteById(id);
+		 List<InventoryItems> inventoryItems = itemRepo.findByEmpId(id);
+		    for (InventoryItems item : inventoryItems) {
+		        item.setEmpId(null); 
+		        itemRepo.save(item);
+		    }
+		    employeeItemsRepo.deleteByEmpId(id);
 	}
 	@Override
 	public List<Users> getEmployees() {

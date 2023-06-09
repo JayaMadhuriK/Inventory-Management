@@ -3,11 +3,15 @@ import React,{useState} from 'react';
 import './AdminBoard.scss'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import FormControl from '@mui/material/FormControl';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import MuiAlert from '@mui/material/Alert';
 import AdminNavBar from './AdminNavBar';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel'; 
+import Input from '@mui/material/Input';
 
 const AddItem = () =>{
     const initialValues = {
@@ -35,6 +39,13 @@ const AddItem = () =>{
             disableUnderline: true,
         }
     };
+    const categories = [
+        "Skin Care Products",
+        "Clothing",
+        "Food Items",
+        "Sports",
+        "Foot wear"
+      ];
     const handleRegister = () =>{
       axios.post('http://localhost:6001/api/inventory/InventoryItems',formValues)
       .then(response=>{
@@ -42,7 +53,7 @@ const AddItem = () =>{
             setSystemErrors({...systemErrors,response:'Item added Successfully'});
             setTimeout(function() {
                 setSystemErrors({...systemErrors,response:''})
-                navigate('/itemlist')
+                navigate(-1)
             }, 5000);
         }
       }).catch(error=>{
@@ -73,7 +84,28 @@ const AddItem = () =>{
                                 <TextField type="text" className="text" variant="standard" InputProps={input} name="itemName" style={{width: "205px"}} onChange={handleChange} label="Item Name" size="small" required></TextField>
                             </Grid>
                             <Grid className="textbox">
-                                <TextField type="text" className="text" variant="standard" InputProps={input} name="category" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Category" size="small" required></TextField>
+                                <FormControl variant="standard" style={{ width: '205px', marginLeft: '65px',marginTop:'13px' }}>
+                                    <Select
+                                        value={formValues.category}
+                                        onChange={handleChange}
+                                        name="category"
+                                        displayEmpty
+                                        style={{ color: 'white'}}
+                                        sx={{
+                                            ':before': { borderBottomColor: 'white' },
+                                            ':after': { borderBottomColor: 'white' },
+                                        }}
+                                    >
+                                        <MenuItem value="" disabled>
+                                        Category
+                                        </MenuItem>
+                                        {categories.map((category) => (
+                                        <MenuItem key={category} value={category} >
+                                            {category}
+                                        </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
                             </Grid>
                         </Grid>
                         <Grid className = "field-container">
@@ -90,11 +122,6 @@ const AddItem = () =>{
                             </Grid>
                             <Grid className="textbox">
                                 <TextField className="text" variant="standard" InputProps={input}  name="expireDate" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Expire Date" size="small" required></TextField>
-                            </Grid>
-                        </Grid>
-                        <Grid className = "field-container">
-                            <Grid className="textbox">
-                                <TextField type="Number" className="text" variant="standard" InputProps={input} name="empId" style={{width: "205px"}} onChange={handleChange} label="Employee Id" size="small" required></TextField>
                             </Grid>
                         </Grid>
                         <Grid className="button-label">

@@ -6,4 +6,6 @@ import com.project.Inventory.Entity.EmployeeItems;
 
 public interface EmployeeItemsRepo extends JpaRepository<EmployeeItems,Long>{
 
+	void deleteByEmpId(Long id);
+
 }

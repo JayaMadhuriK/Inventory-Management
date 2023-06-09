@@ -1,6 +1,6 @@
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField';
-import React,{useState,useEffect} from 'react'
+import React from 'react'
 import './AdminBoard.scss'
 import { useNavigate } from 'react-router-dom';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -12,31 +12,13 @@ import {TableContainer,
     TableCell,
     Paper,
 } from '@mui/material';
+import axios from 'axios';
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
-import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 
 const EmployeeList= (props) =>{
-    const {employeeDetails,setEmployeeDetails,navigation,setNavigation,setEmployeeCount} = props;
-    const [employeeData,setEmployeeData] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filteredEmployeeData, setFilteredEmployeeData] = useState([]);
-    const getEmployeeData = async () =>{
-        const response =await axios.get('http://localhost:6001/api/users/getemployees');
-        const data = response?.data;
-        setEmployeeData(data);
-        setEmployeeCount(data?.length);
-        console.log(data?.length)
-        const filteredData = data?.filter((employee) => {
-            const empIdMatch = employee.userId.toString().includes(searchQuery.toLowerCase());
-            const empNameMatch = `${employee.firstName} ${employee.lastName}`.toLowerCase().includes(searchQuery.toLowerCase());
-            const empEmailMatch = employee.email.toLowerCase().includes(searchQuery.toLowerCase());
-            return empIdMatch || empNameMatch || empEmailMatch;
-        });
-        setFilteredEmployeeData(filteredData);
-        console.log(response);
-    };
+    const {setEmployeeDetails,navigation,setNavigation,setSearchQuery,filteredEmployeeData,searchQuery} = props;
     const navigate = useNavigate();
     const handleSearchQueryChange = (event) => {
         setSearchQuery(event.target.value);
@@ -55,9 +37,6 @@ const EmployeeList= (props) =>{
             </InputAdornment>
         ),
     };
-    useEffect(() => {
-        getEmployeeData();
-      },[searchQuery]);
    return (
         <Grid className="employee-body">
             <Grid className="grid-btn">
@@ -98,7 +77,6 @@ const EmployeeList= (props) =>{
                                         <Button variant="contained" style={{marginLeft:'10px'}} 
                                         onClick={()=>{
                                             axios.delete(`http://localhost:6001/api/users/deleteusers/${employee.userId}`);
-                                            window.location.reload(false);
                                         }} 
                                         color="error" size="small">Delete</Button>
                                         <Button variant="contained" size="small" style={{marginLeft:'10px'}}  onClick={()=>{setEmployeeDetails(employee);setNavigation({...navigation,home:false,employee:false,items:false,profile:false,employeeAssigned:true,addEmployee:false})}}>Inventory Details</Button>

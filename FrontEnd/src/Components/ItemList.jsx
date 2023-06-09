@@ -17,29 +17,8 @@ import Button from '@mui/material/Button';
 import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 
-const ItemList = ({setAssignItemCount,setUnAssignItemCount}) =>{
-    const [itemData,setItemData] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filteredItemData, setFilteredItemData] = useState([]);
-
-    const getItemData = async () =>{
-        const assign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/assign');
-        setAssignItemCount(assign?.data.length);
-        const unassign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign');
-        setUnAssignItemCount(unassign?.data.length);
-        const response =await axios.get('http://localhost:6001/api/inventory/InventoryItems');
-        const data = response?.data;
-        setItemData(data);
-        const filteredData = data?.filter((item) =>{
-        const itemNameMatch = item.itemName.toLowerCase().includes(searchQuery.toLowerCase());
-        const itemIdMatch = item.itemId.toString().includes(searchQuery.toLowerCase());
-        const categoryMatch = item.category.toLowerCase().includes(searchQuery.toLowerCase());
-        const billNumberMatch = item.billNumber.toString().includes(searchQuery.toLowerCase());
+const ItemList = ({setSearchQuery1,searchQuery1,filteredItemData}) =>{
     
-        return itemNameMatch || itemIdMatch || categoryMatch || billNumberMatch;
-    });
-        setFilteredItemData(filteredData)
-    };
     const navigate = useNavigate();
     const input = {
         disableUnderline: true,
@@ -56,17 +35,14 @@ const ItemList = ({setAssignItemCount,setUnAssignItemCount}) =>{
         ),
     };
     const handleSearchQueryChange = (event) => {
-        setSearchQuery(event.target.value);
+        setSearchQuery1(event.target.value);
       };
-    useEffect(() => {
-        getItemData();
-      },[searchQuery]);
    return (
         <Grid className="employee-body">
             <Grid className="grid-btn">
                 <h1>ITEMS</h1>
                 <Button variant="contained" color="primary" size="medium" onClick={()=>{navigate("/additem")}} className="buttonnew"><AddIcon/>Add Item</Button>
-                <TextField variant="standard" className="button" color="primary" InputProps={input} value={searchQuery} onChange={handleSearchQueryChange}></TextField>
+                <TextField variant="standard" className="button" color="primary" InputProps={input} value={searchQuery1} onChange={handleSearchQueryChange}></TextField>
             </Grid>
             <TableContainer component={Paper} className="app-container">
                 <Table aria-label='table'>

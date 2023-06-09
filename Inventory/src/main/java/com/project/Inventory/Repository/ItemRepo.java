@@ -11,4 +11,6 @@ public interface ItemRepo extends JpaRepository<InventoryItems,Integer>{
 	List<InventoryItems> findByEmpIdIsNull();
 
 	List<InventoryItems> findByEmpIdIsNotNull();
+
+	List<InventoryItems> findByEmpId(Long id);
 }

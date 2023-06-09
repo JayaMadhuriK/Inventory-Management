@@ -8,8 +8,6 @@ import ShoppingCartCheckoutOutlined from '@mui/icons-material/ShoppingCartChecko
 import ShoppingCartOutlined from '@mui/icons-material/ShoppingCartOutlined';
 
 const AdminBoard = ({assignItemCount,unAssignItemCount,employeeCount}) =>{
-    console.log(assignItemCount)
-    console.log(unAssignItemCount)
    return (
         <Grid className="adminboard-body">
             <Grid className="grid1">
@@ -19,7 +17,7 @@ const AdminBoard = ({assignItemCount,unAssignItemCount,employeeCount}) =>{
                         <DashboardCard icon={<PeopleOutline style={{color:"black", backgroundColor:"red",borderRadius:20, fontSize:24, padding:8,}}/>} title="Employees" value={employeeCount}/>
                         <DashboardCard icon={<ShoppingCartOutlined style={{color:"black", backgroundColor:"blueviolet",borderRadius:20, fontSize:24, padding:8,}}/>} title="Assigned Items" value={assignItemCount}/>
                         <DashboardCard icon={<ShoppingCartCheckoutOutlined style={{color:"black", backgroundColor:"yellow",borderRadius:20, fontSize:24, padding:8,}}/>} title="Unassigned Items" value={unAssignItemCount}/>
-                        <DashboardCard icon={<Category style={{color:"black", backgroundColor:"pink",borderRadius:20, fontSize:24, padding:8,}}/>} title="Categories" value={1234}/>
+                        <DashboardCard icon={<Category style={{color:"black", backgroundColor:"pink",borderRadius:20, fontSize:24, padding:8,}}/>} title="Categories" value={5}/>
                     </Space>
                 </Grid>
             </Grid>
