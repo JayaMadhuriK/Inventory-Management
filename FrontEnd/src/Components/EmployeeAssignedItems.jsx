@@ -1,4 +1,4 @@
-import {Grid} from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
 import React,{useState,useEffect} from 'react'
 import './AdminBoard.scss';
 import Dialog from '@mui/material/Dialog';
@@ -15,7 +15,6 @@ import {TableContainer,
     Paper,
 } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import UserProfile from './UserProfile'
 import Button from '@mui/material/Button';
@@ -43,19 +42,13 @@ const EmployeeAssignedItems = (props) =>{
         setIsUnassignPopupOpen(false);
         setItemData(assignedItems);
     };
-    const handleDelete = (item) =>{
-        console.log(item);
-    }
     useEffect(() => {
         getItemData();
       },[]);
    return (
-        <Grid className="employee-body">
+        <Grid className="inventory-body">
             <Grid className="grid-btn">
                 <h1>Inventory Details</h1>
-            </Grid>
-            <Grid className="profile">
-                <h3><UserProfile userId={employeeDetails?.userId}/></h3>
             </Grid>
             <Grid className="btn-grid">
                 <Button variant="contained" size="medium" onClick={handleAssign} className="btn"><AddIcon/>Assign More</Button>
@@ -135,6 +128,9 @@ const EmployeeAssignedItems = (props) =>{
                     <Button variant="contained" className="button" onClick={handleAdd}>Add</Button>
                 </DialogActions>
             </Dialog>
+            <Grid className="profile">
+                <h3><UserProfile userId={employeeDetails?.userId}/></h3>
+            </Grid>
         </Grid>
    )
 }

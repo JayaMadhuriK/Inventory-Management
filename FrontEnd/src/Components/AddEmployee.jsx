@@ -1,17 +1,16 @@
-import {Grid} from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
 import React,{useState,useEffect} from 'react';
 import './AdminBoard.scss'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { FormControl} from '@mui/material';
+import FormControl from '@mui/material/FormControl';
 import InputAdornment from '@mui/material/InputAdornment';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { IconButton } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import MuiAlert from '@mui/material/Alert';
-import AdminNavBar from './AdminNavBar';
 
 const AddEmployee = () =>{
     const initialValues = {

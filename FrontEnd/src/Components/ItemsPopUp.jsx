@@ -1,7 +1,7 @@
-import {Grid} from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
 import React,{useState,useEffect} from 'react'
 import './AdminBoard.scss'
-import { DataGrid } from '@mui/x-data-grid';
+import {DataGrid} from '@mui/x-data-grid';
 import axios from 'axios';
 
 const columns =[

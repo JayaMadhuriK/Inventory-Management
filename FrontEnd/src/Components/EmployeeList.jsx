@@ -1,9 +1,9 @@
-import {Grid, TextField} from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
+import TextField from '@material-ui/core/TextField';
 import React,{useState,useEffect} from 'react'
 import './AdminBoard.scss'
 import { useNavigate } from 'react-router-dom';
 import InputAdornment from '@mui/material/InputAdornment';
-
 import {TableContainer,
     Table,
     TableHead,
@@ -18,15 +18,29 @@ import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 
 const EmployeeList= (props) =>{
-    const {employeeDetails,setEmployeeDetails,navigation,setNavigation} = props;
-    const [employeeData,setEmployeeData] = useState([])
+    const {employeeDetails,setEmployeeDetails,navigation,setNavigation,setEmployeeCount} = props;
+    const [employeeData,setEmployeeData] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredEmployeeData, setFilteredEmployeeData] = useState([]);
     const getEmployeeData = async () =>{
         const response =await axios.get('http://localhost:6001/api/users/getemployees');
-        setEmployeeData(response?.data);
+        const data = response?.data;
+        setEmployeeData(data);
+        setEmployeeCount(data?.length);
+        console.log(data?.length)
+        const filteredData = data?.filter((employee) => {
+            const empIdMatch = employee.userId.toString().includes(searchQuery.toLowerCase());
+            const empNameMatch = `${employee.firstName} ${employee.lastName}`.toLowerCase().includes(searchQuery.toLowerCase());
+            const empEmailMatch = employee.email.toLowerCase().includes(searchQuery.toLowerCase());
+            return empIdMatch || empNameMatch || empEmailMatch;
+        });
+        setFilteredEmployeeData(filteredData);
         console.log(response);
     };
     const navigate = useNavigate();
-   
+    const handleSearchQueryChange = (event) => {
+        setSearchQuery(event.target.value);
+      };
     const input = {
         disableUnderline: true,
         style: {
@@ -43,13 +57,13 @@ const EmployeeList= (props) =>{
     };
     useEffect(() => {
         getEmployeeData();
-      },[]);
+      },[searchQuery]);
    return (
         <Grid className="employee-body">
             <Grid className="grid-btn">
                 <h1>EMPLOYEES</h1>
                 <Button variant="contained" color="primary" size="medium" onClick={()=>{navigate("/addemployee")}} className="buttonnew"><AddIcon/>Add Employee</Button>
-                <TextField variant="standard" className="button" color="primary" InputProps={input}></TextField>
+                <TextField variant="standard" className="button" color="primary" InputProps={input} value={searchQuery} onChange={handleSearchQueryChange}></TextField>
             </Grid>
             <TableContainer component={Paper} className="app-container">
                 <Table aria-label='table'>
@@ -65,8 +79,9 @@ const EmployeeList= (props) =>{
                             <TableCell align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
+                    {filteredEmployeeData.length>0 ? (
                     <TableBody>
-                        {employeeData.map((employee) => (
+                        {filteredEmployeeData.map((employee) => (
                             <TableRow 
                                 key = {employee.userId}
                                 sx = {{ '&:last-child td, &:last-child th': {border:0} }}
@@ -93,6 +108,11 @@ const EmployeeList= (props) =>{
                         ))
                         }
                     </TableBody>
+                    ):(
+                        <Grid>
+                            <p align="center">No Records Found</p>
+                        </Grid>
+                        )}
                 </Table>
             </TableContainer>
         </Grid>

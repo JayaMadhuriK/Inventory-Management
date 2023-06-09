@@ -1,4 +1,4 @@
-import {Grid} from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
 import React,{useEffect, useState} from 'react'
 import './AdminBoard.scss';
 import axios from 'axios';
@@ -23,24 +23,18 @@ const UserProfile = (props) =>{
         <Grid className="profile-body">
              {user ?(
                 <Grid className="profile-grid">
-                    <Grid className="grid-container">
-                        <p className="first">User Id:</p><TextField className="text-box1" size="small" variant="standard" value={user.userId}/>
-                        <p className="second">Email:</p><TextField className="text-box2" size="small" variant="standard" value={user.email}/>
+                    <Grid>
+                        <img src="https://cdn-icons-png.flaticon.com/512/16/16363.png" className='image'/>
                     </Grid>
                     <Grid className="grid-container">
-                        <p className="first">First Name:</p><TextField className="text-box3" size="small" variant="standard" value={user.firstName}/>
-                        <p className="lastname">Last Name:</p><TextField className="text-box4" size="small" variant="standard" value={user.lastName}/>
-                    </Grid>
-                    <Grid className="grid-container">
-                        <p className="first">Date of Birth:</p><TextField className="text-box5" size="small" variant="standard" value={user.dateOfBirth}/>
-                        <p className="age">Age:</p><TextField className="text-box6" size="small" variant="standard" value={user.age}/>
-                    </Grid>
-                    <Grid className="grid-container">
-                        <p className="first">Mobile Number:</p><TextField className="text-box7" size="small" variant="standard" value={user.mobileNumber}/>
+                        <p className="userid">ID :- {user.userId}</p>
+                        <p className="name">NAME :- {user.firstName +" "+ user.lastName}</p>
+                        <p className="email">EMAIL :- {user.email}</p>
+                        <p className="name">Mobile Number :- {user.mobileNumber}</p>
                     </Grid>
                 </Grid>
              ):(
-                <p>Loading user profile ....</p>
+                <p align="center">Loading user profile ....</p>
              )}
         </Grid>
    );

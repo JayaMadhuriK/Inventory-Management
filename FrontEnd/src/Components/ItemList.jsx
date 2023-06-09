@@ -1,17 +1,9 @@
-import {Grid, TextField} from '@material-ui/core'
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 import React,{useState,useEffect} from 'react'
 import './AdminBoard.scss'
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import IconButton from '@mui/material/IconButton';
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
 import { useNavigate } from 'react-router-dom';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import InputAdornment from '@mui/material/InputAdornment';
-
 import {TableContainer,
     Table,
     TableHead,
@@ -25,15 +17,30 @@ import Button from '@mui/material/Button';
 import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
 
-const ItemList = () =>{
-     const [itemData,setItemData] = useState([])
+const ItemList = ({setAssignItemCount,setUnAssignItemCount}) =>{
+    const [itemData,setItemData] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredItemData, setFilteredItemData] = useState([]);
+
     const getItemData = async () =>{
-        const response =await axios.get('http://localhost:6001/api/inventory/InventoryItems')
-        setItemData(response?.data);
-        console.log(response);
+        const assign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/assign');
+        setAssignItemCount(assign?.data.length);
+        const unassign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign');
+        setUnAssignItemCount(unassign?.data.length);
+        const response =await axios.get('http://localhost:6001/api/inventory/InventoryItems');
+        const data = response?.data;
+        setItemData(data);
+        const filteredData = data?.filter((item) =>{
+        const itemNameMatch = item.itemName.toLowerCase().includes(searchQuery.toLowerCase());
+        const itemIdMatch = item.itemId.toString().includes(searchQuery.toLowerCase());
+        const categoryMatch = item.category.toLowerCase().includes(searchQuery.toLowerCase());
+        const billNumberMatch = item.billNumber.toString().includes(searchQuery.toLowerCase());
+    
+        return itemNameMatch || itemIdMatch || categoryMatch || billNumberMatch;
+    });
+        setFilteredItemData(filteredData)
     };
     const navigate = useNavigate();
-   
     const input = {
         disableUnderline: true,
         style: {
@@ -48,15 +55,18 @@ const ItemList = () =>{
             </InputAdornment>
         ),
     };
+    const handleSearchQueryChange = (event) => {
+        setSearchQuery(event.target.value);
+      };
     useEffect(() => {
         getItemData();
-      },[]);
+      },[searchQuery]);
    return (
         <Grid className="employee-body">
             <Grid className="grid-btn">
                 <h1>ITEMS</h1>
                 <Button variant="contained" color="primary" size="medium" onClick={()=>{navigate("/additem")}} className="buttonnew"><AddIcon/>Add Item</Button>
-                <TextField variant="standard" className="button" color="primary" InputProps={input}></TextField>
+                <TextField variant="standard" className="button" color="primary" InputProps={input} value={searchQuery} onChange={handleSearchQueryChange}></TextField>
             </Grid>
             <TableContainer component={Paper} className="app-container">
                 <Table aria-label='table'>
@@ -73,8 +83,9 @@ const ItemList = () =>{
                             <TableCell align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
+                    {filteredItemData.length>0 ? (
                     <TableBody>
-                        {itemData.map((item) => (
+                        {filteredItemData.map((item) => (
                             <TableRow 
                                 key = {item.itemId}
                                 sx = {{ '&:last-child td, &:last-child th': {border:0} }}
@@ -101,6 +112,11 @@ const ItemList = () =>{
                         ))
                         }
                     </TableBody>
+                    ):(
+                    <Grid>
+                        <p align="center">No Records Found</p>
+                    </Grid>
+                    )}
                 </Table>
             </TableContainer>
         </Grid>

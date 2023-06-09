@@ -1,4 +1,4 @@
-import {Grid} from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
 import React,{useState} from 'react'
 import './AdminBoard.scss'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -30,12 +30,15 @@ const AdminNavBar = () =>{
     });
     const [isDialogOpen,setIsDialogOpen] = useState(false);
     const [employeeDetails,setEmployeeDetails] = useState({});
+    const [assignItemCount, setAssignItemCount] = useState(0);
+    const [unAssignItemCount, setUnAssignItemCount] = useState(0);
+    const [employeeCount, setEmployeeCount] = useState(0);
     const navigate = useNavigate();
     const handleProfile = () => {
         setNavigation({...navigation,home:false,employee:false,items:false,profile:true,employeeAssigned:false,addEmployee:false});
         setAnchorEl(null);
     };
-    console.log(employeeDetails);
+    console.log(assignItemCount);
     const handleLogOut = () => {
         setAnchorEl(null);
         setTimeout(function() {
@@ -83,13 +86,14 @@ const AdminNavBar = () =>{
                     <MenuItem onClick={()=>{setIsDialogOpen(true)}}>Logout</MenuItem>
                 </Menu>
             </Grid>
-            {navigation ?.home && <AdminBoard/>}
+            {navigation ?.home && <AdminBoard assignItemCount={assignItemCount} unAssignItemCount={unAssignItemCount} employeeCount={employeeCount}/>}
             {navigation ?.employee && <EmployeeList
                 employeeDetails={employeeDetails} 
                 setEmployeeDetails={setEmployeeDetails}
                 setNavigation={setNavigation}
-                navigation={navigation}/>}
-            {navigation ?.items && <ItemList/>}
+                navigation={navigation}
+                setEmployeeCount={setEmployeeCount}/>}
+            {navigation ?.items && <ItemList setAssignItemCount={setAssignItemCount} setUnAssignItemCount={setUnAssignItemCount}/>}
             {navigation ?.profile && <UserProfile employeeDetails={employeeDetails}/>}
             {navigation ?.employeeAssigned && <EmployeeAssignedItems employeeDetails={employeeDetails} />}
             {navigation ?.addEmployee && <AddEmployee/>}
