@@ -90,5 +90,8 @@ public class UserServiceImpl implements UserService{
 		}
 		return employees;
 	}
+	public Optional<Users> findUserByEmail(String email) {
+		return userRepo.findByEmail(email);
+	}
 	
 }

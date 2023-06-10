@@ -2,7 +2,6 @@ import Grid from '@material-ui/core/Grid'
 import React,{useEffect, useState} from 'react'
 import './AdminBoard.scss';
 import axios from 'axios';
-import TextField from '@mui/material/TextField';
 
 const UserProfile = (props) =>{
     const {userId} = props;

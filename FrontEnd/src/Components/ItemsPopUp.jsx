@@ -1,8 +1,7 @@
 import Grid from '@material-ui/core/Grid'
-import React,{useState,useEffect} from 'react'
+import React from 'react'
 import './AdminBoard.scss'
 import {DataGrid} from '@mui/x-data-grid';
-import axios from 'axios';
 
 const columns =[
     { field: 'itemId', headerName: 'Item Id'},
@@ -14,8 +13,7 @@ const columns =[
     { field: 'expireDate', headerName: 'Expire Date'},
 ];
 const ItemsPopUp = (props) =>{
-    const {selectedItems,setSelectedItems} = props
-    const [itemData,setItemData] = useState([])
+    const {setSelectedItems,itemData} = props;
     const formattedRows = itemData.map((item,index)=>({
         id:item.itemId,
         ...item,
@@ -24,18 +22,6 @@ const ItemsPopUp = (props) =>{
         const selectedRowsData = ids.map((id) => formattedRows.find((row) => row.id == id));
         setSelectedItems(selectedRowsData);
       };
-    useEffect(() => {
-        const getItemData = async () =>{
-            try{
-                const response =await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign');
-                setItemData(response?.data || []);
-            }catch(error) {
-                console.error('Error fetching item data:', error);
-            }
-        };
-        getItemData();
-      },[]);
-      console.log(itemData)
    return (
         <Grid className="items-popup-body">
             <Grid className="grid-btn">
@@ -49,6 +35,22 @@ const ItemsPopUp = (props) =>{
                         paginationModel: { page: 0, pageSize: 5 },
                       },
                 }}
+                sx={{
+                    height: '370px',
+                    '& .MuiDataGrid-virtualScroller::-webkit-scrollbar':{
+                      height: '3px',
+                      width: '3px'
+                    },
+                    '& .MuiDataGrid-virtualScroller::-webkit-scrollbar-track': {
+                      background: '#fff',
+                    },
+                    '& .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb': {
+                      background: '#A7A2A2',
+                    },
+                    '& .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb:hover': {
+                      background: '#555',
+                    },
+                  }}
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
                 onRowSelectionModelChange={ids =>onRowsSelectionHandler(ids)}

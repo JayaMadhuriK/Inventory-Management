@@ -16,9 +16,11 @@ import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import axios from 'axios';
 import SearchIcon from '@mui/icons-material/Search';
+import AddItem from './AddItem'
+import Dialog from '@mui/material/Dialog';
 
 const ItemList = ({setSearchQuery1,searchQuery1,filteredItemData}) =>{
-    
+    const [isUnassignPopupOpen,setIsUnassignPopupOpen] = useState(false);
     const navigate = useNavigate();
     const input = {
         disableUnderline: true,
@@ -36,12 +38,15 @@ const ItemList = ({setSearchQuery1,searchQuery1,filteredItemData}) =>{
     };
     const handleSearchQueryChange = (event) => {
         setSearchQuery1(event.target.value);
-      };
+    };
+      const handleAdd = () =>{
+        setIsUnassignPopupOpen(true);
+    };
    return (
         <Grid className="employee-body">
             <Grid className="grid-btn">
                 <h1>ITEMS</h1>
-                <Button variant="contained" color="primary" size="medium" onClick={()=>{navigate("/additem")}} className="buttonnew"><AddIcon/>Add Item</Button>
+                <Button variant="contained" color="primary" size="medium" onClick={handleAdd} className="buttonnew"><AddIcon/>Add Item</Button>
                 <TextField variant="standard" className="button" color="primary" InputProps={input} value={searchQuery1} onChange={handleSearchQueryChange}></TextField>
             </Grid>
             <TableContainer component={Paper} className="app-container">
@@ -95,6 +100,17 @@ const ItemList = ({setSearchQuery1,searchQuery1,filteredItemData}) =>{
                     )}
                 </Table>
             </TableContainer>
+            <Dialog sx={{
+                    "& .MuiDialog-container": {
+                        "& .MuiPaper-root": {
+                        width: "800px", 
+                        height:"0px",
+                        borderRadius:"10px"
+                        },
+                    },
+                }} onClose={()=>{setIsUnassignPopupOpen(false)}} open={isUnassignPopupOpen} >
+                    <AddItem/>
+            </Dialog>
         </Grid>
    )
 }

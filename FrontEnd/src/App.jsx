@@ -1,11 +1,8 @@
-
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AdminRegister from './Components/AdminRegister';
 import EmployeeBoard from './Components/EmployeeBoard';
 import EmployeeRegister from './Components/EmployeeRegister';
 import Login from './Components/login';
-import AddEmployee from './Components/AddEmployee';
-import AddItem from './Components/AddItem';
 import AdminNavBar from './Components/AdminNavBar';
 import ItemsPopUp from './Components/ItemsPopUp'
 
@@ -18,8 +15,6 @@ function App() {
             <Route path='/adminregister' element={<AdminRegister/>}/>
             <Route path='/employeeregister' element={<EmployeeRegister/>}/>
             <Route path='/employeeboard' element={<EmployeeBoard/>}/>
-            <Route path='/addemployee' element={<AddEmployee/>}/>
-            <Route path='/additem' element={<AddItem/>}/>
             <Route path='/adminboard' element={<AdminNavBar/>}/>
             <Route path='/itemspopup' element={<ItemsPopUp/>}/>
           </Routes>

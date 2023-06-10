@@ -9,7 +9,6 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import axios from 'axios'
-import {useNavigate} from 'react-router-dom';
 import MuiAlert from '@mui/material/Alert';
 
 const AddEmployee = () =>{
@@ -23,7 +22,6 @@ const AddEmployee = () =>{
         password: "",
         role: ['employee'] ,
     };
-    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
@@ -94,9 +92,7 @@ const AddEmployee = () =>{
             setSystemErrors({...systemErrors,response:'User Successfully Registered!'});
             setTimeout(function() {
                 setSystemErrors({...systemErrors,response:''})
-                navigate('/employeelist')
-            }, 5000);
-        }
+            }, 5000);        }
       }).catch(error=>{
         if(error?.message=="Network Error"){
             setSystemErrors({...systemErrors,networkError:error?.message})
@@ -220,53 +216,55 @@ const AddEmployee = () =>{
     }, [formErrors]);
     return (
         <Grid className="addemployee">
-            {systemErrors?.networkError?.length>0 && <Alert severity="error" style={{width:'350px', position:"absolute", marginLeft:'983px', marginTop:'5px'}}>{systemErrors?.networkError}</Alert>}   
-            {systemErrors?.response?.length>0 && <Alert severity="success" style={{width:'400px', position:"absolute", marginLeft:'933px', marginTop:'5px'}}>{systemErrors?.response}</Alert>} 
+            {systemErrors?.networkError?.length>0 && <Alert severity="error" style={{width:'415px', position:"absolute", marginLeft:'85px', marginTop:'50px'}}>{systemErrors?.networkError}</Alert>}   
+            {systemErrors?.response?.length>0 && <Alert severity="success" style={{width:'415px', position:"absolute", marginLeft:'85px', marginTop:'50px'}}>{systemErrors?.response}</Alert>} 
             <Grid className='employee-popup'>
                 <Grid>
                     <FormControl className="register-form">
                         <h1>Add Employee</h1>
-                        <Grid className="field-container"> 
-                            <Grid className="textbox">
-                                <TextField type="text" className="text" variant="standard" InputProps={input} name="firstName" style={{width: "205px"}} onChange={handleChange} label="First Name" size="small" required></TextField>
+                        <Grid className="all-fields">
+                            <Grid className="field-container"> 
+                                <Grid className="textbox">
+                                    <TextField type="text" className="text" variant="standard" InputProps={input} name="firstName" style={{width: "205px"}} onChange={handleChange} label="First Name" size="small" required></TextField>
+                                </Grid>
+                                <Grid className="textbox">
+                                    <TextField type="text" className="text" variant="standard" InputProps={input} name="lastName" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Last Name" size="small" required></TextField>
+                                </Grid>
+                                <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"65px"}}>{formErrors.firstName}</p>
+                                <p style={{color:"red", position:"absolute",marginLeft:"210px",marginTop:"65px"}}>{formErrors.lastName}</p>
                             </Grid>
-                            <Grid className="textbox">
-                                <TextField type="text" className="text" variant="standard" InputProps={input} name="lastName" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Last Name" size="small" required></TextField>
+                            <Grid className = "field-container">
+                                <Grid className="textbox">
+                                    <TextField type={focus ? "date" : "text"} className="text" variant="standard" InputProps={input} name="dateOfBirth" style={{width: "205px"}} onChange={handleChange} label="Date of birth" size="small" onFocus={onFocus} onBlur={onBlur} required></TextField>
+                                </Grid>
+                                <Grid className="textbox">
+                                    <TextField type="text" className="text" variant="standard" InputProps={input} InputLabelProps={{shrink:ageBlur}} inputProps={{ readOnly: true }} name="age" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Age" size="small" value={ageValue} required></TextField>
+                                </Grid>
+                                <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"65px"}}>{formErrors.dateOfBirth}</p>
                             </Grid>
-                            <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"65px"}}>{formErrors.firstName}</p>
-                            <p style={{color:"red", position:"absolute",marginLeft:"210px",marginTop:"65px"}}>{formErrors.lastName}</p>
-                        </Grid>
-                        <Grid className = "field-container">
-                            <Grid className="textbox">
-                                <TextField type={focus ? "date" : "text"} className="text" variant="standard" InputProps={input} name="dateOfBirth" style={{width: "205px"}} onChange={handleChange} label="Date of birth" size="small" onFocus={onFocus} onBlur={onBlur} required></TextField>
+                            <Grid className = "field-container">
+                                <Grid className="textbox">
+                                    <TextField type="Number" className="text" variant="standard" InputProps={input} name="mobileNumber" style={{width: "205px"}} onChange={handleChange} label="Mobile Number" size="small" required></TextField>
+                                </Grid>
+                                <Grid className="textbox">
+                                    <TextField type="email" className="text" variant="standard" InputProps={input}  name="email" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Email Id" size="small" required></TextField>
+                                </Grid>
+                                <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"65px"}}>{formErrors.mobileNumber}</p>
+                                <p style={{color:"red", position:"absolute",marginLeft:"210px",marginTop:"65px"}}>{formErrors.email}</p>
                             </Grid>
-                            <Grid className="textbox">
-                                <TextField type="text" className="text" variant="standard" InputProps={input} InputLabelProps={{shrink:ageBlur}} inputProps={{ readOnly: true }} name="age" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Age" size="small" value={ageValue} required></TextField>
+                            <Grid className = "field-container">
+                                <Grid className="textbox">
+                                    <TextField type={showPassword ? "text" : "password"} className="text" variant="standard" InputProps={inputpass} name="password" style={{width: "210px"}} onChange={handleChange} label="Password" size="small" required></TextField>
+                                </Grid>
+                                <Grid className="textbox">
+                                    <TextField type={showConfirmPassword ? "text" : "password"} className="text" variant="standard" InputProps={inputconf} name="confirmpassword" style={{width: "210px",marginLeft:"65px"}} onChange={handleChange} label="Confirm Password" size="small" required></TextField>
+                                </Grid>
+                                <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"65px"}}>{formErrors.password}</p>
+                                <p style={{color:"red", position:"absolute",marginLeft:"210px",marginTop:"65px"}}>{formErrors.confirmpassword}</p>
                             </Grid>
-                            <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"65px"}}>{formErrors.dateOfBirth}</p>
-                        </Grid>
-                        <Grid className = "field-container">
-                            <Grid className="textbox">
-                                <TextField type="Number" className="text" variant="standard" InputProps={input} name="mobileNumber" style={{width: "205px"}} onChange={handleChange} label="Mobile Number" size="small" required></TextField>
+                            <Grid className="button-label">
+                                <Button variant="contained" className="button" onClick={handleRegister} disabled={isDisable} InputProps={input} size="large" >Add</Button>
                             </Grid>
-                            <Grid className="textbox">
-                                <TextField type="email" className="text" variant="standard" InputProps={input}  name="email" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Email Id" size="small" required></TextField>
-                            </Grid>
-                            <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"65px"}}>{formErrors.mobileNumber}</p>
-                            <p style={{color:"red", position:"absolute",marginLeft:"210px",marginTop:"65px"}}>{formErrors.email}</p>
-                        </Grid>
-                        <Grid className = "field-container">
-                            <Grid className="textbox">
-                                <TextField type={showPassword ? "text" : "password"} className="text" variant="standard" InputProps={inputpass} name="password" style={{width: "210px"}} onChange={handleChange} label="Password" size="small" required></TextField>
-                            </Grid>
-                            <Grid className="textbox">
-                                <TextField type={showConfirmPassword ? "text" : "password"} className="text" variant="standard" InputProps={inputconf} name="confirmpassword" style={{width: "210px",marginLeft:"65px"}} onChange={handleChange} label="Confirm Password" size="small" required></TextField>
-                            </Grid>
-                            <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"65px"}}>{formErrors.password}</p>
-                            <p style={{color:"red", position:"absolute",marginLeft:"210px",marginTop:"65px"}}>{formErrors.confirmpassword}</p>
-                        </Grid>
-                        <Grid className="button-label">
-                            <Button variant="contained" className="button" onClick={handleRegister} disabled={isDisable} InputProps={input} size="large" >Register</Button>
                         </Grid>
                     </FormControl>
                 </Grid>

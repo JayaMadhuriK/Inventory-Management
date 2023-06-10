@@ -40,6 +40,8 @@ const AdminNavBar = () =>{
     const [itemData,setItemData] = useState([]);
     const [searchQuery1, setSearchQuery1] = useState('');
     const [filteredItemData, setFilteredItemData] = useState([]);
+    const [itemPopupData,setItemPopupData] = useState([])
+    const [itemAssignData,setItemAssignData] = useState([]);
 
     const navigate = useNavigate();
     const handleProfile = () => {
@@ -90,8 +92,14 @@ const AdminNavBar = () =>{
     const getItemData = async () =>{
         const assign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/assign');
         setAssignItemCount(assign?.data.length);
-        const unassign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign');
-        setUnAssignItemCount(unassign?.data.length);
+        setItemAssignData(assign?.data || [])
+        try{
+            const unassign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign');
+            setUnAssignItemCount(unassign?.data.length);
+            setItemPopupData(unassign?.data || []);
+        }catch(error) {
+            console.error('Error fetching item data:', error);
+        }
         const response =await axios.get('http://localhost:6001/api/inventory/InventoryItems');
         const data = response?.data;
         setItemData(data);
@@ -143,9 +151,12 @@ const AdminNavBar = () =>{
             {navigation ?.items && <ItemList
              searchQuery1={searchQuery1}
              filteredItemData={filteredItemData}
-             />}
+             setSearchQuery1={setSearchQuery1}
+             itemAssignData={itemAssignData}
+             itemPopupData={itemPopupData}
+            />}
             {navigation ?.profile && <UserProfile employeeDetails={employeeDetails}/>}
-            {navigation ?.employeeAssigned && <EmployeeAssignedItems employeeDetails={employeeDetails} />}
+            {navigation ?.employeeAssigned && <EmployeeAssignedItems employeeDetails={employeeDetails} itemData={itemPopupData} setItemData={setItemPopupData}/>}
             {navigation ?.addEmployee && <AddEmployee/>}
             <Dialog sx={{
                     "& .MuiDialog-container": {

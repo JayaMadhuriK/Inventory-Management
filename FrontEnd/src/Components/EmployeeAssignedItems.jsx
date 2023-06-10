@@ -23,24 +23,34 @@ import AddIcon from '@mui/icons-material/Add';
 import ItemsPopUp from'./ItemsPopUp';
 
 const EmployeeAssignedItems = (props) =>{
-    const {employeeDetails} = props;
-    const [itemData,setItemData] = useState([]);
+    const {employeeDetails,itemData,setItemData} = props;
+    const [assignedItemData,setAssignedItemData] = useState([]);
     const [selectedItems,setSelectedItems] = useState([]);
     const [isUnassignPopupOpen,setIsUnassignPopupOpen] = useState(false);
     const getItemData = async () =>{
         const response =await axios.get(`http://localhost:6001/api/employeeitems/assignitems/${employeeDetails?.userId}`)
-        setItemData(response?.data?.assignedItems);
-        console.log(response);
+        setAssignedItemData(response?.data?.assignedItems);
     };
-    console.log(employeeDetails)
     const handleAssign = () =>{
         setIsUnassignPopupOpen(true);
     };
+    console.log(selectedItems,"selectedItems")
+    console.log(itemData,"itemData")
     const handleAdd = () =>{
         let assignedItems = [];
-        assignedItems = [...itemData,...selectedItems];
+        let unAssignedItems = itemData;
+        assignedItems = [...assignedItemData,...selectedItems];
+        itemData?.map(item=>{
+            selectedItems?.map(selectedItem=>{
+                if(item?.itemId == selectedItem?.itemId){
+                    let index = itemData.indexOf(item);
+                    unAssignedItems.splice(index,selectedItems.length);
+                }
+            });
+        });
         setIsUnassignPopupOpen(false);
-        setItemData(assignedItems);
+        setAssignedItemData(assignedItems);
+        setItemData(unAssignedItems);
     };
     useEffect(() => {
         getItemData();
@@ -51,9 +61,10 @@ const EmployeeAssignedItems = (props) =>{
                 <h1>Inventory Details</h1>
             </Grid>
             <Grid className="btn-grid">
-                <Button variant="contained" size="medium" onClick={handleAssign} className="btn"><AddIcon/>Assign More</Button>
+            <Button variant="contained" size="medium" className="btn1"><AddIcon/>Update</Button>
+            <Button variant="contained" size="medium" onClick={handleAssign} className="btn"><AddIcon/>Assign More</Button>
             </Grid>
-            {itemData.length>0 ? (
+            {assignedItemData.length>0 ? (
                      <TableContainer component={Paper} className="app-container">
                      <Table aria-label='table'>
                          <TableHead>
@@ -69,7 +80,7 @@ const EmployeeAssignedItems = (props) =>{
                              </TableRow>
                          </TableHead>
                          <TableBody>
-                             {itemData.map((item) => (
+                             {assignedItemData.map((item) => (
                                  <TableRow 
                                      key = {item.itemId}
                                      sx = {{ '&:last-child td, &:last-child th': {border:0} }}
@@ -85,13 +96,14 @@ const EmployeeAssignedItems = (props) =>{
                                          <Grid style={{display:'flex'}}>
                                              <Button variant="contained" style={{marginLeft:'10px',backgroundColor:"black"}} 
                                              onClick={()=>{
-                                                let deletedItems =[]
-                                                 itemData.map((row)=>{
+                                                let deletedItems =[];
+                                                 assignedItemData.map((row)=>{
                                                     if(row.itemId != item.itemId){
                                                         deletedItems.push(row);
                                                     }
                                                 })
-                                                setItemData(deletedItems);
+                                                setAssignedItemData(deletedItems);
+                                                setItemData([...itemData,item]);
                                              }} size="small"><DeleteIcon/></Button>
                                          </Grid>
                                      </TableCell>
@@ -115,13 +127,14 @@ const EmployeeAssignedItems = (props) =>{
                         },
                     },
                 }} onClose={()=>{setIsUnassignPopupOpen(false)}} open={isUnassignPopupOpen} >
-                <DialogTitle>
-                    <IconButton onClick={()=>{setIsUnassignPopupOpen(false)}}>
+                <DialogTitle sx={{height: '40px',marginTop:'-11px',marginBottom:'10px'}}>
+                    <h3>Inventory Items</h3>
+                    <IconButton onClick={()=>{setIsUnassignPopupOpen(false)}}  style={{marginLeft:'520px',marginTop:'-130px'}}>
                         <CloseIcon/>
                     </IconButton>
                 </DialogTitle>
-                <DialogContent>
-                    <ItemsPopUp selectedItems={selectedItems} setSelectedItems={setSelectedItems}/>
+                <DialogContent sx={{overflowY:"hidden"}}>
+                    <ItemsPopUp selectedItems={selectedItems} setSelectedItems={setSelectedItems} itemData={itemData} />
                 </DialogContent>
                 <DialogActions>
                     <Button variant="contained" className="button"  onClick={()=>{setIsUnassignPopupOpen(false)}}>Cancel</Button>

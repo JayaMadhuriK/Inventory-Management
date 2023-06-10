@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.Inventory.Entity.Users;
+import com.project.Inventory.Repository.UserRepo;
 import com.project.Inventory.Service.Impl.UserServiceImpl;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -22,8 +23,10 @@ import com.project.Inventory.Service.Impl.UserServiceImpl;
 @RestController
 public class UserController {
 	private final UserServiceImpl userServiceImpl;
-	public UserController(UserServiceImpl userServiceImpl) {
+	private final UserRepo userRepo;
+	public UserController(UserServiceImpl userServiceImpl, UserRepo userRepo) {
 		this.userServiceImpl = userServiceImpl;
+		this.userRepo = userRepo;
 	}
 	
 	@PostMapping("/addusers")
@@ -45,6 +48,10 @@ public class UserController {
 	@GetMapping("/getusers/{id}")
 	public Optional<Users> findUserById(@PathVariable Long id) {
 		return userServiceImpl.findUserById(id);
+	}
+	@GetMapping("/getusersbyemail/{email}")
+	public Optional<Users> findUserByEmail(@PathVariable String email) {
+		return userRepo.findByEmail(email);
 	}
 	
 }

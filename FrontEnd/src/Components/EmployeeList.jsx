@@ -1,8 +1,7 @@
 import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField';
-import React from 'react'
+import React,{useState} from 'react'
 import './AdminBoard.scss'
-import { useNavigate } from 'react-router-dom';
 import InputAdornment from '@mui/material/InputAdornment';
 import {TableContainer,
     Table,
@@ -16,10 +15,12 @@ import axios from 'axios';
 import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
+import Dialog from '@mui/material/Dialog';
+import AddEmployee from './AddEmployee';
 
 const EmployeeList= (props) =>{
     const {setEmployeeDetails,navigation,setNavigation,setSearchQuery,filteredEmployeeData,searchQuery} = props;
-    const navigate = useNavigate();
+    const [isUnassignPopupOpen,setIsUnassignPopupOpen] = useState(false);
     const handleSearchQueryChange = (event) => {
         setSearchQuery(event.target.value);
       };
@@ -37,12 +38,15 @@ const EmployeeList= (props) =>{
             </InputAdornment>
         ),
     };
+    const handleAdd = () =>{
+        setIsUnassignPopupOpen(true);
+    };
    return (
         <Grid className="employee-body">
             <Grid className="grid-btn">
                 <h1>EMPLOYEES</h1>
-                <Button variant="contained" color="primary" size="medium" onClick={()=>{navigate("/addemployee")}} className="buttonnew"><AddIcon/>Add Employee</Button>
-                <TextField variant="standard" className="button" color="primary" InputProps={input} value={searchQuery} onChange={handleSearchQueryChange}></TextField>
+                <Button variant="contained" color="primary" size="medium" onClick={handleAdd} className="buttonnew"><AddIcon/>Add Employee</Button>
+                <TextField variant="standard" className="button" color="primary" placeholder='Search' InputProps={input} value={searchQuery} onChange={handleSearchQueryChange}></TextField>
             </Grid>
             <TableContainer component={Paper} className="app-container">
                 <Table aria-label='table'>
@@ -93,6 +97,17 @@ const EmployeeList= (props) =>{
                         )}
                 </Table>
             </TableContainer>
+            <Dialog sx={{
+                    "& .MuiDialog-container": {
+                        "& .MuiPaper-root": {
+                        width: "800px", 
+                        height:"450px",
+                        borderRadius:"10px"
+                        },
+                    },
+                }} onClose={()=>{setIsUnassignPopupOpen(false)}} open={isUnassignPopupOpen} >
+                    <AddEmployee/>
+            </Dialog>
         </Grid>
    )
 }
