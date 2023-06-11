@@ -28,6 +28,7 @@ public class InventoryItemServiceImpl implements InventoryItemService {
 		inventoryPayload.get().setCategory(inventoryItems.getCategory());
 		inventoryPayload.get().setExpireDate(inventoryItems.getExpireDate());
 		inventoryPayload.get().setWarranty(inventoryItems.getWarranty());
+		inventoryPayload.get().setBillNumber(inventoryItems.getBillNumber());
 		inventoryPayload.get().setDateOfPurchase(inventoryItems.getDateOfPurchase());
 		inventoryPayload.get().setEmpId(inventoryItems.getEmpId());
 		return inventoryItemRepo.save(inventoryPayload.get());

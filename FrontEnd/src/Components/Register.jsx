@@ -85,38 +85,39 @@ const Register = (role) =>{
                     {showConfirmPassword ? <VisibilityIcon sx={{ color: "white"}}/> : <VisibilityOffIcon sx={{ color: "white"}}/>}
                 </IconButton>
             </InputAdornment>
-          ),
+        ),
     };
     const handleRegister = () =>{
       axios.post('http://localhost:6001/api/auth/signup',formValues)
-      .then(response=>{
-        if(response?.status==200){
-            setSystemErrors({...systemErrors,response:'User Successfully Registered! Redirecting to Login Page'});
-            setTimeout(function() {
-                setSystemErrors({...systemErrors,response:''})
-                navigate('/')
-            }, 5000);
-        }
-      }).catch(error=>{
-        if(error?.message=="Network Error"){
-            setSystemErrors({...systemErrors,networkError:error?.message})
-            setTimeout(function() {
-            setSystemErrors({...systemErrors,networkError:''})
-            }, 5000);
-        }
-        else if(error?.response?.status==400){
-            setSystemErrors({...systemErrors,networkError:'Email Already Exists!'})
-            setTimeout(function() {
-            setSystemErrors({...systemErrors,networkError:''})
-            }, 5000);
-        }
-        else if(error?.response?.status==401){
-            setSystemErrors({...systemErrors,networkError:'Values Out Of Range!'})
-            setTimeout(function() {
-            setSystemErrors({...systemErrors,networkError:''})
-            }, 5000);
-        }
-      });
+        .then(response=>{
+            if(response?.status==200){
+                setSystemErrors({...systemErrors,response:'User Successfully Registered! Redirecting to Login Page'});
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,response:''})
+                    navigate('/')
+                }, 5000);
+            }
+        })
+        .catch(error=>{
+            if(error?.message=="Network Error"){
+                setSystemErrors({...systemErrors,networkError:error?.message})
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,networkError:''})
+                }, 5000);
+            }
+            else if(error?.response?.status==400){
+                setSystemErrors({...systemErrors,networkError:'Email Already Exists!'})
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,networkError:''})
+                }, 5000);
+            }
+            else if(error?.response?.status==401){
+                setSystemErrors({...systemErrors,networkError:'Values Out Of Range!'})
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,networkError:''})
+                }, 5000);
+            }
+        });
     };
     const handleLogin = () => {
         navigate("/");
@@ -220,7 +221,7 @@ const Register = (role) =>{
         else if(formErrors?.firstName?.length != 0 || formErrors?.lastName?.length != 0 || formErrors?.dateOfBirth?.length != 0 || formErrors?.mobileNumber?.length != 0 || formErrors?.email?.length != 0 || formErrors?.password?.length != 0 || formErrors?.confirmpassword?.length != 0){
             setIsDisable(true);
         }
-    }, [formErrors]);
+    },[formErrors]);
     return (
         <Grid className="body">
             <Grid className="logo">WalMart</Grid>

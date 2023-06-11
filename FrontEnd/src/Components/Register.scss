@@ -7,17 +7,17 @@
     background-size: cover;
     .logo{
         font-size: 50px;
-            width:220px;
-            font-weight:700;
-            height:100px;
-            background: linear-gradient(to left,
-            blue,
-            white,
-            blue,
-            white);
-            margin-left: 600px;
-            -webkit-background-clip: text;
-            color: transparent;
+        width:220px;
+        font-weight:700;
+        height:100px;
+        background: linear-gradient(to left,
+        blue,
+        white,
+        blue,
+        white);
+        margin-left: 600px;
+        -webkit-background-clip: text;
+        color: transparent;
     }
     .register-popup{
         width:600px;
@@ -47,7 +47,7 @@
                     .text{
                         .MuiInput-root {
                             border-bottom: 1px solid white !important;
-                          }
+                        }
                         .MuiInputLabel-root {
                             color: white !important;
                         }

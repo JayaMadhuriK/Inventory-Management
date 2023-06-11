@@ -9,9 +9,9 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import axios from 'axios'
-import MuiAlert from '@mui/material/Alert';
 
-const AddEmployee = () =>{
+const AddEmployee = (props) =>{
+    const {systemErrors,setSystemErrors,setIsUnassignPopupOpen,getEmployeeData} =props
     const initialValues = {
         firstName:"",
         lastName:"",
@@ -35,12 +35,8 @@ const AddEmployee = () =>{
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isDisable, setIsDisable] = useState(true);
-    const [systemErrors,setSystemErrors] = useState("");
     const [ageValue,setAgeValue] = useState();
     const [ageBlur,setAgeBlur] = useState(false);
-    const Alert = React.forwardRef(function Alert(props, ref) {
-        return <MuiAlert ref={ref} variant="filled" {...props} />;
-    });
     const input = {
         disableUnderline: true,
         style: {
@@ -83,36 +79,40 @@ const AddEmployee = () =>{
                     {showConfirmPassword ? <VisibilityIcon sx={{ color: "white"}}/> : <VisibilityOffIcon sx={{ color: "white"}}/>}
                 </IconButton>
             </InputAdornment>
-          ),
+        ),
     };
     const handleRegister = () =>{
       axios.post('http://localhost:6001/api/auth/signup',formValues)
-      .then(response=>{
-        if(response?.status==200){
-            setSystemErrors({...systemErrors,response:'User Successfully Registered!'});
-            setTimeout(function() {
-                setSystemErrors({...systemErrors,response:''})
-            }, 5000);        }
-      }).catch(error=>{
-        if(error?.message=="Network Error"){
-            setSystemErrors({...systemErrors,networkError:error?.message})
-            setTimeout(function() {
-            setSystemErrors({...systemErrors,networkError:''})
-            }, 5000);
-        }
-        else if(error?.response?.status==400){
-            setSystemErrors({...systemErrors,networkError:'Email Already Exists!'})
-            setTimeout(function() {
-            setSystemErrors({...systemErrors,networkError:''})
-            }, 5000);
-        }
-        else if(error?.response?.status==401){
-            setSystemErrors({...systemErrors,networkError:'Values Out Of Range!'})
-            setTimeout(function() {
-            setSystemErrors({...systemErrors,networkError:''})
-            }, 5000);
-        }
-      });
+        .then(response=>{
+            if(response?.status==200){
+                setSystemErrors({...systemErrors,response:'User Successfully Registered!'});
+                getEmployeeData();
+                setIsUnassignPopupOpen(false);
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,response:''})
+                }, 5000);
+            }
+        })
+        .catch(error=>{
+            if(error?.message=="Network Error"){
+                setSystemErrors({...systemErrors,networkError:error?.message})
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,networkError:''})
+                }, 5000);
+            }
+            else if(error?.response?.status==400){
+                setSystemErrors({...systemErrors,networkError:'Email Already Exists!'})
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,networkError:''})
+                }, 5000);
+            }
+            else if(error?.response?.status==401){
+                setSystemErrors({...systemErrors,networkError:'Values Out Of Range!'})
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,networkError:''})
+                }, 5000);
+            }
+        });
     };
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -216,8 +216,6 @@ const AddEmployee = () =>{
     }, [formErrors]);
     return (
         <Grid className="addemployee">
-            {systemErrors?.networkError?.length>0 && <Alert severity="error" style={{width:'415px', position:"absolute", marginLeft:'85px', marginTop:'50px'}}>{systemErrors?.networkError}</Alert>}   
-            {systemErrors?.response?.length>0 && <Alert severity="success" style={{width:'415px', position:"absolute", marginLeft:'85px', marginTop:'50px'}}>{systemErrors?.response}</Alert>} 
             <Grid className='employee-popup'>
                 <Grid>
                     <FormControl className="register-form">

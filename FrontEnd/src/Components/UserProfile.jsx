@@ -8,8 +8,8 @@ const UserProfile = (props) =>{
     const [user,setUser] = useState(null);
     const fetchUser = async() =>{
         try{
-        const response =await axios.get(`http://localhost:6001/api/users/getusers/${userId}`);
-        setUser(response?.data);
+            const response =await axios.get(`http://localhost:6001/api/users/getusers/${userId}`);
+            setUser(response?.data);
         }catch(error){
             console.log(error);
         }
@@ -19,7 +19,7 @@ const UserProfile = (props) =>{
     },[]);
    return (
         <Grid className="profile-body">
-             {user ?(
+            {user ?(
                 <Grid className="profile-grid">
                     <Grid>
                         <img src="https://cdn-icons-png.flaticon.com/512/16/16363.png" className='image'/>
@@ -31,11 +31,11 @@ const UserProfile = (props) =>{
                         <p className="name">Mobile Number :- {user.mobileNumber}</p>
                     </Grid>
                 </Grid>
-             ):(
-                <p align="center">Loading user profile ....</p>
-             )}
+                ):(
+                    <p align="center">Loading user profile ....</p>
+            )}
         </Grid>
-   );
+    );
 };
 
 export default UserProfile;

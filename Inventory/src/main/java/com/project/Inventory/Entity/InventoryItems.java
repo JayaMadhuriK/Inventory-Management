@@ -23,8 +23,7 @@ public class InventoryItems {
 	@Column(nullable=false, length = 30)
 	private int billNumber;
 	@Column(nullable=false)
-	@JsonFormat(pattern = "dd-MM-yyyy")
-	private Date dateOfPurchase;
+	private String dateOfPurchase;
 	@Column(nullable=false)
 	private int warranty;
 	@Column(nullable=false)
@@ -35,7 +34,7 @@ public class InventoryItems {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public InventoryItems(String itemName, String category, int billNumber, Date dateOfPurchase, int warranty,
+	public InventoryItems(String itemName, String category, int billNumber, String dateOfPurchase, int warranty,
 			String expireDate, Long empId) {
 		super();
 		this.itemName = itemName;
@@ -46,7 +45,6 @@ public class InventoryItems {
 		this.expireDate = expireDate;
 		this.empId = empId;
 	}
-	
 	public int getItemId() {
 		return itemId;
 	}
@@ -71,10 +69,10 @@ public class InventoryItems {
 	public void setBillNumber(int billNumber) {
 		this.billNumber = billNumber;
 	}
-	public Date getDateOfPurchase() {
+	public String getDateOfPurchase() {
 		return dateOfPurchase;
 	}
-	public void setDateOfPurchase(Date dateOfPurchase) {
+	public void setDateOfPurchase(String dateOfPurchase) {
 		this.dateOfPurchase = dateOfPurchase;
 	}
 	public int getWarranty() {

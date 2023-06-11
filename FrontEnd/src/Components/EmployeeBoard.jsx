@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid'
-import React,{useState,useEffect} from 'react'
+import React,{useState} from 'react'
 import './AdminBoard.scss'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import Button from '@mui/material/Button';
@@ -11,13 +11,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
-import AdminBoard from './AdminBoard';
-import EmployeeList from './EmployeeList';
-import ItemList from './ItemList';
 import UserProfile from './UserProfile';
-import EmployeeAssignedItems from './EmployeeAssignedItems';
-import AddEmployee from './AddEmployee';
-import axios from 'axios';
 
 const EmployeeBoard = () =>{
     const [anchorEl, setAnchorEl] = useState(null);
@@ -37,7 +31,7 @@ const EmployeeBoard = () =>{
     const handleLogOut = () => {
         setAnchorEl(null);
         setTimeout(function() {
-        navigate('/');
+            navigate('/');
         },1000);
     };
     const handleClose = () =>{
@@ -50,7 +44,7 @@ const EmployeeBoard = () =>{
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
-   return (
+    return (
         <Grid className="adminnav-body">
             <Grid className='label'>
                 <Grid className="logo">WalMart</Grid>
@@ -64,35 +58,35 @@ const EmployeeBoard = () =>{
                     style={{top: 50,marginLeft:'55px'}}
                     onClose={handleCloseMenu}
                     open={Boolean(anchorEl)}
-                    autoFocus
-                >
+                    autoFocus>
                     <MenuItem onClick={handleProfile}>Profile</MenuItem>
                     <MenuItem onClick={()=>{setIsDialogOpen(true)}}>Logout</MenuItem>
                 </Menu>
             </Grid>
             {navigation ?.items && <UserProfile/>}
             {navigation ?.profile && <UserProfile/>}
-            <Dialog sx={{
+            <Dialog 
+                sx={{
                     "& .MuiDialog-container": {
                         "& .MuiPaper-root": {
-                        width: "100%",
-                        maxWidth: "400px", 
-                        marginLeft:"80px"
+                            width: "100%",
+                            maxWidth: "400px", 
+                            marginLeft:"80px"
                         },
                     },
                 }} onClose={handleClose} open={isDialogOpen} >
-                    <DialogContent>
-          <DialogContentText>
-            Do you want to Logout?
-          </DialogContentText>
-        </DialogContent>
+                <DialogContent>
+                    <DialogContentText>
+                        Do you want to Logout?
+                    </DialogContentText>
+                </DialogContent>
                 <DialogActions>
                     <Button variant="contained" className="button"  onClick={handleLogOut}>Agree</Button>
                     <Button variant="contained" className="button" onClick={handleClose}>Disagree</Button>
                 </DialogActions>
             </Dialog>
         </Grid>
-   )
+    )
 }
 
 export default EmployeeBoard;

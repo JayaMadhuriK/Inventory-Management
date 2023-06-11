@@ -22,21 +22,17 @@ const Login = () =>{
         password: "" 
     };
     const navigate = useNavigate();
-
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
-
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isDisable, setIsDisable] = useState(true);
     const [isDialogOpen,setIsDialogOpen] = useState(false);
     const [systemErrors,setSystemErrors] = useState({});
-
     const Alert = React.forwardRef(function Alert(props, ref) {
         return <MuiAlert ref={ref} variant="filled" {...props} />;
     });
-
     const input = {
         disableUnderline: true,
         style: {
@@ -49,7 +45,6 @@ const Login = () =>{
             </InputAdornment>
         ),
     };
-
     const inputpass = {
         disableUnderline: true,
         style: {
@@ -61,18 +56,15 @@ const Login = () =>{
                 <IconButton
                 aria-label="toggle password visibility"
                 onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                >
+                onMouseDown={handleMouseDownPassword}>
                 {showPassword ? <VisibilityIcon sx={{ color: "white"}}/> : <VisibilityOffIcon sx={{ color: "white"}}/>}
                 </IconButton>
             </InputAdornment>
-          ),
+        ),
     };
-
     const handleClose = () =>{
         setIsDialogOpen(false);
     };
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         if(name === "email"){
@@ -95,42 +87,40 @@ const Login = () =>{
         }
         setFormValues({ ...formValues, [name]: value });
     };
-
     const handleLogin = (e) => {
       axios.post('http://localhost:6001/api/auth/signin',formValues)
-      .then(response=>{
-        if(response?.status==200){
-            if(response?.data.roles[0]== "ROLE_ADMIN"){
-                setSystemErrors({...systemErrors,response:'Login Successfull'})
-                setTimeout(function() {
-                    setSystemErrors({...systemErrors,response:''})
-                    navigate('/adminboard');
-                }, 3000);
+        .then(response=>{
+            if(response?.status==200){
+                if(response?.data.roles[0]== "ROLE_ADMIN"){
+                    setSystemErrors({...systemErrors,response:'Login Successfull'})
+                    setTimeout(function() {
+                        setSystemErrors({...systemErrors,response:''})
+                        navigate('/adminboard');
+                    }, 3000);
+                }
+                else if(response?.data.roles[0]== "ROLE_EMPLOYEE"){
+                    setSystemErrors({...systemErrors,response:'Login Successfull'})
+                    setTimeout(function() {
+                        setSystemErrors({...systemErrors,response:''})
+                        navigate('/employeeboard');
+                    }, 3000);
+                }
             }
-           else if(response?.data.roles[0]== "ROLE_EMPLOYEE"){
-                setSystemErrors({...systemErrors,response:'Login Successfull'})
+        }).catch(error=>{
+            if(error?.message=="Network Error"){
+                setSystemErrors({...systemErrors,networkError:error?.message})
                 setTimeout(function() {
-                    setSystemErrors({...systemErrors,response:''})
-                    navigate('/employeeboard');
-                }, 3000);
+                    setSystemErrors({...systemErrors,networkError:''})
+                }, 5000);
             }
-        }
-      }).catch(error=>{
-        if(error?.message=="Network Error"){
-            setSystemErrors({...systemErrors,networkError:error?.message})
-            setTimeout(function() {
-            setSystemErrors({...systemErrors,networkError:''})
-            }, 5000);
-        }
-        else if(error?.response?.status==401){
-            setSystemErrors({...systemErrors,networkError:'Invalid Credentials'})
-            setTimeout(function() {
-            setSystemErrors({...systemErrors,networkError:''})
-            }, 5000);
-        }
-      });
+            else if(error?.response?.status==401){
+                setSystemErrors({...systemErrors,networkError:'Invalid Credentials'})
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,networkError:''})
+                }, 5000);
+            }
+        });
     };
-
     useEffect(() => {
         if (formErrors?.email?.length == 0 && formErrors?.password?.length == 0) {
             setIsDisable(false);
@@ -138,8 +128,7 @@ const Login = () =>{
         else if(formErrors?.email?.length != 0 || formErrors?.password?.length != 0){
             setIsDisable(true);
         }
-    }, [formErrors]);
-
+    },[formErrors]);
     return (
         <Grid className="body">
             <Grid className="logo">WalMart</Grid>
@@ -164,12 +153,13 @@ const Login = () =>{
                     </FormControl>
                 </Grid>
             </Grid>
-            <Dialog sx={{
+            <Dialog 
+                sx={{
                     "& .MuiDialog-container": {
                         "& .MuiPaper-root": {
-                        width: "100%",
-                        maxWidth: "400px", 
-                        marginLeft:"80px"
+                            width: "100%",
+                            maxWidth: "400px", 
+                            marginLeft:"80px"
                         },
                     },
                 }} onClose={handleClose} open={isDialogOpen} >

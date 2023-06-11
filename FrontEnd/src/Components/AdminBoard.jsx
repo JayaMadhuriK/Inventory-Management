@@ -7,8 +7,9 @@ import PeopleOutline from '@mui/icons-material/PeopleOutline';
 import ShoppingCartCheckoutOutlined from '@mui/icons-material/ShoppingCartCheckoutOutlined';
 import ShoppingCartOutlined from '@mui/icons-material/ShoppingCartOutlined';
 
-const AdminBoard = ({assignItemCount,unAssignItemCount,employeeCount}) =>{
-   return (
+const AdminBoard = (props) =>{
+    const {assignItemCount,unAssignItemCount,employeeCount} = props;
+    return (
         <Grid className="adminboard-body">
             <Grid className="grid1">
                 <img src='https://www.spherewms.com/hubfs/blog-files/SPH%20Whse%20Inv%20Mgmt%20Blog-shutterstock_1930996376.jpg' width="1366" height="450" className="image" ></img>
@@ -22,9 +23,8 @@ const AdminBoard = ({assignItemCount,unAssignItemCount,employeeCount}) =>{
                 </Grid>
             </Grid>
         </Grid>
-   )
+    )
 }
-
 function DashboardCard({title,value,icon}){
     return(
         <Card style={{marginLeft:"120px",height:"110px",border:"0"}}>
@@ -35,4 +35,5 @@ function DashboardCard({title,value,icon}){
         </Card>
     );
 }
+
 export default AdminBoard;

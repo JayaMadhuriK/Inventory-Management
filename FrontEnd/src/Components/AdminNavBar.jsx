@@ -13,7 +13,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import AdminBoard from './AdminBoard';
 import EmployeeList from './EmployeeList';
-import ItemList from './ItemList';
+import ItemList from './SideNavbar';
 import UserProfile from './UserProfile';
 import EmployeeAssignedItems from './EmployeeAssignedItems';
 import AddEmployee from './AddEmployee';
@@ -42,7 +42,6 @@ const AdminNavBar = () =>{
     const [filteredItemData, setFilteredItemData] = useState([]);
     const [itemPopupData,setItemPopupData] = useState([])
     const [itemAssignData,setItemAssignData] = useState([]);
-
     const navigate = useNavigate();
     const handleProfile = () => {
         setNavigation({...navigation,home:false,employee:false,items:false,profile:true,employeeAssigned:false,addEmployee:false});
@@ -89,11 +88,11 @@ const AdminNavBar = () =>{
     const getItemData = async () =>{
         const assign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/assign');
         setAssignItemCount(assign?.data.length);
-        setItemAssignData(assign?.data || [])
+        setItemAssignData(assign?.data)
         try{
             const unassign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign');
             setUnAssignItemCount(unassign?.data.length);
-            setItemPopupData(unassign?.data || []);
+            setItemPopupData(unassign?.data);
         }catch(error) {
             console.error('Error fetching item data:', error);
         }
@@ -101,20 +100,19 @@ const AdminNavBar = () =>{
         const data = response?.data;
         setItemData(data);
         const filteredData = data?.filter((item) =>{
-        const itemNameMatch = item.itemName.toLowerCase().includes(searchQuery1.toLowerCase());
-        const itemIdMatch = item.itemId.toString().includes(searchQuery1.toLowerCase());
-        const categoryMatch = item.category.toLowerCase().includes(searchQuery1.toLowerCase());
-        const billNumberMatch = item.billNumber.toString().includes(searchQuery1.toLowerCase());
-    
-        return itemNameMatch || itemIdMatch || categoryMatch || billNumberMatch;
-    });
+            const itemNameMatch = item.itemName.toLowerCase().includes(searchQuery1.toLowerCase());
+            const itemIdMatch = item.itemId.toString().includes(searchQuery1.toLowerCase());
+            const categoryMatch = item.category.toLowerCase().includes(searchQuery1.toLowerCase());
+            const billNumberMatch = item.billNumber.toString().includes(searchQuery1.toLowerCase());    
+            return itemNameMatch || itemIdMatch || categoryMatch || billNumberMatch;
+        });
         setFilteredItemData(filteredData)
     };
     useEffect(() => {
         getEmployeeData();
         getItemData();
-      },[searchQuery,searchQuery1]);
-   return (
+    },[searchQuery,searchQuery1]);
+    return (
         <Grid className="adminnav-body">
             <Grid className='label'>
                 <Grid className="logo">WalMart</Grid>
@@ -130,13 +128,16 @@ const AdminNavBar = () =>{
                     style={{top: 50,marginLeft:'55px'}}
                     onClose={handleCloseMenu}
                     open={Boolean(anchorEl)}
-                    autoFocus
-                >
+                    autoFocus>
                     <MenuItem onClick={handleProfile}>Profile</MenuItem>
                     <MenuItem onClick={()=>{setIsDialogOpen(true)}}>Logout</MenuItem>
                 </Menu>
             </Grid>
-            {navigation ?.home && <AdminBoard assignItemCount={assignItemCount} unAssignItemCount={unAssignItemCount} employeeCount={employeeCount}/>}
+            {navigation ?.home && <AdminBoard
+                assignItemCount={assignItemCount}
+                unAssignItemCount={unAssignItemCount}
+                employeeCount={employeeCount}/>
+            }
             {navigation ?.employee && <EmployeeList
                 setEmployeeDetails={setEmployeeDetails}
                 setNavigation={setNavigation}
@@ -144,38 +145,49 @@ const AdminNavBar = () =>{
                 employeeData={employeeData}
                 setSearchQuery={setSearchQuery}
                 searchQuery={searchQuery}
-                filteredEmployeeData={filteredEmployeeData}/>}
+                filteredEmployeeData={filteredEmployeeData}
+                getEmployeeData={getEmployeeData}
+                getItemData={getItemData}/>
+            }
             {navigation ?.items && <ItemList
-             searchQuery1={searchQuery1}
-             filteredItemData={filteredItemData}
-             setSearchQuery1={setSearchQuery1}
-             itemAssignData={itemAssignData}
-             itemPopupData={itemPopupData}
-            />}
+                searchQuery1={searchQuery1}
+                filteredItemData={filteredItemData}
+                setSearchQuery1={setSearchQuery1}
+                itemAssignData={itemAssignData}
+                getItemData={getItemData}
+                itemPopupData={itemPopupData}/>
+            }
             {navigation ?.profile && <UserProfile employeeDetails={employeeDetails}/>}
-            {navigation ?.employeeAssigned && <EmployeeAssignedItems employeeDetails={employeeDetails} getAllItemData={getItemData} itemData={itemPopupData} setItemData={setItemPopupData}/>}
+            {navigation ?.employeeAssigned && <EmployeeAssignedItems 
+                employeeDetails={employeeDetails} 
+                getAllItemData={getItemData} 
+                itemData={itemPopupData} 
+                setItemData={setItemPopupData}
+                getItemData={getItemData}/>
+            }
             {navigation ?.addEmployee && <AddEmployee/>}
-            <Dialog sx={{
+            <Dialog 
+                sx={{
                     "& .MuiDialog-container": {
                         "& .MuiPaper-root": {
-                        width: "100%",
-                        maxWidth: "400px", 
-                        marginLeft:"80px"
+                            width: "100%",
+                            maxWidth: "400px", 
+                            marginLeft:"80px"
                         },
                     },
-                }} onClose={handleClose} open={isDialogOpen} >
-                    <DialogContent>
-          <DialogContentText>
-            Do you want to Logout?
-          </DialogContentText>
-        </DialogContent>
+                }} onClose={handleClose} open={isDialogOpen}>
+                <DialogContent>
+                    <DialogContentText>
+                        Do you want to Logout?
+                    </DialogContentText>
+                </DialogContent>
                 <DialogActions>
                     <Button variant="contained" className="button"  onClick={handleLogOut}>Agree</Button>
                     <Button variant="contained" className="button" onClick={handleClose}>Disagree</Button>
                 </DialogActions>
             </Dialog>
         </Grid>
-   )
+    )
 }
 
 export default AdminNavBar;

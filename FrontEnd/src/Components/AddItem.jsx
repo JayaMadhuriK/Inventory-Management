@@ -4,31 +4,25 @@ import './AdminBoard.scss'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
-import MuiAlert from '@mui/material/Alert';
-import AdminNavBar from './AdminNavBar';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-const AddItem = () =>{
-    const initialValues = {
-        itemName:"",
-        category:"",
-        billNumber:"",
-        dateOfPurchase:"",
-        warranty:"",
-        expireDate: "", 
-    };
+const AddItem = (props) =>{
+    const {title, initialValues,getItemData,systemErrors,setSystemErrors,setIsUnassignPopupOpen} = props;
     const [focus, setFocused] = useState(false);
     const onFocus = () => setFocused(true);
-    const onBlur = () => setFocused(false);
-    const [systemErrors,setSystemErrors] = useState("");
-    const [formValues, setFormValues] = useState(initialValues);
-
-    const Alert = React.forwardRef(function Alert(props, ref) {
-        return <MuiAlert ref={ref} variant="filled" {...props} />;
-    });
+    const onBlur = (e) => {
+        setFocused(false)
+        const { name, value } = e.target;
+        if(name == "dateOfPurchase"){
+        let dateArray = value.split("-");
+        let date = dateArray[2]+"-"+dateArray[1]+"-"+dateArray[0];
+        console.log(date);
+        setFormValues({...formValues,dateOfPurchase:date})
+        }
+    };
+    const [formValues, setFormValues] = useState({...initialValues});
     const input = {
         disableUnderline: true,
         style: {
@@ -42,35 +36,67 @@ const AddItem = () =>{
         "Food Items",
         "Sports",
         "Foot wear"
-      ];
+    ];
+    const postRequest = ()=>{
+        axios.post('http://localhost:6001/api/inventory/InventoryItems',formValues)
+        .then(response=>{
+            if(response?.status==200){
+                setSystemErrors({...systemErrors,response:'Item added Successfully'});
+                getItemData();
+                setIsUnassignPopupOpen(false);
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,response:''})
+                }, 5000);
+            }
+        })
+        .catch(error=>{
+            if(error?.message=="Network Error"){
+                setSystemErrors({...systemErrors,networkError:error?.message})
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,networkError:''})
+                }, 5000);
+            }
+        });
+    };
+    const putRequest = ()=>{
+        axios.put(`http://localhost:6001/api/inventory/InventoryItems/${initialValues?.itemId}`,formValues)
+        .then(response=>{
+            if(response?.status==200){
+                setSystemErrors({...systemErrors,response:'Item updated Successfully'});
+                getItemData();
+                setIsUnassignPopupOpen(false);
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,response:''})
+                }, 5000);
+            }
+        })
+        .catch(error=>{
+            if(error?.message=="Network Error"){
+                setSystemErrors({...systemErrors,networkError:error?.message})
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,networkError:''})
+                }, 5000);
+            }
+        });
+    }
     const handleRegister = () =>{
-      axios.post('http://localhost:6001/api/inventory/InventoryItems',formValues)
-      .then(response=>{
-        if(response?.status==200){
-            setSystemErrors({...systemErrors,response:'Item added Successfully'});
-        }
-      }).catch(error=>{
-        if(error?.message=="Network Error"){
-            setSystemErrors({...systemErrors,networkError:error?.message})
-            setTimeout(function() {
-            setSystemErrors({...systemErrors,networkError:''})
-            }, 5000);
-        }
-      });
+       if(title == 'Add Item'){
+            postRequest();
+       }else{
+            putRequest();
+       }
     };
     const handleChange = (e) => {
         const { name, value } = e.target;
+        console.log(name,":",value);
         setFormValues({...formValues,[name]:value});
-
     };
     return (
         <Grid className="additem">
-            {systemErrors?.networkError?.length>0 && <Alert severity="error" style={{width:'415px', position:"absolute", marginLeft:'85px', marginTop:'50px'}}>{systemErrors?.networkError}</Alert>}   
-            {systemErrors?.response?.length>0 && <Alert severity="success" style={{width:'415px', position:"absolute", marginLeft:'85px', marginTop:'50px'}}>{systemErrors?.response}</Alert>} 
             <Grid className='item-popup'>
                 <Grid>
                     <FormControl className="register-form">
-                        <h1>Add Item</h1>
+                        <h1>{title}</h1>
                         <Grid className="all-items">
                             <Grid className="field-container"> 
                                 <Grid className="textbox">
@@ -79,7 +105,7 @@ const AddItem = () =>{
                                 <Grid className="textbox">
                                     <FormControl variant="standard" style={{ width: '205px', marginLeft: '65px',marginTop:'13px' }}>
                                         <Select
-                                            value={formValues.category}
+                                            value={formValues?.category}
                                             onChange={handleChange}
                                             name="category"
                                             displayEmpty
@@ -87,15 +113,10 @@ const AddItem = () =>{
                                             sx={{
                                                 ':before': { borderBottomColor: 'white' },
                                                 ':after': { borderBottomColor: 'white' },
-                                            }}
-                                        >
-                                            <MenuItem value="" disabled>
-                                            Category
-                                            </MenuItem>
+                                            }}>
+                                            <MenuItem value="" disabled>Category</MenuItem>
                                             {categories.map((category) => (
-                                            <MenuItem key={category} value={category} >
-                                                {category}
-                                            </MenuItem>
+                                                <MenuItem key={category} value={category} >{category}</MenuItem>
                                             ))}
                                         </Select>
                                     </FormControl>
@@ -103,22 +124,22 @@ const AddItem = () =>{
                             </Grid>
                             <Grid className = "field-container">
                                 <Grid className="textbox">
-                                    <TextField type={focus ? "date" : "text"} className="text" variant="standard" InputProps={input} name="dateOfPurchase" style={{width: "205px"}} onChange={handleChange} label="Date of purchase" size="small" onFocus={onFocus} onBlur={onBlur} required></TextField>
+                                    <TextField type={focus ? "date" : "text"} className="text" variant="standard" InputProps={input} value={formValues?.dateOfPurchase} name="dateOfPurchase" style={{width: "205px"}} onChange={handleChange} label="Date of purchase" size="small" onFocus={onFocus} onBlur={onBlur} required></TextField>
                                 </Grid>
                                 <Grid className="textbox">
-                                    <TextField type="text" className="text" variant="standard" InputProps={input} name="billNumber" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Bill Number" size="small" required></TextField>
+                                    <TextField type="text" className="text" variant="standard" InputProps={input} name="billNumber" value={formValues?.billNumber} style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Bill Number" size="small" required></TextField>
                                 </Grid>
                             </Grid>
                             <Grid className = "field-container">
                                 <Grid className="textbox">
-                                    <TextField type="Number" className="text" variant="standard" InputProps={input} name="warranty" style={{width: "205px"}} onChange={handleChange} label="Warranty(in months)" size="small" required></TextField>
+                                    <TextField type="Number" className="text" variant="standard" InputProps={input} name="warranty" style={{width: "205px"}} value={formValues?.warranty} onChange={handleChange} label="Warranty(in months)" size="small" required></TextField>
                                 </Grid>
                                 <Grid className="textbox">
-                                    <TextField className="text" variant="standard" InputProps={input}  name="expireDate" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Expire Date" size="small" required></TextField>
+                                    <TextField className="text" variant="standard" InputProps={input}  name="expireDate" value={formValues?.expireDate} style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Expire Date" size="small" required></TextField>
                                 </Grid>
                             </Grid>
                             <Grid className="button-label">
-                                <Button variant="contained" className="button" onClick={handleRegister} InputProps={input} size="large" >Add</Button>
+                                <Button variant="contained" className="button" onClick={handleRegister} InputProps={input} size="large" >{title == "Add Item"? "Add" : "Update"}</Button>
                             </Grid>
                         </Grid>
                     </FormControl>

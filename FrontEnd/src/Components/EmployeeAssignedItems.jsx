@@ -24,7 +24,7 @@ import ItemsPopUp from'./ItemsPopUp';
 import MuiAlert from '@mui/material/Alert';
 
 const EmployeeAssignedItems = (props) =>{
-    const {employeeDetails,itemData,setItemData,getAllItemData} = props;
+    const {employeeDetails,itemData,setItemData,getAllItemData, getItemData} = props;
     const [assignedItemData,setAssignedItemData] = useState([]);
     const [preAssigned,setPreAssigned] = useState([]);
     const [selectedItems,setSelectedItems] = useState([]);
@@ -33,12 +33,13 @@ const EmployeeAssignedItems = (props) =>{
     const Alert = React.forwardRef(function Alert(props, ref) {
         return <MuiAlert ref={ref} variant="filled" {...props} />;
     });
-    const getItemData = async () =>{
+    const  getEmployeeData= async () =>{
         const response =await axios.get(`http://localhost:6001/api/employeeitems/assignitems/${employeeDetails?.userId}`)
         setAssignedItemData(response?.data?.assignedItems);
         setPreAssigned(response?.data?.assignedItems);
     };
     const handleAssign = () =>{
+        getEmployeeData();
         setIsUnassignPopupOpen(true);
     };
     const handleAdd = () =>{
@@ -68,41 +69,40 @@ const EmployeeAssignedItems = (props) =>{
     const handlePost=(payload)=>{
         axios.post('http://localhost:6001/api/employeeitems/assignitems',payload)
         .then(response=>{
-          if(response?.status==200){
-            setSystemErrors({...systemErrors,response:'Updated Successfully'});
-            setTimeout(function() {
-                setSystemErrors({...systemErrors,response:''});
-            }, 5000);
-            getUnassignedData();
-            getAllItemData();
-          }
+            if(response?.status==200){
+                setSystemErrors({...systemErrors,response:'Updated Successfully'});
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,response:''});
+                }, 2000);
+                getUnassignedData();
+                getAllItemData();
+            }
         }).catch(error=>{
-          if(error?.message=="Network Error"){
-              setSystemErrors({...systemErrors,networkError:error?.message})
-              setTimeout(function() {
-              setSystemErrors({...systemErrors,networkError:''})
-              }, 5000);
-          }
+            if(error?.message=="Network Error"){
+                setSystemErrors({...systemErrors,networkError:error?.message})
+                setTimeout(function() {
+                setSystemErrors({...systemErrors,networkError:''})
+                }, 2000);
+            }
         });
     }
     const handlePut =(payload)=>{
         axios.put(`http://localhost:6001/api/employeeitems/unassignitems/${employeeDetails?.userId}`,payload)
         .then(response=>{
-          if(response?.status==200){
-            setSystemErrors({...systemErrors,response:'Updated Successfully'});
-            setTimeout(function() {
-                setSystemErrors({...systemErrors,response:''});
-            }, 5000);
-            getUnassignedData();
-            handlePost(payload);
-          }
+            if(response?.status==200){
+                setSystemErrors({...systemErrors,response:'Updated Successfully'});
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,response:''});
+                }, 2000);
+                getUnassignedData();
+            }
         }).catch(error=>{
-          if(error?.message=="Network Error"){
-              setSystemErrors({...systemErrors,networkError:error?.message})
-              setTimeout(function() {
-              setSystemErrors({...systemErrors,networkError:''})
-              }, 5000);
-          }
+            if(error?.message=="Network Error"){
+                setSystemErrors({...systemErrors,networkError:error?.message})
+                setTimeout(function() {
+                    setSystemErrors({...systemErrors,networkError:''})
+                }, 2000);
+            }
         });
     }
     const handleUpdate =() =>{
@@ -114,11 +114,12 @@ const EmployeeAssignedItems = (props) =>{
             payload?.assignedItems.push(item?.itemId);
         })
         handlePut(payload);
+        handlePost(payload);
     };
     useEffect(() => {
-        getItemData();
-      },[]);
-   return (
+        getEmployeeData();
+    },[]);
+    return (
         <Grid className="inventory-body">
             <Grid className="grid-btn">
                 <h1>Inventory Details</h1>
@@ -126,75 +127,76 @@ const EmployeeAssignedItems = (props) =>{
             {systemErrors?.networkError?.length>0 && <Alert severity="error" style={{width:'400px', position:"absolute", marginLeft:'920px', marginTop:'140px'}}>{systemErrors?.networkError}</Alert>}   
             {systemErrors?.response?.length>0 && <Alert severity="success" style={{width:'400px', position:"absolute", marginLeft:'920px', marginTop:'140px'}}>{systemErrors?.response}</Alert>} 
             <Grid className="btn-grid">
-            <Button variant="contained" size="medium" className="btn1" onClick={handleUpdate}>Update</Button>
-            <Button variant="contained" size="medium" onClick={handleAssign} className="btn"><AddIcon/>Assign More</Button>
+                <Button variant="contained" size="medium" className="btn1" onClick={handleUpdate}>Update</Button>
+                <Button variant="contained" size="medium" onClick={handleAssign} className="btn"><AddIcon/>Assign More</Button>
             </Grid>
             {assignedItemData.length>0 ? (
-                     <TableContainer component={Paper} className="app-container">
-                     <Table aria-label='table'>
-                         <TableHead>
-                             <TableRow>
-                                 <TableCell>Item Id</TableCell>
-                                 <TableCell>Item Name</TableCell>
-                                 <TableCell>Category</TableCell>
-                                 <TableCell>Bill Number</TableCell>
-                                 <TableCell>Date of Purchase</TableCell>
-                                 <TableCell>Warranty</TableCell>
-                                 <TableCell>Expire date</TableCell>
-                                 <TableCell>Actions</TableCell>
-                             </TableRow>
-                         </TableHead>
-                         <TableBody>
-                             {assignedItemData.map((item) => (
-                                 <TableRow 
-                                     key = {item.itemId}
-                                     sx = {{ '&:last-child td, &:last-child th': {border:0} }}
-                                 >
-                                     <TableCell>{item.itemId}</TableCell>
-                                     <TableCell>{item.itemName}</TableCell>
-                                     <TableCell>{item.category}</TableCell>
-                                     <TableCell>{item.billNumber}</TableCell>
-                                     <TableCell>{item.dateOfPurchase}</TableCell>
-                                     <TableCell>{item.warranty}</TableCell>
-                                     <TableCell>{item.expireDate}</TableCell>
-                                     <TableCell align="center" scope="row" component="th">
-                                         <Grid style={{display:'flex'}}>
-                                             <Button variant="contained" style={{marginLeft:'10px',backgroundColor:"black"}} 
-                                             onClick={()=>{
-                                                let deletedItems =[];
-                                                 assignedItemData.map((row)=>{
-                                                    if(row.itemId != item.itemId){
-                                                        deletedItems.push(row);
-                                                    }
-                                                })
-                                                setAssignedItemData(deletedItems);
-                                                setItemData([...itemData,item]);
-                                             }} size="small"><DeleteIcon/></Button>
-                                         </Grid>
-                                     </TableCell>
-                                 </TableRow>
-                             ))
-                             }
-                         </TableBody>
-                     </Table>
-                 </TableContainer>
-            ):(
+                <TableContainer component={Paper} className="app-container">
+                    <Table aria-label='table'>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Item Id</TableCell>
+                                <TableCell>Item Name</TableCell>
+                                <TableCell>Category</TableCell>
+                                <TableCell>Bill Number</TableCell>
+                                <TableCell>Date of Purchase</TableCell>
+                                <TableCell>Warranty</TableCell>
+                                <TableCell>Expire date</TableCell>
+                                <TableCell>Actions</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {assignedItemData.map((item) => (
+                                <TableRow 
+                                    key = {item.itemId}
+                                    sx = {{ '&:last-child td, &:last-child th': {border:0} }}>
+                                    <TableCell>{item.itemId}</TableCell>
+                                    <TableCell>{item.itemName}</TableCell>
+                                    <TableCell>{item.category}</TableCell>
+                                    <TableCell>{item.billNumber}</TableCell>
+                                    <TableCell>{item.dateOfPurchase}</TableCell>
+                                    <TableCell>{item.warranty}</TableCell>
+                                    <TableCell>{item.expireDate}</TableCell>
+                                    <TableCell align="center" scope="row" component="th">
+                                        <Grid style={{display:'flex'}}>
+                                            <Button variant="contained" style={{marginLeft:'10px',backgroundColor:"black"}} 
+                                                onClick={()=>{
+                                                    let deletedItems =[];
+                                                    assignedItemData.map((row)=>{
+                                                        if(row.itemId != item.itemId){
+                                                            deletedItems.push(row);
+                                                        }
+                                                    })
+                                                    setAssignedItemData(deletedItems);
+                                                    setItemData([...itemData,item]);
+                                                }} size="small">
+                                                <DeleteIcon/>
+                                            </Button>
+                                        </Grid>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                ):(
                 <Grid className="last-grid">
                     <h1>No Items Assigned</h1>
                 </Grid>
             )}
-             <Dialog sx={{
+            <Dialog 
+                sx={{
                     "& .MuiDialog-container": {
                         "& .MuiPaper-root": {
-                        width: "800px", 
-                        height:"500px",
-                        marginLeft:"80px"
+                            width: "800px", 
+                            height:"500px",
+                            marginLeft:"80px"
                         },
                     },
                 }} onClose={()=>{setIsUnassignPopupOpen(false)}} open={isUnassignPopupOpen} >
                 <DialogTitle sx={{height: '40px',marginTop:'-11px',marginBottom:'10px'}}>
                     <h3>Inventory Items</h3>
-                    <IconButton onClick={()=>{setIsUnassignPopupOpen(false)}}  style={{marginLeft:'520px',marginTop:'-130px'}}>
+                    <IconButton onClick={()=>{setIsUnassignPopupOpen(false)}} style={{marginLeft:'520px',marginTop:'-130px'}}>
                         <CloseIcon/>
                     </IconButton>
                 </DialogTitle>
@@ -210,7 +212,7 @@ const EmployeeAssignedItems = (props) =>{
                 <h3><UserProfile userId={employeeDetails?.userId}/></h3>
             </Grid>
         </Grid>
-   )
+    )
 }
 
 export default EmployeeAssignedItems;
