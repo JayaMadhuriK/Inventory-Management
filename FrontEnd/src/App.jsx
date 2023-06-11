@@ -4,7 +4,8 @@ import EmployeeBoard from './Components/EmployeeBoard';
 import EmployeeRegister from './Components/EmployeeRegister';
 import Login from './Components/login';
 import AdminNavBar from './Components/AdminNavBar';
-import ItemsPopUp from './Components/ItemsPopUp'
+import ItemsPopUp from './Components/ItemsPopUp';
+import SideNavbar from './Components/SideNavbar';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path='/employeeboard' element={<EmployeeBoard/>}/>
             <Route path='/adminboard' element={<AdminNavBar/>}/>
             <Route path='/itemspopup' element={<ItemsPopUp/>}/>
+            <Route path='/sidenavbar' element={<SideNavbar/>}/>
           </Routes>
       </BrowserRouter>
     </div>

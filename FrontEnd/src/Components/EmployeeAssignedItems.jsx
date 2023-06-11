@@ -21,21 +21,26 @@ import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import ItemsPopUp from'./ItemsPopUp';
+import MuiAlert from '@mui/material/Alert';
 
 const EmployeeAssignedItems = (props) =>{
-    const {employeeDetails,itemData,setItemData} = props;
+    const {employeeDetails,itemData,setItemData,getAllItemData} = props;
     const [assignedItemData,setAssignedItemData] = useState([]);
+    const [preAssigned,setPreAssigned] = useState([]);
     const [selectedItems,setSelectedItems] = useState([]);
     const [isUnassignPopupOpen,setIsUnassignPopupOpen] = useState(false);
+    const [systemErrors,setSystemErrors] = useState("");
+    const Alert = React.forwardRef(function Alert(props, ref) {
+        return <MuiAlert ref={ref} variant="filled" {...props} />;
+    });
     const getItemData = async () =>{
         const response =await axios.get(`http://localhost:6001/api/employeeitems/assignitems/${employeeDetails?.userId}`)
         setAssignedItemData(response?.data?.assignedItems);
+        setPreAssigned(response?.data?.assignedItems);
     };
     const handleAssign = () =>{
         setIsUnassignPopupOpen(true);
     };
-    console.log(selectedItems,"selectedItems")
-    console.log(itemData,"itemData")
     const handleAdd = () =>{
         let assignedItems = [];
         let unAssignedItems = itemData;
@@ -52,6 +57,64 @@ const EmployeeAssignedItems = (props) =>{
         setAssignedItemData(assignedItems);
         setItemData(unAssignedItems);
     };
+    const getUnassignedData =async() =>{
+        try{
+            const unassign =await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign');
+            setItemData(unassign?.data);
+        }catch(error) {
+            console.error('Error fetching item data:', error);
+        }
+    }
+    const handlePost=(payload)=>{
+        axios.post('http://localhost:6001/api/employeeitems/assignitems',payload)
+        .then(response=>{
+          if(response?.status==200){
+            setSystemErrors({...systemErrors,response:'Updated Successfully'});
+            setTimeout(function() {
+                setSystemErrors({...systemErrors,response:''});
+            }, 5000);
+            getUnassignedData();
+            getAllItemData();
+          }
+        }).catch(error=>{
+          if(error?.message=="Network Error"){
+              setSystemErrors({...systemErrors,networkError:error?.message})
+              setTimeout(function() {
+              setSystemErrors({...systemErrors,networkError:''})
+              }, 5000);
+          }
+        });
+    }
+    const handlePut =(payload)=>{
+        axios.put(`http://localhost:6001/api/employeeitems/unassignitems/${employeeDetails?.userId}`,payload)
+        .then(response=>{
+          if(response?.status==200){
+            setSystemErrors({...systemErrors,response:'Updated Successfully'});
+            setTimeout(function() {
+                setSystemErrors({...systemErrors,response:''});
+            }, 5000);
+            getUnassignedData();
+            handlePost(payload);
+          }
+        }).catch(error=>{
+          if(error?.message=="Network Error"){
+              setSystemErrors({...systemErrors,networkError:error?.message})
+              setTimeout(function() {
+              setSystemErrors({...systemErrors,networkError:''})
+              }, 5000);
+          }
+        });
+    }
+    const handleUpdate =() =>{
+        let payload = {
+            empId: employeeDetails?.userId,
+            assignedItems:[]
+        }
+        assignedItemData?.map(item=>{
+            payload?.assignedItems.push(item?.itemId);
+        })
+        handlePut(payload);
+    };
     useEffect(() => {
         getItemData();
       },[]);
@@ -60,8 +123,10 @@ const EmployeeAssignedItems = (props) =>{
             <Grid className="grid-btn">
                 <h1>Inventory Details</h1>
             </Grid>
+            {systemErrors?.networkError?.length>0 && <Alert severity="error" style={{width:'400px', position:"absolute", marginLeft:'920px', marginTop:'140px'}}>{systemErrors?.networkError}</Alert>}   
+            {systemErrors?.response?.length>0 && <Alert severity="success" style={{width:'400px', position:"absolute", marginLeft:'920px', marginTop:'140px'}}>{systemErrors?.response}</Alert>} 
             <Grid className="btn-grid">
-            <Button variant="contained" size="medium" className="btn1"><AddIcon/>Update</Button>
+            <Button variant="contained" size="medium" className="btn1" onClick={handleUpdate}>Update</Button>
             <Button variant="contained" size="medium" onClick={handleAssign} className="btn"><AddIcon/>Assign More</Button>
             </Grid>
             {assignedItemData.length>0 ? (

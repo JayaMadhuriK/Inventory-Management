@@ -48,7 +48,6 @@ const AdminNavBar = () =>{
         setNavigation({...navigation,home:false,employee:false,items:false,profile:true,employeeAssigned:false,addEmployee:false});
         setAnchorEl(null);
     };
-    console.log(assignItemCount);
     const handleLogOut = () => {
         setAnchorEl(null);
         setTimeout(function() {
@@ -79,7 +78,6 @@ const AdminNavBar = () =>{
         const data = response?.data;
         setEmployeeData(data);
         setEmployeeCount(data?.length);
-        console.log(data?.length)
         const filteredData = data?.filter((employee) => {
             const empIdMatch = employee.userId.toString().includes(searchQuery.toLowerCase());
             const empNameMatch = `${employee.firstName} ${employee.lastName}`.toLowerCase().includes(searchQuery.toLowerCase());
@@ -87,7 +85,6 @@ const AdminNavBar = () =>{
             return empIdMatch || empNameMatch || empEmailMatch;
         });
         setFilteredEmployeeData(filteredData);
-        console.log(response);
     };
     const getItemData = async () =>{
         const assign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/assign');
@@ -156,7 +153,7 @@ const AdminNavBar = () =>{
              itemPopupData={itemPopupData}
             />}
             {navigation ?.profile && <UserProfile employeeDetails={employeeDetails}/>}
-            {navigation ?.employeeAssigned && <EmployeeAssignedItems employeeDetails={employeeDetails} itemData={itemPopupData} setItemData={setItemPopupData}/>}
+            {navigation ?.employeeAssigned && <EmployeeAssignedItems employeeDetails={employeeDetails} getAllItemData={getItemData} itemData={itemPopupData} setItemData={setItemPopupData}/>}
             {navigation ?.addEmployee && <AddEmployee/>}
             <Dialog sx={{
                     "& .MuiDialog-container": {

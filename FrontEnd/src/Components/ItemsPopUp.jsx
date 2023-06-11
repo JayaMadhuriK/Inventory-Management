@@ -14,7 +14,7 @@ const columns =[
 ];
 const ItemsPopUp = (props) =>{
     const {setSelectedItems,itemData} = props;
-    const formattedRows = itemData.map((item,index)=>({
+    const formattedRows = itemData.map((item)=>({
         id:item.itemId,
         ...item,
     }));

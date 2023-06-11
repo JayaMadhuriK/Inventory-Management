@@ -39,7 +39,7 @@ const ItemList = ({setSearchQuery1,searchQuery1,filteredItemData}) =>{
     const handleSearchQueryChange = (event) => {
         setSearchQuery1(event.target.value);
     };
-      const handleAdd = () =>{
+    const handleAdd = () =>{
         setIsUnassignPopupOpen(true);
     };
    return (
@@ -47,7 +47,7 @@ const ItemList = ({setSearchQuery1,searchQuery1,filteredItemData}) =>{
             <Grid className="grid-btn">
                 <h1>ITEMS</h1>
                 <Button variant="contained" color="primary" size="medium" onClick={handleAdd} className="buttonnew"><AddIcon/>Add Item</Button>
-                <TextField variant="standard" className="button" color="primary" InputProps={input} value={searchQuery1} onChange={handleSearchQueryChange}></TextField>
+                <TextField variant="standard" className="button" placeholder="Search" color="primary" InputProps={input} value={searchQuery1} onChange={handleSearchQueryChange}></TextField>
             </Grid>
             <TableContainer component={Paper} className="app-container">
                 <Table aria-label='table'>
@@ -104,7 +104,7 @@ const ItemList = ({setSearchQuery1,searchQuery1,filteredItemData}) =>{
                     "& .MuiDialog-container": {
                         "& .MuiPaper-root": {
                         width: "800px", 
-                        height:"0px",
+                        height:"400px",
                         borderRadius:"10px"
                         },
                     },

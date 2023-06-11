@@ -14,7 +14,6 @@ const UserProfile = (props) =>{
             console.log(error);
         }
     };
-    console.log(user)
     useEffect(()=>{
         fetchUser();
     },[]);
