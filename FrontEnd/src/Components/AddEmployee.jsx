@@ -4,10 +4,6 @@ import './AdminBoard.scss'
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
-import InputAdornment from '@mui/material/InputAdornment';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import IconButton from '@mui/material/IconButton';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import axios from 'axios'
 
 const AddEmployee = (props) =>{
@@ -19,19 +15,12 @@ const AddEmployee = (props) =>{
         age:"",
         mobileNumber:"",
         email: "", 
-        password: "",
+        password: "Test@123",
         role: ['employee'] ,
     };
-    const [showPassword, setShowPassword] = useState(false);
-    const handleClickShowPassword = () => setShowPassword(!showPassword);
-    const handleMouseDownPassword = () => setShowPassword(!showPassword);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const handleClickShowConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
-    const handleMouseDownConfirmPassword = () => setShowConfirmPassword(!showConfirmPassword);
     const [focus, setFocused] = useState(false);
     const onFocus = () => setFocused(true);
     const onBlur = () => setFocused(false);
-    const [password, setPassword] = useState("");
     const [formValues, setFormValues] = useState(initialValues);
     const [formErrors, setFormErrors] = useState({});
     const [isDisable, setIsDisable] = useState(true);
@@ -44,45 +33,8 @@ const AddEmployee = (props) =>{
             disableUnderline: true,
         }
     };
-    const inputpass = {
-        disableUnderline: true,
-        style: {
-            color: "white",
-            disableUnderline: true,
-        },
-        endAdornment: (
-            <InputAdornment position="end">
-                <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    >
-                    {showPassword ? <VisibilityIcon sx={{ color: "white"}}/> : <VisibilityOffIcon sx={{ color: "white"}}/>}
-                </IconButton>
-            </InputAdornment>
-        ),
-    };
-    const inputconf = {
-        disableUnderline: true,
-        shrink: true,
-        style: {
-            color: "white",
-            disableUnderline: true,
-        },
-        endAdornment: (
-            <InputAdornment position="end">
-                <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowConfirmPassword}
-                    onMouseDown={handleMouseDownConfirmPassword}
-                    >
-                    {showConfirmPassword ? <VisibilityIcon sx={{ color: "white"}}/> : <VisibilityOffIcon sx={{ color: "white"}}/>}
-                </IconButton>
-            </InputAdornment>
-        ),
-    };
     const handleRegister = () =>{
-      axios.post('http://localhost:6001/api/auth/signup',formValues)
+      axios.post('http://localhost:6001/api/auth/signup',finalValues)
         .then(response=>{
             if(response?.status==200){
                 setSystemErrors({...systemErrors,response:'User Successfully Registered!'});
@@ -128,25 +80,7 @@ const AddEmployee = (props) =>{
                 setFormValues({...formValues,email:value})
             }
         }
-        else if(name === "password"){
-            setPassword(value);
-            var re = {
-                capital: /(?=.*[A-Z])/,
-                length: /(?=.{7,40}$)/,
-                specialChar: /[ -\/:-@\[-\`{-~]/,
-                digit: /(?=.*[0-9])/,
-            };
-            if(!value){
-                setFormErrors({...formErrors,password:'Password Required'});
-            }
-            else if((!re.capital.test(value))||(!re.specialChar.test(value))||(!re.length.test(value))||(!re.digit.test(value))){
-                setFormErrors({...formErrors,password:'Password must contain atleast a Capital, Special character, Number and minimum 8 characters '});
-            }
-            else{
-                setFormErrors({...formErrors,password:''});
-                setFormValues({...formValues,password:value})
-            }
-        }else if(name === "firstName"){
+        else if(name === "firstName"){
             if(!value){
                 setFormErrors({...formErrors,firstName:'First Name Required'});
             }
@@ -191,26 +125,23 @@ const AddEmployee = (props) =>{
                 setFormValues({...formValues,mobileNumber:value})
             }
         }
-        else if(name === "confirmpassword"){
-            if(!value){
-                setFormErrors({...formErrors,confirmpassword:'Confirm your password'});
-            }
-            else if(password!=value){
-                
-                setFormErrors({...formErrors,confirmpassword:'Passwords does not match'});
-            }
-            else{
-                setFormErrors({...formErrors,confirmpassword:''});
-                setFormValues({...formValues,confirmpassword:value})
-            }
-        }
         setFormValues({...formValues,[name]:value});
     };
+    const finalValues ={
+        firstName:formValues.firstName,
+        lastName:formValues.lastName,
+        dateOfBirth:formValues.dateOfBirth,
+        age:ageValue,
+        mobileNumber:formValues.mobileNumber,
+        email:formValues.email, 
+        password:formValues.password,
+        role: formValues.role
+    };
     useEffect(() => {
-        if (formErrors?.firstName?.length == 0 && formErrors?.lastName?.length == 0 && formErrors?.dateOfBirth?.length == 0 && formErrors?.mobileNumber?.length == 0 && formErrors?.email?.length == 0 && formErrors?.password?.length == 0 && formErrors?.confirmpassword?.length == 0) {
+        if (formErrors?.firstName?.length == 0 && formErrors?.lastName?.length == 0 && formErrors?.dateOfBirth?.length == 0 && formErrors?.mobileNumber?.length == 0 && formErrors?.email?.length == 0) {
             setIsDisable(false);
         }
-        else if(formErrors?.firstName?.length != 0 || formErrors?.lastName?.length != 0 || formErrors?.dateOfBirth?.length != 0 || formErrors?.mobileNumber?.length != 0 || formErrors?.email?.length != 0 || formErrors?.password?.length != 0 || formErrors?.confirmpassword?.length != 0){
+        else if(formErrors?.firstName?.length != 0 || formErrors?.lastName?.length != 0 || formErrors?.dateOfBirth?.length != 0 || formErrors?.mobileNumber?.length != 0 || formErrors?.email?.length != 0){
             setIsDisable(true);
         }
     }, [formErrors]);
@@ -249,16 +180,6 @@ const AddEmployee = (props) =>{
                                 </Grid>
                                 <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"65px"}}>{formErrors.mobileNumber}</p>
                                 <p style={{color:"red", position:"absolute",marginLeft:"210px",marginTop:"65px"}}>{formErrors.email}</p>
-                            </Grid>
-                            <Grid className = "field-container">
-                                <Grid className="textbox">
-                                    <TextField type={showPassword ? "text" : "password"} className="text" variant="standard" InputProps={inputpass} name="password" style={{width: "210px"}} onChange={handleChange} label="Password" size="small" required></TextField>
-                                </Grid>
-                                <Grid className="textbox">
-                                    <TextField type={showConfirmPassword ? "text" : "password"} className="text" variant="standard" InputProps={inputconf} name="confirmpassword" style={{width: "210px",marginLeft:"65px"}} onChange={handleChange} label="Confirm Password" size="small" required></TextField>
-                                </Grid>
-                                <p style={{color:"red", position:"absolute",marginLeft:"-30px",marginTop:"65px"}}>{formErrors.password}</p>
-                                <p style={{color:"red", position:"absolute",marginLeft:"210px",marginTop:"65px"}}>{formErrors.confirmpassword}</p>
                             </Grid>
                             <Grid className="button-label">
                                 <Button variant="contained" className="button" onClick={handleRegister} disabled={isDisable} InputProps={input} size="large" >Add</Button>

@@ -88,7 +88,7 @@ const Register = (role) =>{
         ),
     };
     const handleRegister = () =>{
-      axios.post('http://localhost:6001/api/auth/signup',formValues)
+      axios.post('http://localhost:6001/api/auth/signup',finalValues)
         .then(response=>{
             if(response?.status==200){
                 setSystemErrors({...systemErrors,response:'User Successfully Registered! Redirecting to Login Page'});
@@ -128,7 +128,7 @@ const Register = (role) =>{
             if(!value){
                 setFormErrors({...formErrors,email:'Email Required'});
             }
-            else if(!/^[A-Z0-9a-z+_-]+@test.com$/.test(value)){
+            else if(!/^[A-Z0-9a-z+_-]+@test[.]com$/.test(value)){
                 setFormErrors({...formErrors,email:'Invalid Email'});
             }
             else{
@@ -213,6 +213,16 @@ const Register = (role) =>{
             }
         }
         setFormValues({...formValues,[name]:value});
+    };
+    const finalValues ={
+        firstName:formValues.firstName,
+        lastName:formValues.lastName,
+        dateOfBirth:formValues.dateOfBirth,
+        age:ageValue,
+        mobileNumber:formValues.mobileNumber,
+        email:formValues.email, 
+        password:formValues.password,
+        role: role?.role 
     };
     useEffect(() => {
         if (formErrors?.firstName?.length == 0 && formErrors?.lastName?.length == 0 && formErrors?.dateOfBirth?.length == 0 && formErrors?.mobileNumber?.length == 0 && formErrors?.email?.length == 0 && formErrors?.password?.length == 0 && formErrors?.confirmpassword?.length == 0) {

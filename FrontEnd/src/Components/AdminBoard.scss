@@ -5,6 +5,11 @@
             margin-top: 0px;
         }
     }
+    .grid2{
+        position:absolute;
+        margin-top: 450px;
+        width:1100px;
+    }
 }
 .adminnav-body{
     .label{
@@ -38,6 +43,35 @@
             color:white;
         }
     
+    }
+}
+.employeenav-body{
+    .label{
+        height: 70px;
+        width:1365;
+        background-color: black;
+        display: flex;
+        .logo{
+            font-size: 50px;
+            width:220px;
+            font-weight:700;
+            height:100px;
+            background: linear-gradient(to left,
+            blue,
+            white,
+            blue,
+            white);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .home{
+            margin-left: 750px;
+            color:white;
+        }
+        .items{
+            margin-left: 50px;
+            color:white;
+        }
     }
 }
 .employee-body{
@@ -96,7 +130,7 @@
 }
 .addemployee{
     .employee-popup{
-        height:450px;
+        height:420px;
         background-color:black;
         .register-form{
             margin-left:115px;
@@ -127,9 +161,9 @@
                     }
                 }
                 .button-label{
-                    margin-top:40px;
+                    margin-top:50px;
                     .button{
-                        margin-left: 140px;
+                        margin-left: 130px;
                         padding-left: 40px;
                         padding-right:40px;
                         color:rgb(8, 8, 8);

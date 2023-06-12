@@ -131,7 +131,7 @@ const EmployeeList= (props) =>{
                     "& .MuiDialog-container": {
                         "& .MuiPaper-root": {
                             width: "800px", 
-                            height:"450px",
+                            height:"420px",
                             borderRadius:"10px"
                         },
                     },
