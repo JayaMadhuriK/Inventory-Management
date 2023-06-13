@@ -13,7 +13,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import EmployeeBoard from '../../SubPages/Employee/EmployeeBoard';
 import axios from 'axios';
 import EmployeeItemList from '../../SubPages/Employee/EmployeeItemList';
-import ShowProfile from '../../SubPages/Employee/ShowProfile';
+import ShowProfile from '../../SubPages/ShowProfile';
 
 const EmployeeNavbar = (props) =>{
     const {setRenderComponent,userDetails} = props;

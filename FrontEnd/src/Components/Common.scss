@@ -319,3 +319,41 @@
         margin-left:50px;
     }
 }
+.showprofile-body{
+    .all{
+        margin-left: 600px;
+        .heading{
+            .profile{
+                
+            }
+            .divider{
+                margin-left:-250px;
+                width:700px;
+            }
+            .image{
+                height:100px;
+                width:100px;
+                border:1px solid black;
+                border-radius: 50%;
+                margin-left: 30px;
+            }
+            .password{
+                margin-left: 100px;
+                margin-top: 30px;
+                background-color: black;
+                position:absolute;
+            }
+        }
+        .grid-container{
+            margin-left: -50px;
+            .name{
+                padding-right: 50px;
+            }
+            .button{
+                margin-left: 100px;
+                background-color: black;
+                color:white;
+            }
+        }
+    }
+}

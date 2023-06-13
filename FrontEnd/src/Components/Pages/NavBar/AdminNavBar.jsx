@@ -17,7 +17,7 @@ import EmployeeAssignedItems from '../../SubPages/Employee/EmployeeAssignedItems
 import AddEmployee from '../../SubPages/Employee/AddEmployee';
 import axios from 'axios';
 import EmployeeProfile from '../../SubPages/Employee/EmployeeProfile';
-import ShowProfile from '../../SubPages/Employee/ShowProfile'
+import ShowProfile from '../../SubPages/ShowProfile'
 
 const AdminNavBar = (props) =>{
     const {setRenderComponent,userDetails} = props;

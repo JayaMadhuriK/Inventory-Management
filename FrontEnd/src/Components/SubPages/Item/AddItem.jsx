@@ -131,10 +131,10 @@ const AddItem = (props) =>{
                             </Grid>
                             <Grid className = "field-container">
                                 <Grid className="textbox">
-                                    <TextField type="Number" className="text" variant="standard" InputProps={input} name="warranty" style={{width: "205px"}} value={formValues?.warranty} onChange={handleChange} label="Warranty(in months)" size="small" required></TextField>
+                                    <TextField type="Number" className="text" variant="standard" InputProps={input} name="warranty" style={{width: "205px"}} value={formValues?.warranty} onChange={handleChange} label="Warranty(in months)" size="small" ></TextField>
                                 </Grid>
                                 <Grid className="textbox">
-                                    <TextField className="text" variant="standard" InputProps={input}  name="expireDate" value={formValues?.expireDate} style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Expire Date" size="small" required></TextField>
+                                    <TextField className="text" variant="standard" InputProps={input}  name="expireDate" value={formValues?.expireDate} style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Expire Date" size="small" ></TextField>
                                 </Grid>
                             </Grid>
                             <Grid className="button-label">

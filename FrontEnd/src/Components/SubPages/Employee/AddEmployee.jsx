@@ -33,6 +33,14 @@ const AddEmployee = (props) =>{
             disableUnderline: true,
         }
     };
+    const inputNumber = {
+        maxLength: 10,
+        disableUnderline: true,
+        style: {
+            color: "white",
+            disableUnderline: true,
+        }
+    }
     const handleRegister = () =>{
       axios.post('http://localhost:6001/api/auth/signup',finalValues)
         .then(response=>{
@@ -72,7 +80,7 @@ const AddEmployee = (props) =>{
             if(!value){
                 setFormErrors({...formErrors,email:'Email Required'});
             }
-            else if(!/^[A-Z0-9a-z+_-]+@test.com$/.test(value)){
+            else if(!/^[A-Z0-9a-z+_-]+@walmart.com$/.test(value)){
                 setFormErrors({...formErrors,email:'Invalid Email'});
             }
             else{
@@ -173,7 +181,7 @@ const AddEmployee = (props) =>{
                             </Grid>
                             <Grid className = "field-container">
                                 <Grid className="textbox">
-                                    <TextField type="Number" className="text" variant="standard" InputProps={input} name="mobileNumber" style={{width: "205px"}} onChange={handleChange} label="Mobile Number" size="small" required></TextField>
+                                    <TextField type="Number" className="text" variant="standard" InputProps={inputNumber} name="mobileNumber" style={{width: "205px"}} onChange={handleChange} label="Mobile Number" size="small" required></TextField>
                                 </Grid>
                                 <Grid className="textbox">
                                     <TextField type="email" className="text" variant="standard" InputProps={input}  name="email" style={{width: "205px",marginLeft:"65px"}} onChange={handleChange} label="Email Id" size="small" required></TextField>

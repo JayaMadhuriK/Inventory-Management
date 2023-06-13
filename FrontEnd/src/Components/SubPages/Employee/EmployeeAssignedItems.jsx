@@ -26,7 +26,6 @@ import MuiAlert from '@mui/material/Alert';
 const EmployeeAssignedItems = (props) =>{
     const {employeeDetails,itemData,setItemData,getAllItemData} = props;
     const [assignedItemData,setAssignedItemData] = useState([]);
-    const [preAssigned,setPreAssigned] = useState([]);
     const [selectedItems,setSelectedItems] = useState([]);
     const [isUnassignPopupOpen,setIsUnassignPopupOpen] = useState(false);
     const [systemErrors,setSystemErrors] = useState("");
@@ -36,7 +35,6 @@ const EmployeeAssignedItems = (props) =>{
     const  getEmployeeData= async () =>{
         const response =await axios.get(`http://localhost:6001/api/employeeitems/assignitems/${employeeDetails?.userId}`)
         setAssignedItemData(response?.data?.assignedItems);
-        setPreAssigned(response?.data?.assignedItems);
     };
     const handleAssign = () =>{
         getEmployeeData();
@@ -81,7 +79,7 @@ const EmployeeAssignedItems = (props) =>{
             if(error?.message=="Network Error"){
                 setSystemErrors({...systemErrors,networkError:error?.message})
                 setTimeout(function() {
-                setSystemErrors({...systemErrors,networkError:''})
+                    setSystemErrors({...systemErrors,networkError:''})
                 }, 2000);
             }
         });

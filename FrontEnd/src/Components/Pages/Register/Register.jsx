@@ -9,7 +9,6 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom';
 import MuiAlert from '@mui/material/Alert';
 
 const Register = (props) =>{
@@ -24,7 +23,6 @@ const Register = (props) =>{
         password: "",
         role: role 
     };
-    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const handleClickShowPassword = () => setShowPassword(!showPassword);
     const handleMouseDownPassword = () => setShowPassword(!showPassword);
@@ -129,7 +127,7 @@ const Register = (props) =>{
             if(!value){
                 setFormErrors({...formErrors,email:'Email Required'});
             }
-            else if(!/^[A-Z0-9a-z+_-]+@test[.]com$/.test(value)){
+            else if(!/^[A-Z0-9a-z+_-]+@walmart[.]com$/.test(value)){
                 setFormErrors({...formErrors,email:'Invalid Email'});
             }
             else{
