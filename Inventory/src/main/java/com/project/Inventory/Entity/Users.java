@@ -43,8 +43,6 @@ public class Users {
   @NotEmpty(message = "LastName is required")
   @Pattern(regexp = "^[A-Za-z]+$", message = "Invalid last name")
   private String lastName;
-  
-  @NotEmpty(message = "DateofBirth is required")
   private Date dateOfBirth;
   
   @NotNull(message = "Age is required")
@@ -55,7 +53,7 @@ public class Users {
   @Positive(message = "Mobile number must be a positive number")
   private Long mobileNumber;
   
-  @NotEmpty(message = "Role is required")
+  
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "user_roles", 
         joinColumns = @JoinColumn(name = "user_id"), 

@@ -5,6 +5,8 @@ import com.project.inventory.repository.UserRepo;
 import com.project.inventory.service.impl.UserServiceImpl;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +53,7 @@ public class UserController {
    * getting employees.
   */
   
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/getemployees")
   public List<Users> getEmployees() {
     return userServiceImpl.getEmployees();
