@@ -1,8 +1,9 @@
-package com.project.Inventory.Controller;
+package com.project.inventory.controller;
 
+import com.project.inventory.entity.InventoryItems;
+import com.project.inventory.service.InventoryItemService;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,54 +14,81 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.Inventory.Entity.InventoryItems;
-import com.project.Inventory.Service.InventoryItemService;
+/**
+ * Inventory items controller class.
+*/
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/inventory")
 @RestController
 public class InventoryItemsController {
-	private final InventoryItemService inventoryItemService;
-	public InventoryItemsController(InventoryItemService inventoryItemService)
-	{
-		this.inventoryItemService=inventoryItemService;
-	}
-	@GetMapping("/InventoryItems")
-	public List<InventoryItems> getInventoryItems(){
-		
-		return inventoryItemService.getInventoryItems();
-		
-	}
-	@GetMapping("/InventoryItems/{id}")
-	public Optional<InventoryItems> findByInventoryItemId(@PathVariable int id)
-	{
-		return inventoryItemService.findByInventoryItemId(id);
-	}
-	@PostMapping("/InventoryItems")
-	public InventoryItems addInventoryItem(@RequestBody InventoryItems inventoryItems)
-	{
-		return inventoryItemService.addInventoryItem(inventoryItems);
-	}
-	@PutMapping("/InventoryItems/{id}")
-	public InventoryItems updateInventoryItem(@PathVariable int id,@RequestBody InventoryItems inventoryItems)
-	{
-		return inventoryItemService.updateInventoryItem(id,inventoryItems);
-	}
-	@DeleteMapping("/InventoryItems/{id}")
-	public void deleteInventoryItem(@PathVariable int id)
-	{
-		inventoryItemService.deleteInventoryItem(id);
-	}
-	@GetMapping("/InventoryItems/unassign")
-	public List<InventoryItems> findByEmpIdIsNull() {
-		List<InventoryItems> unassignedItems = inventoryItemService.findByEmpIdIsNull();
-		return unassignedItems ;
-		
-	}
-	@GetMapping("/InventoryItems/assign")
-	public List<InventoryItems> findByEmpIdIsNotNull() {
-		List<InventoryItems> assignedItems = inventoryItemService.findByEmpIdIsNotNull();
-		return assignedItems ;
-		
-	}
+  /**
+    * Inventoryitemservice instance used for items.
+  */
+  private final InventoryItemService invItemService;
+  /**
+   * parameter constructor.
+ */
+  
+  public InventoryItemsController(final InventoryItemService invItemService) {
+    this.invItemService = invItemService;
+  }
+  /**
+   * getting all items.
+  */
+
+  @GetMapping("/InventoryItems")
+  public List<InventoryItems> getInventoryItems() {
+    return invItemService.getInventoryItems();
+  }
+  /**
+   * getting item by id.
+  */
+
+  @GetMapping("/InventoryItems/{itemId}")
+  public Optional<InventoryItems> findByInventoryItemId(@PathVariable final int itemId) {
+    return invItemService.findByInventoryItemId(itemId);
+  }
+  /**
+   * adding items.
+  */
+
+  @PostMapping("/InventoryItems")
+  public InventoryItems addInventoryItem(@RequestBody final InventoryItems inventoryItems) {
+    return invItemService.addInventoryItem(inventoryItems);
+  }
+  /**
+   * updating items.
+  */
+
+  @PutMapping("/InventoryItems/{itemId}")
+  public InventoryItems updateInventoryItem(@PathVariable final int itemId,
+                                            @RequestBody final InventoryItems inventoryItems) {
+    return invItemService.updateInventoryItem(itemId, inventoryItems);
+  }
+  /**
+   * deleting items.
+  */
+
+  @DeleteMapping("/InventoryItems/{itemId}")
+  public void deleteInventoryItem(@PathVariable final int itemId) {
+    invItemService.deleteInventoryItem(itemId);
+  }
+  /**
+   * getting unassigned items.
+  */
+
+  @GetMapping("/InventoryItems/unassign")
+  public List<InventoryItems> findByEmpIdIsNull() {
+    return invItemService.findByEmpIdIsNull();
+  }
+  /**
+   * getting assigned items.
+  */
+
+  @GetMapping("/InventoryItems/assign")
+  public List<InventoryItems> findByEmpIdIsNotNull() {
+    return invItemService.findByEmpIdIsNotNull();
+  }
 
 }

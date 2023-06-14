@@ -1,32 +1,38 @@
-package com.project.Inventory.Security.Service;
+package com.project.inventory.security.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.inventory.entity.Users;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.project.Inventory.Entity.Users;
+/**
+ * userdetails will be checked when login.
+*/
 
 public class UserDetailsImpl implements UserDetails {
   private static final long serialVersionUID = 1L;
   private String email;
   @JsonIgnore
   private String password;
-
   private Collection<? extends GrantedAuthority> authorities;
-
+  /**
+   * parameter constructor.
+  */
+  
   public UserDetailsImpl(String email, String password,
       Collection<? extends GrantedAuthority> authorities) {
-    this.email= email;
+    this.email = email;
     this.password = password;
     this.authorities = authorities;
   }
-
+  /**
+   * userdetails build method.
+  */ 
+  
   public static UserDetailsImpl build(Users user) {
     List<GrantedAuthority> authorities = user.getRoles().stream()
         .map(role -> new SimpleGrantedAuthority(role.getName().name()))
@@ -42,6 +48,7 @@ public class UserDetailsImpl implements UserDetails {
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return authorities;
   }
+  
   public String getEmail() {
     return email;
   }
@@ -50,6 +57,7 @@ public class UserDetailsImpl implements UserDetails {
   public String getPassword() {
     return password;
   }
+  
   @Override
   public boolean isAccountNonExpired() {
     return true;
@@ -72,17 +80,19 @@ public class UserDetailsImpl implements UserDetails {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
-    if (o == null || getClass() != o.getClass())
+    }
+    if (o == null || getClass() != o.getClass()) {
       return false;
+    }
     UserDetailsImpl user = (UserDetailsImpl) o;
     return Objects.equals(email, user.email);
   }
 
-@Override
-public String getUsername() {
-	return email;
-}
+  @Override
+  public String getUsername() {
+    return email;
+  }
 
 }

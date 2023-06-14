@@ -1,15 +1,15 @@
-package com.project.Inventory.Repository;
+package com.project.inventory.repository;
 
+import com.project.inventory.entity.Erole;
+import com.project.inventory.entity.Role;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
-import com.project.Inventory.Entity.ERole;
-import com.project.Inventory.Entity.Role;
+/**
+ * Role repository interface.
+*/
 
 @Repository
-public interface RoleRepo extends JpaRepository<Role,Integer>{
-
-	Optional<Role> findByName(ERole name);
+public interface RoleRepo extends JpaRepository<Role, Integer> {
+  Optional<Role> findByName(Erole name);
 }

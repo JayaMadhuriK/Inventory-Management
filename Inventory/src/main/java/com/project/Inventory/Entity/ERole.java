@@ -1,6 +1,10 @@
-package com.project.Inventory.Entity;
+package com.project.inventory.entity;
 
-public enum ERole {
-	 ROLE_EMPLOYEE,
-	 ROLE_ADMIN
+/**
+ * ERole enum class.
+*/
+
+public enum Erole {
+   ROLE_EMPLOYEE,
+   ROLE_ADMIN
 }

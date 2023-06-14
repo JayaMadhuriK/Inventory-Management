@@ -1,15 +1,22 @@
-package com.project.Inventory.Service;
+package com.project.inventory.service;
 
+import com.project.inventory.entity.Users;
 import java.util.List;
 import java.util.Optional;
-
-import com.project.Inventory.Entity.Users;
+/**
+ * users service interface.
+*/
 
 public interface UserService {
-	Users addUsers(Users users);
-	Users updateUser(Long id,Users users);
-	List<Users> getUsers();
-	List<Users> getEmployees();
-	Optional<Users> findUserById(Long id);
-	void deleteUser(Long id);
+  Users addUsers(Users users);
+
+  Users updateUser(Long id, Users users);
+
+  List<Users> getUsers();
+
+  List<Users> getEmployees();
+
+  Optional<Users> findUserById(Long id);
+
+  void deleteUser(Long id);
 }

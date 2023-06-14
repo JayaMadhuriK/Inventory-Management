@@ -1,11 +1,17 @@
-package com.project.Inventory.Repository;
+package com.project.inventory.repository;
 
+import com.project.inventory.entity.EmployeeItems;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import com.project.Inventory.Entity.EmployeeItems;
+/**
+ * Employee and assigned items for employee repository interface.
+*/
 
-public interface EmployeeItemsRepo extends JpaRepository<EmployeeItems,Long>{
-
-	void deleteByEmpId(Long id);
-
+@Repository
+public interface EmployeeItemsRepo extends JpaRepository<EmployeeItems, Long> {
+  /**
+   * delete employee by id.
+  */
+  void deleteByEmpId(Long empId);
 }
