@@ -38,7 +38,12 @@ const AddItem = (props) =>{
         "Foot wear"
     ];
     const postRequest = ()=>{
-        axios.post('http://localhost:6001/api/inventory/InventoryItems',formValues)
+        const token = localStorage.getItem("jwtToken");
+        const headers = {
+            'Authorization': token,
+            'content-type': 'application/json'
+        };
+        axios.post('http://localhost:6001/api/inventory/InventoryItems',formValues,{headers})
         .then(response=>{
             if(response?.status==200){
                 setSystemErrors({...systemErrors,response:'Item added Successfully'});
@@ -59,7 +64,12 @@ const AddItem = (props) =>{
         });
     };
     const putRequest = ()=>{
-        axios.put(`http://localhost:6001/api/inventory/InventoryItems/${initialValues?.itemId}`,formValues)
+        const token = localStorage.getItem("jwtToken");
+        const headers = {
+            'Authorization': token,
+            'content-type': 'application/json'
+        };
+        axios.put(`http://localhost:6001/api/inventory/InventoryItems/${initialValues?.itemId}`,formValues,{headers})
         .then(response=>{
             if(response?.status==200){
                 setSystemErrors({...systemErrors,response:'Item updated Successfully'});

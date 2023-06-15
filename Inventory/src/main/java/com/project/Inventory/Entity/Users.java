@@ -37,11 +37,9 @@ public class Users {
   private String password;
   
   @NotEmpty(message = "FirstName is required")
-  @Pattern(regexp = "^[A-Za-z]+$", message = "Invalid first name")
   private String firstName;
   
   @NotEmpty(message = "LastName is required")
-  @Pattern(regexp = "^[A-Za-z]+$", message = "Invalid last name")
   private String lastName;
   private Date dateOfBirth;
   

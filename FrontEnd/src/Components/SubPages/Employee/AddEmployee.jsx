@@ -42,7 +42,7 @@ const AddEmployee = (props) =>{
         }
     }
     const handleRegister = () =>{
-      axios.post('http://localhost:6001/api/auth/signup',finalValues)
+        axios.post('http://localhost:6001/api/auth/signup',finalValues)
         .then(response=>{
             if(response?.status==200){
                 setSystemErrors({...systemErrors,response:'User Successfully Registered!'});

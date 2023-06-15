@@ -48,7 +48,7 @@ const EmployeeList= (props) =>{
     useEffect(() => {
         getEmployeeData();
         getItemData();
-    });
+    },[]);
     return (
         <Grid className="employee-body">
             <Grid className="grid-btn">
@@ -90,8 +90,12 @@ const EmployeeList= (props) =>{
                                             <Button variant="contained" 
                                                 style={{marginLeft:'10px'}} 
                                                 onClick={()=>{
+                                                    const token = localStorage.getItem("jwtToken");
+                                                    const headers = {
+                                                        'Authorization': token
+                                                    };
                                                     try{
-                                                        axios.delete(`http://localhost:6001/api/users/deleteusers/${employee.userId}`);
+                                                        axios.delete(`http://localhost:6001/api/users/deleteusers/${employee.userId}`,{headers});
                                                         getEmployeeData();
                                                     }catch(error) {
                                                         console.error('Error deleting employee:', error);

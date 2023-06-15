@@ -90,6 +90,8 @@ const Login = (props) =>{
       axios.post('http://localhost:6001/api/auth/signin',formValues)
         .then(response=>{
             if(response?.status==200){
+                const {token,type} = response?.data;
+                localStorage.setItem("jwtToken", type+" "+token);
                 if(response?.data.roles[0]== "ROLE_ADMIN"){
                     setSystemErrors({...systemErrors,response:'Login Successfull'})
                     setTimeout(function() {

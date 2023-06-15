@@ -7,8 +7,12 @@ const EmployeeProfile = (props) =>{
     const {userId} = props;
     const [user,setUser] = useState(null);
     const fetchUser = async() =>{
+        const token = localStorage.getItem("jwtToken");
+        const headers = {
+            'Authorization': token
+        };
         try{
-            const response =await axios.get(`http://localhost:6001/api/users/getusers/${userId}`);
+            const response =await axios.get(`http://localhost:6001/api/users/getusers/${userId}`,{headers});
             setUser(response?.data);
         }catch(error){
             console.log(error);

@@ -115,7 +115,11 @@ const ItemList = (props) =>{
                                             }}>Update</Button>
                                             <Button variant="contained" style={{marginLeft:'10px'}} 
                                                 onClick={()=>{
-                                                    axios.delete(`http://localhost:6001/api/inventory/InventoryItems/${item.itemId}`);
+                                                    const token = localStorage.getItem("jwtToken");
+                                                    const headers = {
+                                                        'Authorization': token
+                                                    };
+                                                    axios.delete(`http://localhost:6001/api/inventory/InventoryItems/${item.itemId}`,{headers});
                                                     getItemData();
                                                 }} 
                                                 color="error" size="small">Delete

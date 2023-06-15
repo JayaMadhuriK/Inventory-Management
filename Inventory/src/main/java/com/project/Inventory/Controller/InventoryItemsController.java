@@ -37,7 +37,8 @@ public class InventoryItemsController {
   /**
    * getting all items.
   */
-
+  
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/InventoryItems")
   public List<InventoryItems> getInventoryItems() {
     return invItemService.getInventoryItems();
@@ -45,7 +46,8 @@ public class InventoryItemsController {
   /**
    * getting item by id.
   */
-
+  
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/InventoryItems/{itemId}")
   public Optional<InventoryItems> findByInventoryItemId(@PathVariable final int itemId) {
     return invItemService.findByInventoryItemId(itemId);
@@ -63,6 +65,7 @@ public class InventoryItemsController {
    * updating items.
   */
 
+  @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/InventoryItems/{itemId}")
   public InventoryItems updateInventoryItem(@PathVariable final int itemId,
                                             @RequestBody final InventoryItems inventoryItems) {
@@ -71,7 +74,8 @@ public class InventoryItemsController {
   /**
    * deleting items.
   */
-
+  
+  @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/InventoryItems/{itemId}")
   public void deleteInventoryItem(@PathVariable final int itemId) {
     invItemService.deleteInventoryItem(itemId);
@@ -80,6 +84,7 @@ public class InventoryItemsController {
    * getting unassigned items.
   */
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/InventoryItems/unassign")
   public List<InventoryItems> findByEmpIdIsNull() {
     return invItemService.findByEmpIdIsNull();
@@ -88,6 +93,7 @@ public class InventoryItemsController {
    * getting assigned items.
   */
 
+  @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/InventoryItems/assign")
   public List<InventoryItems> findByEmpIdIsNotNull() {
     return invItemService.findByEmpIdIsNotNull();

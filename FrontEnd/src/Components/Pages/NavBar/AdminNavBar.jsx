@@ -50,6 +50,7 @@ const AdminNavBar = (props) =>{
     };
     const handleLogOut = () => {
         setAnchorEl(null);
+        localStorage.setItem("jwtToken", "");
         setTimeout(function() {
             setRenderComponent("login");
         },1000);
@@ -72,9 +73,13 @@ const AdminNavBar = (props) =>{
     }
     const handleItem = ()=>{
         setNavigation({...navigation,home:false,employee:false,items:true,profile:false,employeeAssigned:false,addEmployee:false});
-    };
+    }; 
     const getEmployeeData = async () =>{
-        const response =await axios.get('http://localhost:6001/api/users/getemployees');
+        const token = localStorage.getItem("jwtToken");
+        const headers = {
+            'Authorization': token
+        };
+        const response =await axios.get('http://localhost:6001/api/users/getemployees',{headers});
         const data = response?.data;
         setEmployeeData(data);
         setEmployeeCount(data?.length);
@@ -87,17 +92,21 @@ const AdminNavBar = (props) =>{
         setFilteredEmployeeData(filteredData);
     };
     const getItemData = async () =>{
-        const assign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/assign');
+        const token = localStorage.getItem("jwtToken");
+        const headers = {
+            'Authorization': token
+        };
+        const assign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/assign',{headers});
         setAssignItemCount(assign?.data.length);
         setItemAssignData(assign?.data)
         try{
-            const unassign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign');
+            const unassign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign',{headers});
             setUnAssignItemCount(unassign?.data.length);
             setItemPopupData(unassign?.data);
         }catch(error) {
             console.error('Error fetching item data:', error);
         }
-        const response =await axios.get('http://localhost:6001/api/inventory/InventoryItems');
+        const response =await axios.get('http://localhost:6001/api/inventory/InventoryItems',{headers});
         const data = response?.data;
         setItemData(data);
         const filteredData = data?.filter((item) =>{

@@ -33,6 +33,7 @@ const EmployeeNavbar = (props) =>{
     };
     const handleLogOut = () => {
         setAnchorEl(null);
+        localStorage.setItem("jwtToken", "");
         setTimeout(function() {
             setRenderComponent("login");
         },1000);
@@ -54,7 +55,12 @@ const EmployeeNavbar = (props) =>{
         setNavigation({...navigation,home:false,items:true,profile:false});
     };
     const getItemData = async () =>{
-        const response =await axios.get(`http://localhost:6001/api/employeeitems/assignitems/${userDetails.userId}`);
+        const token = localStorage.getItem("jwtToken");
+        const headers = {
+            'Authorization': token,
+            'content-type': 'application/json'
+        };
+        const response =await axios.get(`http://localhost:6001/api/employeeitems/assignitems/${userDetails.userId}`,{headers});
         const data = response?.data?.assignedItems;
         const filteredData = data?.filter((item) =>{
             const itemNameMatch = item.itemName.toLowerCase().includes(searchQuery1.toLowerCase());
@@ -65,7 +71,6 @@ const EmployeeNavbar = (props) =>{
         });
         setFilteredItemData(filteredData)
         setCount(data.length);
-        console.log(data)
     };
     useEffect(() => {
         getItemData();

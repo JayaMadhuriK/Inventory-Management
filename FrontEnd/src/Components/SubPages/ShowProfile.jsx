@@ -16,11 +16,16 @@ const ShowProfile = (props) =>{
         return <MuiAlert ref={ref} variant="filled" {...props} />;
     });
     const fetchUser = async() =>{
+        const token = localStorage.getItem("jwtToken");
+        const headers = {
+            'Authorization': token
+        };
         try{
-            const response =await axios.get(`http://localhost:6001/api/users/getusers/${userDetails.userId}`);
+            const response =await axios.get(`http://localhost:6001/api/users/getusers/${userDetails.userId}`,{headers});
             setUser(response?.data);
         }catch(error){
             console.log(error);
+            console.log(userDetails.userId);
         }
     };
     const handleInputChange = (event) => {
@@ -30,6 +35,11 @@ const ShowProfile = (props) =>{
         });
       };
     const handleUpdateUser = async () => {
+        const token = localStorage.getItem("jwtToken");
+        const headers = {
+            'Authorization': token,
+            'Content-Type' : 'application/json'
+        };
         const updatedData = {
             firstName: updatedUser.firstName || user.firstName,
             lastName: updatedUser.lastName || user.lastName,
@@ -38,7 +48,7 @@ const ShowProfile = (props) =>{
             age: updatedUser.age || user.age,
             mobileNumber: updatedUser.mobileNumber || user.mobileNumber,
         };
-        await axios.put(`http://localhost:6001/api/users/updateusers/${user.userId}`,updatedData)
+        await axios.put(`http://localhost:6001/api/users/updateusers/${user.userId}`,updatedData,{headers})
         .then(response=>{
             if(response?.status == 200){
                 setSystemErrors({...systemErrors,response:'Updated Successfully'});

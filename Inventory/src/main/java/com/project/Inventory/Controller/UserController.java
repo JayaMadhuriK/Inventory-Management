@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,14 +40,6 @@ public class UserController {
     this.userRepo = userRepo;
   }
   /**
-   * adding users.
-  */
-  
-  @PostMapping("/addusers")
-  public Users addUser(@RequestBody final Users users) {
-    return userServiceImpl.addUsers(users);
-  }
-  /**
    * getting employees.
   */
   
@@ -61,6 +52,7 @@ public class UserController {
    * updating users.
   */
   
+  @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
   @PutMapping("/updateusers/{empId}")
   public Users updateUser(@PathVariable final Long empId, @RequestBody final Users users) {
     return userServiceImpl.updateUser(empId, users);
@@ -69,6 +61,7 @@ public class UserController {
    * deleting users.
   */
   
+  @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/deleteusers/{empId}")
   public void deleteUser(@PathVariable final Long empId) {
     userServiceImpl.deleteUser(empId);
@@ -77,6 +70,7 @@ public class UserController {
    * getting users by id.
   */
   
+  @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
   @GetMapping("/getusers/{empId}")
   public Optional<Users> findUserById(@PathVariable final Long empId) {
     return userServiceImpl.findUserById(empId);

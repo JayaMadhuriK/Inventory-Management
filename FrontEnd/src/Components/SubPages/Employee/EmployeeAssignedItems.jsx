@@ -33,7 +33,11 @@ const EmployeeAssignedItems = (props) =>{
         return <MuiAlert ref={ref} variant="filled" {...props} />;
     });
     const  getEmployeeData= async () =>{
-        const response =await axios.get(`http://localhost:6001/api/employeeitems/assignitems/${employeeDetails?.userId}`)
+        const token = localStorage.getItem("jwtToken");
+        const headers = {
+            'Authorization': token
+        };
+        const response =await axios.get(`http://localhost:6001/api/employeeitems/assignitems/${employeeDetails?.userId}`,{headers})
         setAssignedItemData(response?.data?.assignedItems);
     };
     const handleAssign = () =>{
@@ -57,15 +61,24 @@ const EmployeeAssignedItems = (props) =>{
         setItemData(unAssignedItems);
     };
     const getUnassignedData =async() =>{
+        const token = localStorage.getItem("jwtToken");
+        const headers = {
+            'Authorization': token
+        };
         try{
-            const unassign =await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign');
+            const unassign =await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign',{headers});
             setItemData(unassign?.data);
         }catch(error) {
             console.error('Error fetching item data:', error);
         }
     }
     const handlePost=(payload)=>{
-        axios.post('http://localhost:6001/api/employeeitems/assignitems',payload)
+        const token = localStorage.getItem("jwtToken");
+        const headers = {
+            'Authorization': token,
+            'content-type': 'application/json'
+        };
+        axios.post('http://localhost:6001/api/employeeitems/assignitems',payload,{headers})
         .then(response=>{
             if(response?.status==200){
                 setSystemErrors({...systemErrors,response:'Updated Successfully'});
@@ -85,7 +98,12 @@ const EmployeeAssignedItems = (props) =>{
         });
     }
     const handlePut =(payload)=>{
-        axios.put(`http://localhost:6001/api/employeeitems/unassignitems/${employeeDetails?.userId}`,payload)
+        const token = localStorage.getItem("jwtToken");
+        const headers = {
+            'Authorization': token,
+            'content-type': 'application/json'
+        };
+        axios.put(`http://localhost:6001/api/employeeitems/unassignitems/${employeeDetails?.userId}`,payload,{headers})
         .then(response=>{
             if(response?.status==200){
                 setSystemErrors({...systemErrors,response:'Updated Successfully'});
