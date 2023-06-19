@@ -39,6 +39,7 @@ const EmployeeAssignedItems = (props) =>{
         };
         const response =await axios.get(`http://localhost:6001/api/employeeitems/assignitems/${employeeDetails?.userId}`,{headers})
         setAssignedItemData(response?.data?.assignedItems);
+        console.log(response)
     };
     const handleAssign = () =>{
         getEmployeeData();
@@ -146,7 +147,7 @@ const EmployeeAssignedItems = (props) =>{
                 <Button variant="contained" size="medium" className="btn1" onClick={handleUpdate}>Update</Button>
                 <Button variant="contained" size="medium" onClick={handleAssign} className="btn"><AddIcon/>Assign More</Button>
             </Grid>
-            {assignedItemData.length>0 ? (
+            {assignedItemData ? (
                 <TableContainer component={Paper} className="app-container">
                     <Table aria-label='table'>
                         <TableHead>

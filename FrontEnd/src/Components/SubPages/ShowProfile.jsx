@@ -22,7 +22,7 @@ const ShowProfile = (props) =>{
         };
         try{
             const response =await axios.get(`http://localhost:6001/api/users/getusers/${userDetails.userId}`,{headers});
-            setUser(response?.data);
+            setUser(response?.data?.employees);
         }catch(error){
             console.log(error);
             console.log(userDetails.userId);

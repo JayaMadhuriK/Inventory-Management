@@ -80,7 +80,8 @@ const AdminNavBar = (props) =>{
             'Authorization': token
         };
         const response =await axios.get('http://localhost:6001/api/users/getemployees',{headers});
-        const data = response?.data;
+        const data = response?.data?.employees;
+        console.log(response)
         setEmployeeData(data);
         setEmployeeCount(data?.length);
         const filteredData = data?.filter((employee) => {
@@ -97,11 +98,11 @@ const AdminNavBar = (props) =>{
             'Authorization': token
         };
         const assign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/assign',{headers});
-        setAssignItemCount(assign?.data.length);
+        setAssignItemCount(assign?.data?.length);
         setItemAssignData(assign?.data)
         try{
             const unassign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign',{headers});
-            setUnAssignItemCount(unassign?.data.length);
+            setUnAssignItemCount(unassign?.data?.length);
             setItemPopupData(unassign?.data);
         }catch(error) {
             console.error('Error fetching item data:', error);

@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
       existingUser.setMobileNumber(users.getMobileNumber());
       return userRepo.save(existingUser);
     }
-    return null;
+    return existingUser;
   }
 
   @Override

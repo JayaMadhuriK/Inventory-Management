@@ -122,7 +122,7 @@ const Login = (props) =>{
             }
         });
         const res = await axios.get(`http://localhost:6001/api/users/getusersbyemail/${formValues.email}`);
-        setUserDetails(res?.data)
+        setUserDetails(res?.data?.employees)
     };
     useEffect(() => {
         if (formErrors?.email?.length == 0 && formErrors?.password?.length == 0) {

@@ -13,7 +13,7 @@ const EmployeeProfile = (props) =>{
         };
         try{
             const response =await axios.get(`http://localhost:6001/api/users/getusers/${userId}`,{headers});
-            setUser(response?.data);
+            setUser(response?.data?.employees);
         }catch(error){
             console.log(error);
         }
