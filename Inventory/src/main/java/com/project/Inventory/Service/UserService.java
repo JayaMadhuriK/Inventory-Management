@@ -8,7 +8,6 @@ import java.util.Optional;
 */
 
 public interface UserService {
-  Users addUsers(Users users);
 
   Users updateUser(Long id, Users users);
 

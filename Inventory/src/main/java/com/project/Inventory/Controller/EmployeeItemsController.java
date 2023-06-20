@@ -1,9 +1,9 @@
 package com.project.inventory.controller;
 
-import com.project.inventory.entity.EmployeeItems;
-import com.project.inventory.request.reponse.EmployeeItemResponse;
-import com.project.inventory.service.EmployeeItemsService;
 import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.project.inventory.entity.EmployeeItems;
+import com.project.inventory.request.reponse.EmployeeItemResponse;
+import com.project.inventory.request.reponse.ResponseHandler;
+import com.project.inventory.service.EmployeeItemsService;
 /**
  * Employee Controller class.
 */
@@ -39,8 +44,15 @@ public class EmployeeItemsController {
   
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/assignitems")
-  public EmployeeItems addEmployeeItems(@RequestBody final EmployeeItems employeeItems) {
-    return empItemsService.addEmployeeItem(employeeItems);
+  public ResponseEntity<Object> addEmployeeItems(@RequestBody final EmployeeItems employeeItems) {
+	  try {
+		  EmployeeItems items =  empItemsService.addEmployeeItem(employeeItems);
+	      return ResponseHandler.generateResponse("Successfully retrieved data!",
+	                                               HttpStatus.OK, "employeeItems", items);
+	    } catch (Exception e) {
+	      return ResponseHandler.generateResponse(e.getMessage(),
+	                                              HttpStatus.MULTI_STATUS, "employeeItems", null);
+	    }
   }
   /**
    * get assigned items of employee.
@@ -48,8 +60,15 @@ public class EmployeeItemsController {
   
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/assignitems")
-  public List<EmployeeItems> getEmployeeItems() {
-    return empItemsService.getEmployeeItems();
+  public ResponseEntity<Object> getEmployeeItems() {
+	  try {
+		  List<EmployeeItems> items =  empItemsService.getEmployeeItems();
+	      return ResponseHandler.generateResponse("Successfully retrieved data!",
+	                                               HttpStatus.OK, "employeeItems", items);
+	    } catch (Exception e) {
+	      return ResponseHandler.generateResponse(e.getMessage(),
+	                                              HttpStatus.MULTI_STATUS, "employeeItems", null);
+	    }
   }
   /**
    * get assigned items by Employee id.
@@ -57,26 +76,33 @@ public class EmployeeItemsController {
   
   @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
   @GetMapping("/assignitems/{itemId}")
-  public EmployeeItemResponse findByEmployeeItemId(@PathVariable final Long itemId) {
-    return empItemsService.findByEmployeeItemId(itemId);
+  public ResponseEntity<Object> findByEmployeeItemId(@PathVariable final Long itemId) {
+    try {
+      EmployeeItemResponse items =  empItemsService.findByEmployeeItemId(itemId);
+      return ResponseHandler.generateResponse("Successfully retrieved data!",
+                                               HttpStatus.OK, "employeeItems",
+                                               items.getAssignedItems());
+    } catch (Exception e) {
+      return ResponseHandler.generateResponse(e.getMessage(),
+                                              HttpStatus.MULTI_STATUS, "employeeItems", null);
+    }
   }
   /**
    * updating assigned items to employees.
   */
   
   @PreAuthorize("hasRole('ADMIN')")
-  @PutMapping("/unassignitems/{id}")
-  public EmployeeItems updateEmployeeItems(@PathVariable final Long itemId, 
+  @PutMapping("/unassignitems/{itemId}")
+  public ResponseEntity<Object> updateEmployeeItems(@PathVariable final Long itemId, 
                                            @RequestBody final EmployeeItems employeeItems) {
-    return empItemsService.updateEmployeeItem(itemId, employeeItems);
-  } 
-  /**
-   * deleting assigned items to employees.
-  */
-  
-  @PreAuthorize("hasRole('ADMIN')")
-  @DeleteMapping("/unassignitems/{empId}")
-  public void deleteEmployeeItem(@PathVariable final Long empId) {
-    empItemsService.deleteEmployeeItem(empId);
+	  try {
+		  EmployeeItems items = empItemsService.updateEmployeeItem(itemId, employeeItems);
+	      return ResponseHandler.generateResponse("Successfully retrieved data!",
+	                                               HttpStatus.OK, "employeeItems", items);
+	    } catch (Exception e) {
+	      return ResponseHandler.generateResponse(e.getMessage(),
+	                                              HttpStatus.MULTI_STATUS, "employeeItems", null);
+	    }
   }
+  
 }

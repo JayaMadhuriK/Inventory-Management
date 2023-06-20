@@ -1,5 +1,14 @@
 package com.project.inventory.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.project.inventory.entity.Erole;
 import com.project.inventory.entity.InventoryItems;
 import com.project.inventory.entity.Role;
@@ -8,13 +17,6 @@ import com.project.inventory.repository.EmployeeItemsRepo;
 import com.project.inventory.repository.ItemRepo;
 import com.project.inventory.repository.UserRepo;
 import com.project.inventory.service.UserService;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
 /**
  * user service implementation.
 */
@@ -24,8 +26,6 @@ public class UserServiceImpl implements UserService {
   private final UserRepo userRepo;
   private final EmployeeItemsRepo employeeItemsRepo;
   private final ItemRepo itemRepo;
-  @Autowired
-  private BCryptPasswordEncoder passwordEncoder;
   /**
    * parameter constructor.
   */
@@ -37,13 +37,6 @@ public class UserServiceImpl implements UserService {
     this.itemRepo = itemRepo;
   }
   
-  @Override
-  public Users addUsers(Users users) {
-    String encryptedPassword = passwordEncoder.encode(users.getPassword());
-    users.setPassword(encryptedPassword);
-    return userRepo.save(users);
-  }
-
   @Override
   public Users updateUser(Long id, Users users) {
     Users existingUser = userRepo.findById(id).orElse(null);

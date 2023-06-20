@@ -34,6 +34,9 @@ const ShowProfile = (props) =>{
           [event.target.name]: event.target.value,
         });
       };
+    const handleCancel = () =>{
+        setEditing(false);
+    }
     const handleUpdateUser = async () => {
         const token = localStorage.getItem("jwtToken");
         const headers = {
@@ -54,7 +57,6 @@ const ShowProfile = (props) =>{
                 setSystemErrors({...systemErrors,response:'Updated Successfully'});
                 setTimeout(function() {
                     setSystemErrors({...systemErrors,response:''});
-                    setEditing(false);
                 }, 2000);
                 fetchUser();
             }
@@ -69,7 +71,6 @@ const ShowProfile = (props) =>{
                 setSystemErrors({...systemErrors,networkError:error?.message})
                 setTimeout(function() {
                     setSystemErrors({...systemErrors,networkError:''});
-                    setEditing(false);
                 }, 2000);
             }
         });
@@ -151,6 +152,7 @@ const ShowProfile = (props) =>{
                                 onChange={handleInputChange}
                                 /></h3>
                                 <Button size="medium" variant="contained" className="button" onClick={handleUpdateUser}>Save</Button>
+                                <Button size="medium" variant="contained" className="button" onClick={handleCancel}>Back</Button>
                             </>
                         )}
                     </Grid>

@@ -97,6 +97,7 @@ const EmployeeList= (props) =>{
                                                     try{
                                                         axios.delete(`http://localhost:6001/api/users/deleteusers/${employee.userId}`,{headers});
                                                         getEmployeeData();
+                                                        getItemData();
                                                     }catch(error) {
                                                         console.error('Error deleting employee:', error);
                                                     }

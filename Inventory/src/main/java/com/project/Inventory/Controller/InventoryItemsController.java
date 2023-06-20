@@ -1,9 +1,10 @@
 package com.project.inventory.controller;
 
-import com.project.inventory.entity.InventoryItems;
-import com.project.inventory.service.InventoryItemService;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,6 +15,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.project.inventory.entity.InventoryItems;
+import com.project.inventory.request.reponse.ResponseHandler;
+import com.project.inventory.service.InventoryItemService;
 
 /**
  * Inventory items controller class.
@@ -40,8 +45,15 @@ public class InventoryItemsController {
   
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/InventoryItems")
-  public List<InventoryItems> getInventoryItems() {
-    return invItemService.getInventoryItems();
+  public ResponseEntity<Object> getInventoryItems() {
+	  try {
+		  List<InventoryItems> items =  invItemService.getInventoryItems();
+	      return ResponseHandler.generateResponse("Successfully retrieved data!",
+	                                               HttpStatus.OK, "items", items);
+	    } catch (Exception e) {
+	      return ResponseHandler.generateResponse(e.getMessage(),
+	                                              HttpStatus.MULTI_STATUS, "items", null);
+	    }
   }
   /**
    * getting item by id.
@@ -49,8 +61,15 @@ public class InventoryItemsController {
   
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/InventoryItems/{itemId}")
-  public Optional<InventoryItems> findByInventoryItemId(@PathVariable final int itemId) {
-    return invItemService.findByInventoryItemId(itemId);
+  public ResponseEntity<Object> findByInventoryItemId(@PathVariable final int itemId) {
+	  try {
+		  Optional<InventoryItems> items =  invItemService.findByInventoryItemId(itemId);
+	      return ResponseHandler.generateResponse("Successfully retrieved data!",
+	                                               HttpStatus.OK, "items", items);
+	    } catch (Exception e) {
+	      return ResponseHandler.generateResponse(e.getMessage(),
+	                                              HttpStatus.MULTI_STATUS, "items", null);
+	    }
   }
   /**
    * adding items.
@@ -58,8 +77,15 @@ public class InventoryItemsController {
   
   @PreAuthorize("hasRole('ADMIN')")
   @PostMapping("/InventoryItems")
-  public InventoryItems addInventoryItem(@RequestBody final InventoryItems inventoryItems) {
-    return invItemService.addInventoryItem(inventoryItems);
+  public ResponseEntity<Object> addInventoryItem(@RequestBody final InventoryItems inventoryItems) {
+	  try {
+		  InventoryItems items = invItemService.addInventoryItem(inventoryItems);
+	      return ResponseHandler.generateResponse("Successfully retrieved data!",
+	                                               HttpStatus.OK, "items", items);
+	    } catch (Exception e) {
+	      return ResponseHandler.generateResponse(e.getMessage(),
+	                                              HttpStatus.MULTI_STATUS, "items", null);
+	    }
   }
   /**
    * updating items.
@@ -67,9 +93,16 @@ public class InventoryItemsController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @PutMapping("/InventoryItems/{itemId}")
-  public InventoryItems updateInventoryItem(@PathVariable final int itemId,
+  public ResponseEntity<Object> updateInventoryItem(@PathVariable final int itemId,
                                             @RequestBody final InventoryItems inventoryItems) {
-    return invItemService.updateInventoryItem(itemId, inventoryItems);
+	  try {
+		  InventoryItems items =  invItemService.updateInventoryItem(itemId, inventoryItems);
+	      return ResponseHandler.generateResponse("Successfully retrieved data!",
+	                                               HttpStatus.OK, "items", items);
+	    } catch (Exception e) {
+	      return ResponseHandler.generateResponse(e.getMessage(),
+	                                              HttpStatus.MULTI_STATUS, "items", null);
+	    }
   }
   /**
    * deleting items.
@@ -77,8 +110,15 @@ public class InventoryItemsController {
   
   @PreAuthorize("hasRole('ADMIN')")
   @DeleteMapping("/InventoryItems/{itemId}")
-  public void deleteInventoryItem(@PathVariable final int itemId) {
-    invItemService.deleteInventoryItem(itemId);
+  public ResponseEntity<Object> deleteInventoryItem(@PathVariable final int itemId) {
+	  try {
+		  invItemService.deleteInventoryItem(itemId);
+	      return ResponseHandler.generateResponse("Successfully retrieved data!",
+	                                               HttpStatus.OK, "items", null);
+	    } catch (Exception e) {
+	      return ResponseHandler.generateResponse(e.getMessage(),
+	                                              HttpStatus.MULTI_STATUS, "items", null);
+	    }
   }
   /**
    * getting unassigned items.
@@ -86,8 +126,15 @@ public class InventoryItemsController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/InventoryItems/unassign")
-  public List<InventoryItems> findByEmpIdIsNull() {
-    return invItemService.findByEmpIdIsNull();
+  public ResponseEntity<Object> findByEmpIdIsNull() {
+	  try {
+		  List<InventoryItems> items = invItemService.findByEmpIdIsNull();
+	      return ResponseHandler.generateResponse("Successfully retrieved data!",
+	                                               HttpStatus.OK, "items", items);
+	    } catch (Exception e) {
+	      return ResponseHandler.generateResponse(e.getMessage(),
+	                                              HttpStatus.MULTI_STATUS, "items", null);
+	    }
   }
   /**
    * getting assigned items.
@@ -95,8 +142,15 @@ public class InventoryItemsController {
 
   @PreAuthorize("hasRole('ADMIN')")
   @GetMapping("/InventoryItems/assign")
-  public List<InventoryItems> findByEmpIdIsNotNull() {
-    return invItemService.findByEmpIdIsNotNull();
+  public ResponseEntity<Object> findByEmpIdIsNotNull() {
+	  try {
+		  List<InventoryItems> items =  invItemService.findByEmpIdIsNotNull();
+	      return ResponseHandler.generateResponse("Successfully retrieved data!",
+	                                               HttpStatus.OK, "items", items);
+	    } catch (Exception e) {
+	      return ResponseHandler.generateResponse(e.getMessage(),
+	                                              HttpStatus.MULTI_STATUS, "items", null);
+	    }
   }
 
 }

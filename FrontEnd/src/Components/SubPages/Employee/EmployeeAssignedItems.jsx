@@ -24,7 +24,7 @@ import ItemsPopUp from'../Item/ItemsPopUp';
 import MuiAlert from '@mui/material/Alert';
 
 const EmployeeAssignedItems = (props) =>{
-    const {employeeDetails,itemData,setItemData,getAllItemData} = props;
+    const {employeeDetails,itemData,setItemData,getAllItemData,getItemData} = props;
     const [assignedItemData,setAssignedItemData] = useState([]);
     const [selectedItems,setSelectedItems] = useState([]);
     const [isUnassignPopupOpen,setIsUnassignPopupOpen] = useState(false);
@@ -38,11 +38,12 @@ const EmployeeAssignedItems = (props) =>{
             'Authorization': token
         };
         const response =await axios.get(`http://localhost:6001/api/employeeitems/assignitems/${employeeDetails?.userId}`,{headers})
-        setAssignedItemData(response?.data?.assignedItems);
-        console.log(response)
+        setAssignedItemData(response?.data?.employeeItems);
+        if(response?.data?.employeeItems === null){
+            setAssignedItemData([]);
+        }
     };
     const handleAssign = () =>{
-        getEmployeeData();
         setIsUnassignPopupOpen(true);
     };
     const handleAdd = () =>{
@@ -68,7 +69,7 @@ const EmployeeAssignedItems = (props) =>{
         };
         try{
             const unassign =await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign',{headers});
-            setItemData(unassign?.data);
+            setItemData(unassign?.data?.items);
         }catch(error) {
             console.error('Error fetching item data:', error);
         }
@@ -147,7 +148,7 @@ const EmployeeAssignedItems = (props) =>{
                 <Button variant="contained" size="medium" className="btn1" onClick={handleUpdate}>Update</Button>
                 <Button variant="contained" size="medium" onClick={handleAssign} className="btn"><AddIcon/>Assign More</Button>
             </Grid>
-            {assignedItemData ? (
+            {assignedItemData?.length>0 ? (
                 <TableContainer component={Paper} className="app-container">
                     <Table aria-label='table'>
                         <TableHead>

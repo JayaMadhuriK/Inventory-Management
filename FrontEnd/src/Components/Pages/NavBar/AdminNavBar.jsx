@@ -81,7 +81,6 @@ const AdminNavBar = (props) =>{
         };
         const response =await axios.get('http://localhost:6001/api/users/getemployees',{headers});
         const data = response?.data?.employees;
-        console.log(response)
         setEmployeeData(data);
         setEmployeeCount(data?.length);
         const filteredData = data?.filter((employee) => {
@@ -98,17 +97,17 @@ const AdminNavBar = (props) =>{
             'Authorization': token
         };
         const assign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/assign',{headers});
-        setAssignItemCount(assign?.data?.length);
-        setItemAssignData(assign?.data)
+        setAssignItemCount(assign?.data?.items?.length);
+        setItemAssignData(assign?.data?.items)
         try{
             const unassign = await axios.get('http://localhost:6001/api/inventory/InventoryItems/unassign',{headers});
-            setUnAssignItemCount(unassign?.data?.length);
-            setItemPopupData(unassign?.data);
+            setUnAssignItemCount(unassign?.data?.items?.length);
+            setItemPopupData(unassign?.data?.items);
         }catch(error) {
             console.error('Error fetching item data:', error);
         }
         const response =await axios.get('http://localhost:6001/api/inventory/InventoryItems',{headers});
-        const data = response?.data;
+        const data = response?.data?.items;
         setItemData(data);
         const filteredData = data?.filter((item) =>{
             const itemNameMatch = item.itemName.toLowerCase().includes(searchQuery1.toLowerCase());
@@ -174,7 +173,8 @@ const AdminNavBar = (props) =>{
                 employeeDetails={employeeDetails} 
                 getAllItemData={getItemData} 
                 itemData={itemPopupData} 
-                setItemData={setItemPopupData}/>
+                setItemData={setItemPopupData}
+                getItemData={getItemData}/>
             }
             {navigation ?.addEmployee && <AddEmployee/>}
             <Dialog 

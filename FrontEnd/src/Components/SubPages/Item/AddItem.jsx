@@ -18,7 +18,6 @@ const AddItem = (props) =>{
         if(name == "dateOfPurchase"){
         let dateArray = value.split("-");
         let date = dateArray[2]+"-"+dateArray[1]+"-"+dateArray[0];
-        console.log(date);
         setFormValues({...formValues,dateOfPurchase:date})
         }
     };

@@ -61,7 +61,7 @@ const EmployeeNavbar = (props) =>{
             'content-type': 'application/json'
         };
         const response =await axios.get(`http://localhost:6001/api/employeeitems/assignitems/${userDetails.userId}`,{headers});
-        const data = response?.data?.assignedItems;
+        const data = response?.data?.employeeItems;
         const filteredData = data?.filter((item) =>{
             const itemNameMatch = item.itemName.toLowerCase().includes(searchQuery1.toLowerCase());
             const itemIdMatch = item.itemId.toString().includes(searchQuery1.toLowerCase());
@@ -70,6 +70,9 @@ const EmployeeNavbar = (props) =>{
             return itemNameMatch || itemIdMatch || categoryMatch || billNumberMatch;
         });
         setFilteredItemData(filteredData)
+        if(data === null){
+            setFilteredItemData([])
+        }
         setCount(data.length);
     };
     useEffect(() => {
