@@ -41,6 +41,7 @@ public class Users {
   
   @NotEmpty(message = "LastName is required")
   private String lastName;
+  @NotNull(message = "DateOfBirth is required")
   private Date dateOfBirth;
   
   @NotNull(message = "Age is required")
@@ -50,7 +51,6 @@ public class Users {
   @NotNull(message = "Mobile number is required")
   @Positive(message = "Mobile number must be a positive number")
   private Long mobileNumber;
-  
   
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "user_roles", 

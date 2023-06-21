@@ -100,9 +100,9 @@ public class UserController {
   @GetMapping("/getusers/{empId}")
   public ResponseEntity<Object> findUserById(@PathVariable final Long empId) {
     try {
-      Optional<Users> allUsers = userServiceImpl.findUserById(empId);
+      Optional<Users> user = userServiceImpl.findUserById(empId);
       return ResponseHandler.generateResponse("Successfully retrieved data!!",
-                                               HttpStatus.OK, "employees", allUsers);
+                                               HttpStatus.OK, "employees", user);
     } catch (Exception e) {
       return ResponseHandler.generateResponse(e.getMessage(),
                                               HttpStatus.MULTI_STATUS, "employees", null);

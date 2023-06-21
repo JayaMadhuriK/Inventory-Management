@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
 
 /**
  * Role Controller class.
@@ -19,6 +20,8 @@ public class Role {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
+  
+  @NotEmpty(message = "Role is required")
   @Enumerated(EnumType.STRING)
   @Column(length = 20)
   private Erole name;

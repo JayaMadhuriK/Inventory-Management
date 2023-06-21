@@ -1,14 +1,5 @@
 package com.project.inventory.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import com.project.inventory.entity.Erole;
 import com.project.inventory.entity.InventoryItems;
 import com.project.inventory.entity.Role;
@@ -17,6 +8,12 @@ import com.project.inventory.repository.EmployeeItemsRepo;
 import com.project.inventory.repository.ItemRepo;
 import com.project.inventory.repository.UserRepo;
 import com.project.inventory.service.UserService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import org.springframework.stereotype.Service;
+
 /**
  * user service implementation.
 */

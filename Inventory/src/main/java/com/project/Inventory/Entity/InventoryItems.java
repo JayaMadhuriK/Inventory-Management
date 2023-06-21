@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 /**
  * Inventory items entity class.
 */
@@ -14,19 +16,30 @@ public class InventoryItems {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int itemId;
+  
+  @NotEmpty(message = "Item Name is required")
   @Column(nullable = false, length = 128)
   private String itemName;
+  
+  @NotEmpty(message = "Category is required")
   @Column(nullable = false, length = 128)
   private String category;
+  
+  @NotNull(message = "Bill Number is required")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(nullable = false, length = 30)
   private int billNumber;
+  
+  @NotEmpty(message = "Date of Purchase is required")
   @Column(nullable = false)
   private String dateOfPurchase;
+  
   @Column(nullable = true)
   private int warranty;
+  
   @Column(nullable = true)
   private String expireDate;
+  
   @Column(nullable = true)
   private Long empId;
   
