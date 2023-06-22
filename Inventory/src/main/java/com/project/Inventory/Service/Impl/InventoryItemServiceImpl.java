@@ -22,14 +22,18 @@ public class InventoryItemServiceImpl implements InventoryItemService {
   @Override
   public InventoryItems updateInventoryItem(int id, InventoryItems inventoryItems) {
     Optional<InventoryItems> inventoryPayload = inventoryItemRepo.findById(id);
-    inventoryPayload.get().setItemName(inventoryItems.getItemName());
-    inventoryPayload.get().setCategory(inventoryItems.getCategory());
-    inventoryPayload.get().setExpireDate(inventoryItems.getExpireDate());
-    inventoryPayload.get().setWarranty(inventoryItems.getWarranty());
-    inventoryPayload.get().setBillNumber(inventoryItems.getBillNumber());
-    inventoryPayload.get().setDateOfPurchase(inventoryItems.getDateOfPurchase());
-    inventoryPayload.get().setEmpId(inventoryItems.getEmpId());
-    return inventoryItemRepo.save(inventoryPayload.get());
+    if (inventoryPayload.isPresent()) {
+      inventoryPayload.get().setItemName(inventoryItems.getItemName());
+      inventoryPayload.get().setCategory(inventoryItems.getCategory());
+      inventoryPayload.get().setExpireDate(inventoryItems.getExpireDate());
+      inventoryPayload.get().setWarranty(inventoryItems.getWarranty());
+      inventoryPayload.get().setBillNumber(inventoryItems.getBillNumber());
+      inventoryPayload.get().setDateOfPurchase(inventoryItems.getDateOfPurchase());
+      inventoryPayload.get().setEmpId(inventoryItems.getEmpId());
+      return inventoryItemRepo.save(inventoryPayload.get());
+    } else {
+      return null;
+    }
   }
 
   @Override
@@ -49,7 +53,7 @@ public class InventoryItemServiceImpl implements InventoryItemService {
 
   @Override
   public void deleteInventoryItem(@PathVariable int id) {
-    inventoryItemRepo.deleteById(id);;
+    inventoryItemRepo.deleteById(id);
   }
    
   @Override

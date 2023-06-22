@@ -38,7 +38,7 @@ public class EmployeeItemServiceImpl implements EmployeeItemsService {
   @Override
   public EmployeeItems updateEmployeeItem(Long id, EmployeeItems employeeItems) {
     Optional<EmployeeItems> employeeItemsDb = employeeItemsRepo.findById(id);
-    List<Integer> unassignedItems = employeeItemsDb.get().getAssignedItems();
+    List<Integer> unassignedItems = new ArrayList<>(employeeItemsDb.get().getAssignedItems());
     unassignedItems.removeAll(employeeItems.getAssignedItems());
     for (int i = 0; i < unassignedItems.size(); i++) {
       Optional<InventoryItems> inventoryItems = itemRepo
