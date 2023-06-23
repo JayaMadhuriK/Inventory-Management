@@ -72,10 +72,10 @@ public class EmployeeItemsController {
   */
   
   @PreAuthorize("hasRole('ADMIN') or hasRole('EMPLOYEE')")
-  @GetMapping("/assignitems/{itemId}")
-  public ResponseEntity<Object> findByEmployeeItemId(@PathVariable final Long itemId) {
+  @GetMapping("/assignitems/{empId}")
+  public ResponseEntity<Object> findByEmployeeItemId(@PathVariable final Long empId) {
     try {
-      EmployeeItemResponse items =  empItemsService.findByEmployeeItemId(itemId);
+      EmployeeItemResponse items =  empItemsService.findByEmployeeItemId(empId);
       return ResponseHandler.generateResponse("Successfully retrieved data!",
                                                HttpStatus.OK, "employeeItems",
                                                items.getAssignedItems());
@@ -89,11 +89,11 @@ public class EmployeeItemsController {
   */
   
   @PreAuthorize("hasRole('ADMIN')")
-  @PutMapping("/unassignitems/{itemId}")
-  public ResponseEntity<Object> updateEmployeeItems(@PathVariable final Long itemId, 
+  @PutMapping("/unassignitems/{empId}")
+  public ResponseEntity<Object> updateEmployeeItems(@PathVariable final Long empId, 
                                            @RequestBody final EmployeeItems employeeItems) {
     try {
-      EmployeeItems items = empItemsService.updateEmployeeItem(itemId, employeeItems);
+      EmployeeItems items = empItemsService.updateEmployeeItem(empId, employeeItems);
       return ResponseHandler.generateResponse("Successfully retrieved data!",
                                                HttpStatus.OK, "employeeItems", items);
     } catch (Exception e) {

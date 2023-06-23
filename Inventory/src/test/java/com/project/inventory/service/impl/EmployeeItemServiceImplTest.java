@@ -60,9 +60,7 @@ class EmployeeItemServiceImplTest {
     EmployeeItems existingEmployeeItems = new EmployeeItems();
     existingEmployeeItems.setEmpId(id);
     existingEmployeeItems.setAssignedItems(Arrays.asList(1, 2));
-    EmployeeItems updatedEmployeeItems = new EmployeeItems();
-    updatedEmployeeItems.setEmpId(id);
-    updatedEmployeeItems.setAssignedItems(Arrays.asList(2));
+    EmployeeItems updatedEmployeeItems = new EmployeeItems(id, Arrays.asList(2));
     InventoryItems inventoryItem1 = new InventoryItems();
     inventoryItem1.setItemId(1);
     InventoryItems inventoryItem2 = new InventoryItems();

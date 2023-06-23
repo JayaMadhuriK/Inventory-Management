@@ -2,6 +2,8 @@ package com.project.inventory.security.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.inventory.entity.Users;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +17,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserDetailsImpl implements UserDetails {
   private static final long serialVersionUID = 1L;
+  @NotEmpty(message = "Email is required")
+  @Pattern(regexp = "^[A-Z0-9a-z+_-]+@walmart[.]com$",  message = "Email is not Valid")
   private String email;
+  @NotEmpty(message = "Password is required")
+  @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$",
+           message = "Password must be at least 8 characters long and "
+                      + "contain at least one digit, one lowercase letter, one uppercase letter, "
+                      + "one special character, and no whitespace")
   @JsonIgnore
   private String password;
   private Collection<? extends GrantedAuthority> authorities;
