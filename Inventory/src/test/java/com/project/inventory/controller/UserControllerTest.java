@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -22,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 
 
 class UserControllerTest {
@@ -65,6 +67,21 @@ class UserControllerTest {
     assertEquals(updatedUser, responseBody.get("employees"));
     verify(userServiceImpl, times(1)).updateUser(anyLong(), any(Users.class));
   }
+  
+  @Test
+  void testUpdateUserIfFailed() {
+    Long empId = 1L;
+    Users users = new Users();
+    String errorMessage = "Failed to update user";
+    when(userServiceImpl.updateUser(empId, users)).thenThrow(new RuntimeException(errorMessage));
+    ResponseEntity<Object> response = userController.updateUser(empId, users);
+    assertEquals(HttpStatus.MULTI_STATUS, response.getStatusCode());
+    @SuppressWarnings("unchecked")
+    Map<String, Object> responseBody = (Map<String, Object>) response.getBody();
+    assertEquals("Failed to update user",  responseBody.get("message"));
+    assertEquals(null, responseBody.get("employees"));
+    verify(userServiceImpl, times(1)).updateUser(empId, users);
+  }
 
   @Test
   void testDeleteUser() {
@@ -75,6 +92,20 @@ class UserControllerTest {
     assertEquals("Deleted!", responseBody.get("message"));
     assertEquals(null, responseBody.get("employees"));
     verify(userServiceImpl, times(1)).deleteUser(anyLong());
+  }
+  
+  @Test
+  void testDeleteUserIfFailed() {
+    Long empId = 1L;
+    String errorMessage = "Failed to delete user";
+    doThrow(new RuntimeException(errorMessage)).when(userServiceImpl).deleteUser(empId);
+    ResponseEntity<Object> response = userController.deleteUser(empId);
+    assertEquals(HttpStatus.MULTI_STATUS, response.getStatusCode());
+    @SuppressWarnings("unchecked")
+    Map<String, Object> responseBody = (Map<String, Object>) response.getBody();
+    assertEquals("Failed to delete user", responseBody.get("message"));
+    assertEquals(null, responseBody.get("employees"));
+    verify(userServiceImpl, times(1)).deleteUser(empId);
   }
   
   @Test
@@ -91,6 +122,20 @@ class UserControllerTest {
     verify(userServiceImpl, times(1)).findUserById(anyLong());
   }
   
+  @Test
+  void testFindUserByIdIfFailed() {
+    Long empId = 1L;
+    String errorMessage = "Failed to find user";
+    when(userServiceImpl.findUserById(empId)).thenThrow(new RuntimeException(errorMessage));
+    ResponseEntity<Object> response = userController.findUserById(empId);
+    assertEquals(HttpStatus.MULTI_STATUS, response.getStatusCode());
+    @SuppressWarnings("unchecked")
+    Map<String, Object> responseBody = (Map<String, Object>) response.getBody();
+    assertEquals("Failed to find user", responseBody.get("message"));
+    assertEquals(null, responseBody.get("employees"));
+    verify(userServiceImpl, times(1)).findUserById(empId);
+  }
+  
   
   @Test
   void testFindUserByEmail() {
@@ -104,6 +149,20 @@ class UserControllerTest {
     assertEquals("Successfully retrieved data!!", responseBody.get("message"));
     assertEquals(optionalUser, responseBody.get("employees"));
     verify(userRepo, times(1)).findByEmail(anyString());
+  }
+  
+  @Test
+  void testFindUserByEmailIfFailed() {
+    String email = "test@example.com";
+    String errorMessage = "Failed to find user";
+    when(userRepo.findByEmail(email)).thenThrow(new RuntimeException(errorMessage));
+    ResponseEntity<Object> response = userController.findUserByEmail(email);
+    assertEquals(HttpStatus.MULTI_STATUS, response.getStatusCode());
+    @SuppressWarnings("unchecked")
+    Map<String, Object> responseBody = (Map<String, Object>) response.getBody();
+    assertEquals("Failed to find user", responseBody.get("message"));
+    assertEquals(null, responseBody.get("employees"));
+    verify(userRepo, times(1)).findByEmail(email);
   }
   
 }

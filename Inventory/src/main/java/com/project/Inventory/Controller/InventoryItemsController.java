@@ -65,7 +65,7 @@ public class InventoryItemsController {
       return ResponseHandler.generateResponse("Successfully retrieved data!",
                                                HttpStatus.OK, "items", items);
     } catch (Exception e) {
-      return ResponseHandler.generateResponse(e.getMessage(),
+      return ResponseHandler.generateResponse("Failed to find item",
                                               HttpStatus.MULTI_STATUS, "items", null);
     }
   }

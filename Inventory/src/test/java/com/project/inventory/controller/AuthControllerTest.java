@@ -17,6 +17,7 @@ import com.project.inventory.repository.UserRepo;
 import com.project.inventory.request.payload.LoginRequest;
 import com.project.inventory.request.payload.SignupRequest;
 import com.project.inventory.request.reponse.JwtResponse;
+import com.project.inventory.request.reponse.MessageResponse;
 import com.project.inventory.security.jwt.JwtUtils;
 import com.project.inventory.security.service.UserDetailsImpl;
 import java.sql.Date;
@@ -92,7 +93,7 @@ class AuthControllerTest {
     assertEquals(Collections.singletonList("ROLE_EMPLOYEE"), jwtResponse.getRoles());
     verify(jwtUtils, times(1)).generateJwtToken(any(Authentication.class));
   }
-     
+  
   @Test
   void registerUser_WithValidRequest_ShouldReturnSuccessMessageRoleEmployee() {
     SignupRequest signUpRequest = new SignupRequest();
@@ -108,11 +109,14 @@ class AuthControllerTest {
     when(encoder.encode(signUpRequest.getPassword())).thenReturn("encoded-password");
     ResponseEntity<?> response = authController.registerUser(signUpRequest);
     assertEquals(HttpStatus.OK, response.getStatusCode());
+    assertEquals(MessageResponse.class, response.getBody().getClass());
+    MessageResponse messageResponse = (MessageResponse) response.getBody();
+    assertEquals("User registered successfully!", messageResponse.getMessage());
     verify(userRepository, times(1)).existsByEmail(signUpRequest.getEmail());
     verify(userRepository, times(1)).save(any(Users.class));
     verify(roleRepository, times(1)).findByName(Erole.ROLE_EMPLOYEE);
     verify(encoder, times(1)).encode(signUpRequest.getPassword());
-  }
+  } 
   
   @Test
   void registerUser_WithValidRequest_ShouldReturnSuccessMessageRoleNotGiven() {

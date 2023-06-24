@@ -80,7 +80,7 @@ public class EmployeeItemsController {
                                                HttpStatus.OK, "employeeItems",
                                                items.getAssignedItems());
     } catch (Exception e) {
-      return ResponseHandler.generateResponse(e.getMessage(),
+      return ResponseHandler.generateResponse("EmpId doesn't found",
                                               HttpStatus.MULTI_STATUS, "employeeItems", null);
     }
   }
